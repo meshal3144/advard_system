@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .terms-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 40px 0;
+            color: #033043;
+            margin-top: 100px; /* أو padding-top: 100px حسب التصميم */
+        }
+
+        .terms-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px; /* أضف مسافة بين العنصر والفوتر */
+
+        }
+
+        .terms-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .terms-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .terms-section i {
+            color: #033043;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .terms-section h2 {
+            font-size: 22px;
+            color: #033043;
+            margin-bottom: 10px;
+        }
+
+        .terms-section p, .terms-section ul {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555555;
+            margin: 0;
+        }
+
+        .terms-section ul {
+            padding-left: 20px;
+        }
+
+        .terms-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .arrow {
+            color: #033043;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+    </style>
+
+    <div class="terms-title">
+        <h1>الشروط والأحكام</h1>
+    </div>
+
+    <div class="terms-container">
+        <div class="terms-section" data-aos="fade-up">
+            <h2> مقدمة</h2>
+            <p>ترحب Advard بكم في منصتنا لإدارة الموظفين. باستخدامك لهذا النظام، فإنك توافق على الشروط والأحكام التالية، والتي تهدف إلى ضمان تجربة استخدام سلسة وآمنة للجميع.</p>
+        </div>
+
+        <div class="terms-section" data-aos="fade-up" data-aos-delay="200">
+            <h2> 1. استخدام النظام</h2>
+            <ul>
+                <li>يحق للمستخدمين المسجلين فقط الوصول إلى خدمات النظام.</li>
+                <li>يتحمل المستخدم مسؤولية دقة البيانات المدخلة في النظام.</li>
+                <li>لا يجوز استخدام النظام لأي أغراض غير قانونية أو غير مصرح بها.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section" data-aos="fade-up" data-aos-delay="400">
+            <h2> 2. الاشتراكات والدفع</h2>
+            <ul>
+                <li> يتم توفير خدمات النظام ضمن خطط اشتراك مختلفة.</li>
+                <li> في حال عدم تجديد الاشتراك، قد يتم تعليق الوصول إلى بعض الميزات.</li>
+                <li> لا يمكن استرداد المدفوعات بعد بدء فترة الاشتراك.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section" data-aos="fade-up" data-aos-delay="600">
+            <h2> 3. الأمان والخصوصية</h2>
+            <ul>
+                <li>يحظر مشاركة بيانات تسجيل الدخول مع أي أطراف أخرى.</li>
+                <li>يتم تخزين بيانات المستخدمين وفقًا لمعايير الأمان المعتمدة.</li>
+                <li>الشركة غير مسؤولة عن أي خسائر ناتجة عن إساءة استخدام الحساب.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section" data-aos="fade-up" data-aos-delay="800">
+            <h2> 4. التعديلات على الشروط</h2>
+            <p>نحتفظ بحق تحديث الشروط والأحكام في أي وقت، وسيتم إخطار المستخدمين بأي تغييرات هامة عبر البريد الإلكتروني أو من خلال إشعار داخل النظام.</p>
+        </div>
+    </div>
+
+    <script>
+        // تفعيل مكتبة AOS لتحسين الحركات عند ظهور العناصر
+        AOS.init();
+    </script>
+{% endblock %}

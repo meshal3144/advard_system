@@ -1,0 +1,230 @@
+{% extends 'panel_base.html' %}
+{% block title %}تفاصيل المستخدم{% endblock %}
+
+{% block content %}
+
+<style>
+
+
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* تباعد بين الأزرار */
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.action-buttons a,
+.action-buttons button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: white;
+    font-family: var(--font-family);
+
+}
+
+.btn-back {
+    background-color: #6c757d;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+.btn-edit {
+    background-color: #3a6ea5;
+}
+
+.btn-edit:hover {
+    background-color: #2f5e91;
+}
+
+.btn-deactivate {
+    background-color: #CF423B;
+}
+
+.btn-deactivate:hover {
+    background-color: #b83e37;
+}
+
+.btn-activate {
+    background-color: #67917D;
+}
+
+.btn-activate:hover {
+    background-color: #58836e;
+}
+
+.btn-send-link {
+    background-color: #FDA521;
+    color: black;
+}
+
+.btn-send-link:hover {
+    background-color: #e6951c;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%; /* غيّرناها من 40% لـ 50% عشان التمركز الأفقي */
+    transform: translate(-50%, -50%); /* التمركز الأفقي والرأسي */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 600px;
+    max-width: 90%; /* متجاوب مع الشاشات الصغيرة */
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.close-btn {
+    cursor: pointer;
+    float: right;
+    font-size: 24px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    z-index: 10000;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+</style>
+
+<div class="page-container">
+    <h2>تفاصيل العميل</h2>
+
+    <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
+    <p><strong>البريد:</strong> {{ user.email }}</p>
+    <p><strong>رقم الجوال:</strong> {{ user.phone }}</p>
+    <p><strong>الدور:</strong> {{ user.get_role_display }}</p>
+    <p><strong>الشركة:</strong> {{ user.company.name }}</p>
+    <p><strong>الحالة:</strong> {% if user.is_active %}مفعل{% else %}غير مفعل{% endif %}</p>
+</div>
+
+
+
+
+<div class="action-buttons">
+    <!-- زر الرجوع -->
+    <a href="{% url 'clients' %}" class="btn btn-back">
+        <i class="ri-arrow-go-back-line"></i> رجوع
+    </a>
+
+    <!-- زر تعديل -->
+    <a href="{% url 'edit_user' user.id %}" class="btn btn-edit">
+        <i class="ri-edit-line"></i> تعديل
+    </a>
+
+    <!-- زر تفعيل / تعطيل -->
+    {% if user.is_active %}
+        <form method="POST" action="{% url 'deactivate_user' user.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-deactivate">
+                <i class="ri-lock-line"></i> تعطيل
+            </button>
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'activate_user' user.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-activate">
+                <i class="ri-lock-unlock-line"></i> تفعيل
+            </button>
+        </form>
+    {% endif %}
+
+    <!-- زر إرسال رابط تعيين كلمة مرور -->
+    <form method="POST" action="{% url 'send_set_password_link' user.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button class="btn btn-send-link">
+            <i class="ri-mail-send-line"></i> إرسال رابط تعيين كلمة مرور
+        </button>
+    </form>
+</div>
+
+<div id="confirmDeactivateModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">×</span>
+        <h2>تأكيد تعطيل المستخدم</h2>
+        <p>هل أنت متأكد من أنك تريد تعطيل هذا المستخدم؟</p>
+        <div class="modal-actions">
+            <form id="deactivateForm" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">نعم</button>
+            </form>
+            <button class="btn btn-secondary">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const deactivateBtn = document.querySelector(".btn-deactivate");
+    const modal = document.getElementById("confirmDeactivateModal");
+    const closeBtn = document.querySelector("#confirmDeactivateModal .close-btn");
+    const cancelBtn = document.querySelector(".btn-secondary");
+    const confirmBtn = document.querySelector(".btn-danger");
+    const form = document.getElementById("deactivateForm");
+
+    // تحقق من وجود closeBtn
+    if (!closeBtn) {
+        console.error("Close button not found!");
+        return;
+    }
+
+    if (deactivateBtn) {
+        deactivateBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            modal.style.display = "flex";
+            form.action = deactivateBtn.closest("form").action;
+        });
+    }
+
+    closeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        console.log("Close button clicked"); // تحقق مما إذا كان هذا يظهر في وحدة التحكم
+        modal.style.display = "none";
+    });
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+    }
+
+    if (confirmBtn) {
+        confirmBtn.addEventListener("click", function () {
+            form.submit();
+        });
+    }
+});
+
+
+</script>
+
+
+{% endblock %}

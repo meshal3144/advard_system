@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} نظام معلومات الموظف - Advard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+    <!-- القسم العلوي (Hero Section) -->
+    <section class="hero-section">
+        <div class="hero-text">
+            <i class="ri-info-card-line hero-icon"></i>
+            <h1>نظام معلومات الموظف</h1>
+            <p>نظام مركزي يحفظ جميع بيانات الموظف الوظيفية والشخصية والمالية في سجل رقمي موحّد، مما يسهل الرجوع إليها عند الحاجة، ويضمن توحيد مصدر المعلومات الإدارية داخل المنشأة.</p>
+            <a href="{% url 'services' %}#trial-request" class="custom-demo-btn">اطلب العرض التجريبي</a>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="نظام معلومات الموظف">
+        </div>
+    </section>
+
+    <!-- الفقرة 1 -->
+    <body id="service-sectionemployee-info-system-page">
+    <section class="service-section">
+        <div class="section-text">
+            <h2>وابرز ما يميز الخدمةالمقدمة:</h2>
+            <ul>
+                <li><i class="ri-file-line"></i>ملف رقمي شامل لكل موظف</li>
+                <li><i class="ri-shield-keyhole-line"></i>صلاحيات وصول مخصصة لكل مستوى إداري</li>
+                <li><i class="ri-upload-cloud-2-line"></i> أرشفة الترقيات، الغيابات، والعقوبات</li>
+                <li><i class="ri-send-plane-line"></i>إشعارات للمسؤولين والموظفين بالحالة</li>
+                <li><i class="ri-attachment-line"></i>ارتباط مباشر بجميع الأنظمة المرتبطة بالموظف</li>
+            </ul>
+        </div>
+    </body>
+        <div class="section-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="فترات العمل">
+        </div>
+    </section>
+
+    <!-- الفقرة 2 -->
+    <section class="service-section reverse">
+        <div class="section-text">
+            <h2> تكامل الخدمة مع الأنظمة الأخرى</h2>
+        </div>
+        <div class="section-image">
+            <img src="{% static 'images/services/ban.svg' %}" alt="موافقات متعددة المستويات">
+        </div>
+    </section>
+
+    <!-- الفقرة 3 -->
+    <section class="service-section">
+        <div class="section-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="رصيد الإجازات">
+        </div>
+        <div class="section-text">
+            <h2>تتبع رصيد الإجازات بشكل فوري</h2>
+            <p>كل موظف يمكنه معرفة رصيده المتبقي من الإجازات بحسب نوعها، ويتم تحديث الرصيد تلقائيًا عند الموافقة على الطلبات. هذا يعزز من الشفافية ويقلل من الاستفسارات المتكررة حول الأرصدة.</p>
+        </div>
+    </section>
+
+    <!-- جدول المعلومات أسفل الصفحة -->
+    <section class="service-info">
+        <h2>معلومات إضافية</h2>
+        <table class="info-table">
+            <tr>
+                <th>الخاصية</th>
+                <th>البيان</th>
+            </tr>
+            <tr>
+                <td>توفر الخدمة	</td>
+                <td>تتوفر في جميع الباقات</td>
+            </tr>
+            <tr>
+                <td>التكامل مع الخدمات الأخرى	</td>
+                <td>الحضور - الرواتب - التقييم</td>
+            </tr>
+            <tr>
+                <td>آلية الاستخدام</td>
+                <td>مخصص للإدارة فقط</td>
+            </tr>
+            <tr>
+                <td>التفعيل عبر الأجهزة الذكية</td>
+                <td>متوافق مع الجوال والتابلت</td>
+            </tr>
+            <tr>
+                <td>إمكانية الربط بالبصمة</td>
+                <td> متاح عبر التكامل مع أجهزة الحضور</td>
+            </tr>
+        </table>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/services.js' %}" defer></script>
+{% endblock %}
+

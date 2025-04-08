@@ -1,0 +1,241 @@
+{% extends 'panel_base.html' %}
+{% load static %}
+
+{% block title %}الملف الشخصي{% endblock %}
+
+{% block extra_css %}
+<style>
+.profile-container {
+    background-color: #f5f3f3;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    direction: rtl;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto 60px auto;
+    position: relative;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.profile-header h2 {
+    margin: 0;
+}
+
+.change-password-btn {
+    background-color: #FDA521;
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--font-family);
+}
+
+.profile-image {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.profile-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.profile-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: var(--font-family);
+}
+
+.profile-form input:disabled {
+    background-color: #f9f9f9;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #044A54;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: var(--font-family);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%; /* غيّرناها من 40% لـ 50% عشان التمركز الأفقي */
+    transform: translate(-50%, -50%); /* التمركز الأفقي والرأسي */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 600px;
+    max-width: 90%; /* متجاوب مع الشاشات الصغيرة */
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 45px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    direction: rtl;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: var(--font-family);
+}
+
+.modal-content button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
+.modal-actions {
+    text-align: left;
+}
+
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+    padding-left: 35px; /* تأكد من وجود مساحة للأيقونة */
+}
+
+.password-container .toggle-password {
+    position: absolute;
+    left: 10px; /* تحريك الأيقونة إلى اليسار */
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: gray;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>الملف الشخصي</h2>
+            <button class="change-password-btn" onclick="openPasswordModal()">تغيير كلمة المرور</button>
+        </div>
+
+        <div class="profile-image">
+            <img src="{{ user_avatar }}" alt="الصورة الشخصية" onclick="uploadProfileImage()">
+        </div>
+
+        <form class="profile-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="avatar" id="profile-upload" style="display:none">
+            <input type="text" value="{{ user.full_name }}" disabled>
+            <input type="text" name="phone" value="{{ phone }}">
+            <input type="email" value="{{ email }}" disabled>
+            <button class="save-btn" type="submit">حفظ</button>
+        </form>
+    </div>
+
+    <!-- نافذة تغيير كلمة المرور -->
+    <div class="modal" id="passwordModal">
+        <form method="POST" class="modal-content">
+            {% csrf_token %}
+            <h3>تغيير كلمة المرور</h3>
+            <input type="hidden" name="change_password" value="1">
+            <div class="password-container">
+                <input type="password" name="old_password" placeholder="كلمة المرور القديمة" required>
+                <i class="ri-eye-off-fill toggle-password"></i>
+            </div>
+            
+            <div class="password-container">
+                <input type="password" name="new_password" placeholder="كلمة المرور الجديدة" required>
+                <i class="ri-eye-off-fill toggle-password"></i>
+            </div>
+            
+            <div class="password-container">
+                <input type="password" name="confirm_password" placeholder="تأكيد كلمة المرور الجديدة" required>
+                <i class="ri-eye-off-fill toggle-password"></i>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" onclick="closePasswordModal()">إلغاء</button>
+                <button style="background-color: #FDA521; color: #fff;" type="submit">حفظ</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openPasswordModal() {
+    document.getElementById('passwordModal').style.display = 'flex';
+}
+
+function closePasswordModal() {
+    document.getElementById('passwordModal').style.display = 'none';
+}
+
+function uploadProfileImage() {
+    document.getElementById('profile-upload').click();
+}
+
+
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", function () {
+        let passwordField = this.previousElementSibling; // تحديد حقل الإدخال المرتبط بالأيقونة
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            this.classList.replace("ri-eye-off-fill", "ri-eye-fill"); // إعادة الأيقونة الأصلية
+        } else {
+            passwordField.type = "password";
+            this.classList.replace("ri-eye-fill", "ri-eye-off-fill"); // تغيير شكل الأيقونة
+        }
+    });
+});
+
+</script>
+{% endblock %}

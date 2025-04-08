@@ -1,0 +1,465 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-03 15:54+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\accounts\templates\accounts\set_password.html:7
+#: .\accounts\templates\accounts\set_password.html:220
+msgid "تعيين كلمة المرور لأول مرة"
+msgstr "Set your password for the first time"
+
+#: .\accounts\templates\accounts\set_password.html:221
+msgid "يرجى تعيين كلمة مرور جديدة للدخول إلى النظام لأول مرة."
+msgstr "Please set a new password to access the system for the first time."
+
+#: .\accounts\templates\accounts\set_password.html:224
+#: .\templates\reset-password.html:223
+msgid "كلمة المرور غير متطابقة"
+msgstr "Passwords do not match"
+
+#: .\accounts\templates\accounts\set_password.html:230
+#: .\templates\reset-password.html:229
+msgid "كلمة المرور الجديدة"
+msgstr "New password"
+
+#: .\accounts\templates\accounts\set_password.html:233
+#: .\templates\reset-password.html:232
+msgid "اعادة كلمة المرور الجديدة"
+msgstr "Reset New Password"
+
+#: .\accounts\templates\accounts\set_password.html:236
+#: .\templates\reset-password.html:235
+msgid "يجب أن تحتوي كلمة المرور على 8 أحرف وأرقام."
+msgstr "Password must contain 8 characters and numbers."
+
+#: .\accounts\templates\accounts\set_password.html:239
+#: .\templates\forgot-password.html:250 .\templates\reset-password.html:238
+msgid "إرسال"
+msgstr "send"
+
+#: .\accounts\templates\accounts\set_password.html:247
+#: .\templates\forgot-password.html:254 .\templates\reset-password.html:246
+msgid "العودة لتسجيل الدخول"
+msgstr "Back to login"
+
+#: .\templates\base.html:99
+msgid "advard -نظام متكامل للموارد البشرية"
+msgstr "Integrated human resources system"
+
+#: .\templates\base.html:133 .\templates\forgot-password.html:259
+#: .\templates\login.html:244 .\templates\panel_base.html:53
+#: .\templates\panel_base.html:198
+msgid "الرئيسية"
+msgstr "Home"
+
+#: .\templates\base.html:136
+msgid "الخدمات المقدمة"
+msgstr "Services provided"
+
+#: .\templates\base.html:222
+msgid "الباقات و الأسعار"
+msgstr "Packages and prices"
+
+#: .\templates\base.html:223
+msgid "اتصل بنا"
+msgstr "Contact us"
+
+#: .\templates\base.html:224 .\templates\base.html:236 .\templates\login.html:8
+#: .\templates\login.html:201 .\templates\login.html:235
+#: .\templates\reset-success.html:120
+msgid "تسجيل الدخول"
+msgstr "Sign in"
+
+#: .\templates\base.html:225 .\templates\base.html:234
+msgid "طلب عرض تجريبي"
+msgstr "Request a Demo"
+
+#: .\templates\base.html:269 .\templates\forgot-password.html:260
+#: .\templates\login.html:245
+msgid "من نحن"
+msgstr "About Us"
+
+#: .\templates\base.html:270 .\templates\forgot-password.html:261
+#: .\templates\login.html:246
+msgid "السياسة والخصوصية"
+msgstr "Policy and Privacy"
+
+#: .\templates\base.html:271
+msgid "الشروط والأحكام"
+msgstr "Terms and Conditions"
+
+#: .\templates\base.html:275
+msgid "حمل التطبيق الآن"
+msgstr "Download the App Now"
+
+#: .\templates\base.html:291
+msgid "©advard 2025"
+msgstr "©advard 2025"
+
+#: .\templates\forgot-password.html:7 .\templates\forgot-password.html:237
+msgid "إعادة تعيين كلمة المرور"
+msgstr "Password Reset"
+
+#: .\templates\forgot-password.html:240
+msgid "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني"
+msgstr "Reset link has been sent to your email"
+
+#: .\templates\forgot-password.html:247 .\templates\login.html:223
+msgid "البريد الإلكتروني الخاص بالعمل"
+msgstr "Work Email"
+
+#: .\templates\forgot-password.html:263 .\templates\login.html:248
+msgid "© 2025 جميع الحقوق محفوظة - ادفارد"
+msgstr "© 2025 All Rights Reserved - advard"
+
+#: .\templates\home.html:56
+msgid "صلاحيات قائمة على الدور الوظيفي"
+msgstr "Role-Based Permissions"
+
+
+#: .\templates\home.html:57
+msgid ""
+"يوفر النظام مرونة كاملة في تحديد صلاحيات المستخدم بناءً على دوره الوظيفي. "
+"يتمتع المديرون بصلاحيات إشرافية لمراقبة الأداء وإدارة الموارد، بينما يمكن "
+"للموظفين الوصول فقط إلى البيانات والأدوات المرتبطة بأدوارهم. هذا النهج يضمن "
+"الأمان والشفافية مع تحسين سير العمل داخل المؤسسة."
+msgstr ""
+"The system provides full flexibility in setting user permissions based on job roles. "
+"Managers have supervisory privileges to monitor performance and manage resources, "
+"while employees can only access data and tools relevant to their roles. This approach "
+"ensures security, transparency, and optimized workflow within the organization."
+
+#: .\templates\home.html:69
+msgid "تكامل شامل مع أنظمة الموارد البشرية"
+msgstr "Comprehensive HR System Integration"
+
+#: .\templates\home.html:70
+msgid ""
+"يتكامل النظام بسلاسة مع أنظمة الموارد البشرية المختلفة لتوفير تجربة متكاملة "
+"تمامًا. يتيح استيراد وتصدير البيانات بسهولة بين النظام وأنظمة شؤون الموظفين، "
+"مما يقلل من الحاجة إلى الإدخال اليدوي للبيانات ويوفر وقتًا وجهدًا كبيرًا. كل ما "
+"تحتاجه لإدارة فريق العمل أصبح الآن في مكان واحد!"
+msgstr ""
+"The system seamlessly integrates with various HR systems to provide a fully unified "
+"experience. It enables easy data import/export between the system and employee "
+"management systems, reducing manual data entry and saving significant time and effort. "
+"Everything you need to manage your workforce is now in one place!"
+
+#: .\templates\home.html:82
+msgid "طرق متعددة لتسجيل الحضور"
+msgstr "efll"
+
+#: .\templates\home.html:83
+msgid ""
+"يدعم النظام وسائل متنوعة لتسجيل الحضور والانصراف، بما في ذلك التعرف على "
+"الوجه، بصمة الإصبع، تطبيقات الهواتف الذكية، وتقنيات تحديد الموقع الجغرافي "
+"(GPS). تم تصميم هذه الخيارات لتلبية احتياجات الشركات المختلفة وضمان دقة "
+"وسهولة التتبع."
+msgstr "efll"
+
+#: .\templates\home.html:95
+msgid "جدولة مناوبات العمل بذكاء"
+msgstr "efll"
+
+#: .\templates\home.html:96
+msgid ""
+"تمتع بجدولة مناوبات العمل بذكاء باستخدام أدوات النظام المتقدمة. يتيح لك "
+"تخطيط الجداول الزمنية بمرونة بناءً على احتياجات العمل وتوافر الموظفين، مع "
+"تفادي التداخلات وتخصيص الموارد بشكل مثالي. تعزز هذه الأدوات كفاءة العمليات "
+"وتقليل الضغط الناتج عن الجدولة اليدوية."
+msgstr "efll"
+
+#: .\templates\home.html:108
+msgid "تقارير شاملة وضوابط امتثال آمنة"
+msgstr "efll"
+
+#: .\templates\home.html:109
+msgid ""
+"يوفر النظام مجموعة واسعة من التقارير المفصلة التي تسلط الضوء على الحضور، "
+"الأداء، وأوقات العمل، مع إمكانية تخصيصها بناءً على احتياجات الإدارة. كما يضمن "
+"التوافق مع القوانين والسياسات المتعلقة بساعات العمل وحقوق الموظفين، مما يحمي "
+"المؤسسة من أي مخالفة غير متعمدة."
+msgstr "efll"
+
+#: .\templates\home.html:121
+msgid "خدمة ذاتية للموظفين"
+msgstr "efll"
+
+#: .\templates\home.html:122
+msgid ""
+"بفضل الخدمة الذاتية، يمكن للموظفين الوصول إلى بياناتهم الشخصية بسهولة وإجراء "
+"طلبات الإجازة أو تعديل المناوبات مباشرة من أجهزتهم. يعزز ذلك من رضا الموظفين "
+"ويوفر وقتًا لإدارة الموارد البشرية للتركيز على مهام أكثر استراتيجية."
+msgstr "efll"
+
+#: .\templates\home.html:132
+msgid "لماذا نحن الخيار الأفضل لإدارة الموظفين؟"
+msgstr "efll"
+
+#: .\templates\home.html:134
+msgid ""
+"في عالم الأعمال الحديث، تحتاج المؤسسات إلى أنظمة متطورة تسهل عملياتها "
+"اليومية وتضمن كفاءة عالية في إدارة الموارد البشرية. نحن نقدم لك الحل الأمثل "
+"لإدارة الموظفين، حيث يجمع نظامنا بين الذكاء التقني وسهولة الاستخدام لضمان "
+"تجربة سلسة تلبي احتياجاتك وتساعدك على تحقيق أهدافك بكفاءة."
+msgstr "efll"
+
+#: .\templates\home.html:140
+msgid "سهولة الاستخدام والتكامل السلس"
+msgstr "efll"
+
+#: .\templates\home.html:141
+msgid ""
+"يتميز نظامنا بواجهة مستخدم بسيطة وسهلة الفهم، مما يتيح للموظفين والمديرين "
+"التفاعل معه دون الحاجة إلى تدريب مكثف. كما يمكن دمجه مع أنظمة الموارد "
+"البشرية الحالية دون تعقيدات."
+msgstr "efll"
+
+#: .\templates\home.html:145
+msgid "دقة في متابعة الأداء وتحليل البيانات"
+msgstr "efll"
+
+#: .\templates\home.html:146
+msgid ""
+"يوفر النظام تقارير تحليلية شاملة عن الحضور، الإنتاجية، ومستوى الأداء، مما "
+"يساعد في اتخاذ قرارات مبنية على بيانات دقيقة تساهم في تحسين بيئة العمل "
+"وزيادة كفاءة الموظفين."
+msgstr "efll"
+
+#: .\templates\home.html:150
+msgid "دعم فني واستمرارية تشغيلية"
+msgstr "efll"
+
+#: .\templates\home.html:151
+msgid ""
+"نحرص على توفير دعم فني متواصل لضمان تشغيل النظام دون انقطاع، مع تحديثات "
+"مستمرة لتعزيز الأداء وتحسين تجربة المستخدمين، مما يجعلنا الشريك المثالي "
+"لإدارة الموارد البشرية في مؤسستك."
+msgstr "efll"
+
+#: .\templates\home.html:161
+msgid "ابدأ الآن معنا ..."
+msgstr "efll"
+
+#: .\templates\home.html:164
+msgid ""
+"وفق أحدث التقنيات وأفضل الممارسات، نساعدك على تحسين إدارة الموارد البشرية "
+"وحلول الحضور والانصراف، لتحقق أداءً استثنائيًا في أعمالك."
+msgstr "efll"
+
+#: .\templates\home.html:168
+msgid "ابدأ الآن"
+msgstr "efll"
+
+#: .\templates\home.html:174
+msgid ""
+"يمكنك إدارة الموظفين بكل كفاءة ومرونة، بدءًا من التوظيف وحتى نهاية دورة العمل."
+msgstr "efll"
+
+#: .\templates\home.html:175
+#: .\templates\home.html:175
+msgid ""
+"تقديم تقنية حديثة لرصد وتتبع حضور الموظفين بدقة، مما يوفر بيانات واضحة "
+"لتحسين الأداء."
+msgstr ""
+"Providing modern technology to accurately monitor and track employee "
+"attendance, delivering clear data to improve performance."
+
+#: .\templates\home.html:176
+msgid "أتمتة شاملة لطلبات الإجازات والموافقات لتبسيط العمليات الإدارية."
+msgstr "efll"
+
+#: .\templates\home.html:177
+msgid ""
+"احصل على رؤى دقيقة وفورية من خلال تقارير متقدمة تغطي كافة الجوانب الإدارية."
+msgstr "efll"
+
+#: .\templates\home.html:178
+msgid ""
+"تملك نظامًا يتمتع بسهولة الاستخدام مع تصميم عصري يلائم جميع احتياجاتك اليومية."
+msgstr "efll"
+
+#: .\templates\home.html:179
+msgid ""
+"نضمن استمرارية عملك دون انقطاع من خلال تقديم دعم فني احترافي وعلى مدار "
+"الساعة."
+msgstr "efll"
+
+#: .\templates\login.html:226
+msgid "كلمة المرور"
+msgstr "Password"
+
+#: .\templates\panel_base.html:56
+msgid "لوحة التحكم الرئيسية"
+msgstr "Main Dashboard"
+
+#: .\templates\panel_base.html:68
+msgid "العملاء"
+msgstr "Clients"
+
+#: .\templates\panel_base.html:71
+msgid "إدارة العملاء"
+msgstr "Clients Management"
+
+#: .\templates\panel_base.html:72
+msgid "الخدمات"
+msgstr "Services"
+
+#: .\templates\panel_base.html:73
+msgid "إدارة العقود"
+msgstr "Contracts Management"
+
+#: .\templates\panel_base.html:85
+msgid "الإدارة الداخلية"
+msgstr "Internal Management"
+
+#: .\templates\panel_base.html:88
+msgid "إدارة الموظفين"
+msgstr "Employees Management"
+
+#: .\templates\panel_base.html:89
+msgid "لوحة المستخدم"
+msgstr "User Dashboard"
+
+#: .\templates\panel_base.html:101
+msgid "المالية"
+msgstr "Finance"
+
+#: .\templates\panel_base.html:104
+msgid "الفواتير والمدفوعات"
+msgstr "Invoices and Payments"
+
+#: .\templates\panel_base.html:116
+msgid "التحاليل والتقارير"
+msgstr "Reports and Analytics"
+
+#: .\templates\panel_base.html:119
+msgid "التقارير والتحاليلات"
+msgstr "Reports and Analytics"
+
+#: .\templates\panel_base.html:120
+msgid "الإشعارات"
+msgstr "Notifications"
+
+#: .\templates\panel_base.html:132
+msgid "الدعم الفني"
+msgstr "Technical Support"
+
+#: .\templates\panel_base.html:135
+msgid "مركز الدعم"
+msgstr "Support Center"
+
+#: .\templates\panel_base.html:147
+msgid "الإعدادات"
+msgstr "Settings"
+
+#: .\templates\panel_base.html:150
+msgid "اعدادات النظام"
+msgstr "System Settings"
+
+#: .\templates\panel_base.html:173
+#, python-format
+msgid "صباح الخير: %(user_name)s"
+msgstr "Good morning: %(user_name)s"
+
+#: .\templates\panel_base.html:180
+msgid "الملف الشخصي"
+msgstr "Profile"
+
+#: .\templates\panel_base.html:183
+msgid "تخصيص الاشعارات"
+msgstr "Notification Settings"
+
+#: .\templates\panel_base.html:186
+msgid "تسجيل الخروج"
+msgstr "Logout"
+
+#: .\templates\panel_base.html:223
+msgid "تأكيد تسجيل الخروج"
+msgstr "Confirm Logout"
+
+#: .\templates\panel_base.html:224
+msgid "هل انت متأكد من أنك تريد تسجيل الخروج ؟"
+msgstr "Are you sure you want to logout?"
+
+#: .\templates\panel_base.html:228
+msgid "نعم"
+msgstr "Yes"
+
+#: .\templates\panel_base.html:230
+msgid "إلغاء"
+msgstr "Cancel"
+
+#: .\templates\pricing.html:781
+msgid "الأسئلة الشائعة"
+msgstr "efll"
+
+#: .\templates\pricing.html:784
+msgid "كيف يمكنني تغيير كلمة المرور؟"
+msgstr "efll"
+
+#: .\templates\pricing.html:788
+msgid ""
+"يمكنك تغيير كلمة المرور من خلال الذهاب إلى صفحة تسجيل الدخول، ثم النقر على "
+"'هل نسيت كلمة المرور؟' واتباع الخطوات لإعادة تعيينها."
+msgstr "efll"
+
+#: .\templates\pricing.html:793
+msgid "هل استطيع تغيير الباقة الحالية؟"
+msgstr "efll"
+
+#: .\templates\pricing.html:797
+msgid ""
+"نعم يمكن تغيير الباقة الحالية عن طريق تقديم طلب الى فريق المبيعات بترقية "
+"الخدمة الحالية واستكمال الاجراءات اللازمة لذلك"
+msgstr "efll"
+
+#: .\templates\pricing.html:802
+msgid "هل يمكنني تجربة النظام مجانًا؟"
+msgstr "efll"
+
+#: .\templates\pricing.html:806
+msgid ""
+"نعم، يمكنك طلب عرض تجريبي مجاني لمدة 30 يومًا من خلال التواصل مع فريق "
+"المبيعات."
+msgstr "efll"
+
+#: .\templates\pricing.html:811
+msgid "ما هي تكلفة الخدمة؟"
+msgstr "efll"
+
+#: .\templates\pricing.html:815
+msgid ""
+"تكلفة الخدمة تعتمد على عدد الموظفين في مؤسستك. يمكنك طلب عرض أسعار مخصص من "
+"خلال صفحة 'طلب عرض أسعار'."
+msgstr "efll"
+
+#: .\templates\reset-password.html:7 .\templates\reset-password.html:220
+msgid "إدخال كلمة المرور الجديدة"
+msgstr "Enter New Password"
+
+#: .\templates\reset-success.html:7
+msgid "نجاح إعادة تعيين كلمة المرور"
+msgstr "Password Reset Successful"
+
+#: .\templates\reset-success.html:118
+msgid "تم تغيير كلمة المرور بنجاح!"
+msgstr "Password changed successfully!"
+
+#: .\templates\reset-success.html:119
+msgid "يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة."
+msgstr "You can now login using your new password."

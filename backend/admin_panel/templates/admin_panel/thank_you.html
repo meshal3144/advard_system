@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>شكرًا لتواصلك</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f6f8;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .box h2 {
+            color: #0A7273;
+            margin-bottom: 10px;
+        }
+        .box p {
+            color: #333;
+        }
+
+        .back-to-login-btn {
+    background-color: #033043;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    margin: 20px auto 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-login-btn:hover {
+    background-color: #0A7273;
+}
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>شكرًا لك!</h2>
+        <p>تم استلام طلبك بنجاح، وسنقوم بالتواصل معك في أقرب وقت ممكن.</p>
+        <a href="{% url 'home' %}" class="back-to-login-btn">العودة الى الرئيسية</a>
+
+    </div>
+</body>
+</html>

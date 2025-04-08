@@ -1,0 +1,137 @@
+{% extends 'panel_base.html' %}
+{% load static %}
+
+{% block title %}تعديل بيانات المستخدم{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    direction: rtl;
+}
+
+.page-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #033043;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.avatar-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.form-actions {
+    text-align: left;
+}
+
+.btn-save {
+    background-color: #0A7273;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+
+}
+
+.btn-back {
+    background-color: #999;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2>تعديل بيانات المستخدم</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>الصورة الشخصية:</label>
+            <img src="{{ user.avatar.url }}" class="avatar-preview" alt="الصورة الحالية">
+            <input type="file" name="avatar">
+        </div>
+
+        <div class="form-group">
+            <label>الاسم الأول:</label>
+            <input type="text" name="first_name" value="{{ user.first_name }}">
+        </div>
+
+        <div class="form-group">
+            <label>الاسم الأخير:</label>
+            <input type="text" name="last_name" value="{{ user.last_name }}">
+        </div>
+
+        <div class="form-group">
+            <label>البريد الإلكتروني:</label>
+            <input type="email" value="{{ user.email }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الجوال:</label>
+            <input type="text" name="phone" value="{{ user.phone }}">
+        </div>
+
+        <div class="form-group">
+            <label>الدور:</label>
+            <select name="role">
+                <option value="manager" {% if user.role == "manager" %}selected{% endif %}>مدير شركة</option>
+                <option value="employee" {% if user.role == "employee" %}selected{% endif %}>موظف شركة</option>
+                <option value="staff" {% if user.role == "staff" %}selected{% endif %}>موظف داخلي</option>
+                <option value="admin" {% if user.role == "admin" %}selected{% endif %}>مدير نظام</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>الشركة:</label>
+            <select name="company">
+                {% for company in companies %}
+                <option value="{{ company.id }}" {% if user.company and user.company.id == company.id %}selected{% endif %}>
+                    {{ company.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">حفظ التغييرات</button>
+            <a href="{% url 'client_detail' user.id %}" class="btn-back">رجوع</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

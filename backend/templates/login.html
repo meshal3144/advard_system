@@ -1,0 +1,325 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "تسجيل الدخول" %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <style>
+ /* أساسيات التصميم الثابت */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif; /* تحسين الخط */
+}
+
+body {
+    background: radial-gradient(circle at 15% 20%, #053545, #179cb0d2);
+    height: 100vh; /* تغطية كامل الشاشة */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* لمحاذاة المحتوى عموديًا */
+}
+
+body[dir="rtl"] .login-box {
+    direction: rtl;
+    text-align: right;
+}
+
+body[dir="ltr"] .login-box {
+    direction: ltr;
+    text-align: left;
+}
+
+
+/* صفحة تسجيل الدخول */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* تثبيت المحتوى في المنتصف عموديًا */
+    align-items: center; /* توسيط العناصر أفقيًا */
+    padding: 40px 20px;
+
+}
+
+/* الشعار */
+.logo {
+    width: 300px;
+    height: auto;
+    margin-bottom: 20px; /* مسافة أسفل الشعار */
+}
+
+/* نموذج تسجيل الدخول */
+.login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.login-box {
+    background: rgb(255, 255, 255);
+    padding: 30px; /* تقليل الحشو قليلاً لتثبيت الشكل */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* تثبيت العرض عند قيمة ثابتة */
+    text-align: center;
+    margin-top: -80px; /* تقليل المسافة العلوية */
+}
+
+.login-box h2 {
+    font-size: 22px; /* حجم ثابت */
+    color: #033043;
+    margin-bottom: 15px;
+}
+
+.login-box label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 8px; /* حشو أقل لتثبيت النموذج */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.forgot-password {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    color: #FDA521;
+    text-decoration: none;
+    margin-bottom: 40px; /* تقليل المسافة */
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    background-color: #FDA521;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #e08e1a;
+}
+
+/* الروابط السريعة */
+.quick-links {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 30px; /* تقليل المسافات بين الروابط */
+    text-align: right;
+}
+
+.quick-links a {
+    color: #033043;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.quick-links a:hover {
+    text-decoration: underline;
+}
+
+
+/* رسالة الخطأ */
+.error-message {
+    background-color: #ffe6e6; /* لون الخلفية الأحمر الفاتح */
+    color: #d93025; /* لون النص */
+    border: 1px solid #d93025; /* حدود واضحة */
+    border-radius: 5px; /* زوايا مستديرة */
+    padding: 15px 20px; /* مسافة داخلية */
+    font-size: 14px; /* حجم النص */
+    font-weight: normal; /* نص بخط عريض */
+    display: flex; /* استخدام فلكسبوكس لتنسيق المحتوى */
+    justify-content: space-between; /* توزيع النص والأيقونة */
+    align-items: center; /* محاذاة العمودي */
+    margin-bottom: 20px; /* مسافة أسفل الرسالة */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    position: relative; /* لضبط الأيقونة */
+}
+
+/* أيقونة الإغلاق */
+.error-message .close-icon {
+    font-size: 20px; /* حجم الأيقونة */
+    color: #d93025; /* لون الأيقونة */
+    cursor: pointer; /* مؤشر اليد عند التمرير */
+    transition: transform 0.3s ease, color 0.3s ease; /* تأثير عند التفاعل */
+}
+
+.error-message .close-icon:hover {
+    color: #a50e0e; /* لون عند التمرير */
+    transform: scale(1.2); /* تكبير الأيقونة عند التمرير */
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+    padding-left: 35px; /* تأكد من وجود مساحة للأيقونة */
+}
+
+.password-container i {
+    position: absolute;
+    left: 10px; /* تجعل الأيقونة على اليسار */
+    top: 40%; /* تجعل الأيقونة في المنتصف */
+    transform: translateY(-50%); /* تصحح المحاذاة لتكون بالضبط وسط الحقل */
+    cursor: pointer;
+    font-size: 16px;
+    color: gray;
+}
+
+.lang-toggle {
+    font-size: 20px;
+    font-family: 'Tajawal';
+    color: #033043;
+    position: absolute;
+    align-items: center; /* يضمن محاذاة الأيقونة والنص عاموديًا */
+    right: 50px; /* مسافة من الحافة اليمنى */
+    top: 10px; /* إذا كنت تريد ضبط ارتفاعه أيضًا */
+}
+
+
+    </style>
+</head>
+<body>
+
+    <div class="login-page">
+
+        <div class="lang-toggle">
+            <i class="ri-global-line lang-toggle" id="lang-toggle"></i>
+            {% if LANGUAGE_CODE == 'ar' %}
+            AR 
+        {% else %}
+            EN
+        {% endif %}
+        </div>
+        <!-- الشعار -->
+        <div class="logo-container">
+            <img src="{% static 'images/White Logo.svg' %}" alt="شعار الموقع" class="logo">
+        </div>
+
+
+        <form id="lang-form" action="{% url 'set_language' %}" method="post" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <input type="hidden" name="language" id="language-input">
+        </form>
+
+        <!-- نموذج تسجيل الدخول -->
+        <div class="login-container">
+            <div class="login-box">
+                <h2>{% trans "تسجيل الدخول" %}</h2>
+                {% if error %}
+                <div class="error-message">
+                    <p>{{ error }}</p>
+                    <i class="ri-close-line close-icon"></i> <!-- أيقونة الإغلاق -->
+                </div>
+            {% endif %}
+
+                    {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">
+                    <p>{{ message }}</p>
+                    <i class="ri-close-line close-icon"></i>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        
+            
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="email">{% trans "البريد الإلكتروني الخاص بالعمل" %}</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">{% trans "كلمة المرور" %}</label>
+<div class="password-container">
+    <input type="password" id="password" name="password" required>
+    <i class="ri-eye-off-fill" id="togglePassword"></i> <!-- أيقونة العين هنا -->
+</div>
+
+
+                    <a href="{% url 'forgot_password' %}" class="forgot-password">هل نسيت كلمة المرور؟</a>
+
+                    <button type="submit" class="login-btn">{% trans "تسجيل الدخول" %}</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- الروابط السريعة -->
+
+    </div>
+    <footer class="quick-links">
+        <a href="{% url 'home' %}" class="nav-link active">{% trans "الرئيسية" %}</a>
+        <a href="{% url 'about_us' %}"class="nav-link active">{% trans "من نحن" %}</a>
+        <a href="{% url 'privacy_policy' %}"class="nav-link active">{% trans "السياسة والخصوصية" %}</a>
+        <div class="footer-bottom">
+            <p>{% trans "© 2025 جميع الحقوق محفوظة - ادفارد" %}</p>
+        </div>
+    </footer>
+</body>
+
+
+<script>
+    // استهداف جميع أيقونات الإغلاق
+    document.querySelectorAll('.close-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            // إخفاء الرسالة المرتبطة بأيقونة الإغلاق
+            this.parentElement.style.display = 'none';
+        });
+    });
+
+
+    document.getElementById("togglePassword").addEventListener("click", function () {
+    let passwordField = document.getElementById("password");
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        this.classList.replace("ri-eye-off-fill", "ri-eye-fill"); // إعادة الأيقونة الأصلية
+    } else {
+        passwordField.type = "password";
+        this.classList.replace("ri-eye-fill", "ri-eye-off-fill"); // تغيير شكل الأيقونة
+    }
+});
+
+
+document.getElementById("lang-toggle").addEventListener("click", function () {
+        const currentLang = document.documentElement.lang;
+        const newLang = currentLang === "ar" ? "en" : "ar";
+        document.getElementById("language-input").value = newLang;
+        document.getElementById("lang-form").submit();
+    });
+
+</script>
+
+</html>
+

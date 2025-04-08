@@ -1,0 +1,355 @@
+/* الوضع الليلي الأساسي */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+
+/* الهيدر والفوتر */
+body.dark-mode .panel-header {
+    background-color: #2a2a2a;
+}
+
+body.dark-mode .panel-footer {
+    background-color: #2a2a2a;
+}
+
+/* Sidebar */
+body.dark-mode .sidebar {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .sidebar-nav ul li a:hover {
+    background-color: #363636;
+}
+
+/* Dropdown */
+body.dark-mode .dropdown-menu {
+    background-color: #2a2a2a;
+}
+
+body.dark-mode .dropdown-menu a {
+    color: #ddd;
+}
+
+body.dark-mode .dropdown-menu a:hover {
+    background-color: #3a3a3a;
+}
+
+/* محتوى الحاويات المشتركة */
+body.dark-mode .dashboard-summary {
+    background-color: #2a2a2a;
+    color: #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .dashboard-summary h2 {
+    color: #f5f5f5;
+}
+
+body.dark-mode .dashboard-summary ul li::before {
+    content: "🌙 ";
+    margin-left: 8px;
+    color: #f5f5f5;
+}
+
+/* Scrollbar */
+body.dark-mode .sidebar::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+body.dark-mode .sidebar::-webkit-scrollbar-track {
+    background-color: #2a2a2a;
+}
+
+
+body.dark-mode .user-name {
+    color: #ddd; /* لون النصوص الخاصة بـ user-name */
+}
+
+body.dark-mode .dropdown-menu a i {
+    color: #ffffff; /* جعل لون الأيقونات أبيض في الوضع الليلي */
+}
+
+body.dark-mode .breadcrumb-item a {
+    color: #ffffff; /* لون الروابط أبيض في الوضع الليلي */
+}
+
+body.dark-mode .breadcrumb-item a:hover {
+    color: #cccccc; /* لون عند التمرير في الوضع الليلي */
+}
+
+body.dark-mode .breadcrumb-item.active {
+    color: #bbbbbb; /* لون العنصر النشط في الوضع الليلي */
+}
+
+body.dark-mode .breadcrumb-item i {
+    color: #ffffff; /* لون الأيقونات أبيض في الوضع الليلي */
+}
+
+/* صفحة الملف الشخصي - الوضع الليلي */
+body.dark-mode .profile-container {
+    background-color: #2a2a2a;
+    color: #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .profile-form input {
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #444;
+}
+
+body.dark-mode .profile-form input:disabled {
+    background-color: #2b2b2b;
+    color: #999;
+}
+
+body.dark-mode .save-btn {
+    background-color: #3cba9f;
+    color: #fff;
+}
+
+/* نافذة تغيير كلمة المرور */
+body.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    color: #ddd;
+}
+
+body.dark-mode .modal-content input {
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #444;
+}
+
+body.dark-mode .modal-content button {
+    background-color: #444;
+    color: #eee;
+}
+
+body.dark-mode .modal-content button:hover {
+    background-color: #666;
+}
+
+/* الوضع الليلي لـ .page-container */
+body.dark-mode .page-container {
+    background-color: #2a2a2a00;
+    color: #ddd;
+}
+
+
+
+body.dark-mode .dashboard-card {
+    background-color: #444444; /* تغيير لون البطاقات */
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .dashboard-card h3 {
+    color: #ddd; /* لون العناوين */
+}
+
+body.dark-mode .dashboard-card p {
+    color: #bbb; /* لون النصوص داخل البطاقات */
+}
+
+body.dark-mode h2 {
+    color: #fff;
+}
+
+body.dark-mode .activities ul li {
+    color: #ccc;
+}
+
+/* الوضع الليلي */
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .dropdown-menu {
+    background-color: #444;
+    color: #fff;
+}
+
+body.dark-mode h2, body.dark-mode p, body.dark-mode ul li {
+    color: #ddd;
+}
+
+body.dark-mode .service-table {
+    background-color: #333; /* خلفية داكنة للجدول */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* تأثير ظل داكن */
+}
+
+body.dark-mode .service-table th {
+    background-color: #444; /* لون خلفية خفيف للرأس */
+    color: #fff; /* لون النص أبيض */
+}
+
+body.dark-mode .service-table td {
+    color: #ddd; /* لون النص في الخلايا */
+    border-bottom: 1px solid #555; /* لون خط سفلي داكن */
+}
+
+body.dark-mode .service-table tr:hover {
+    background-color: #555; /* لون مختلف عند التمرير فوق الصف */
+    transition: background-color 0.3s ease; /* نفس الانتقال */
+}
+
+body.dark-mode .filters {
+    gap: 10px; /* الحفاظ على نفس المسافة */
+    margin-bottom: 20px;
+}
+
+body.dark-mode .filters select, 
+body.dark-mode .filters input {
+    background-color: #333; /* خلفية داكنة للمدخلات */
+    border: 1px solid #555; /* لون داكن للحدود */
+    color: #fff; /* لون النص أبيض */
+    border-radius: 6px; /* الحفاظ على الحواف الدائرية */
+    font-family: var(--font-family); /* الحفاظ على نفس الخط */
+}
+
+body.dark-mode .filters select:hover, 
+body.dark-mode .filters input:hover {
+    background-color: #444; /* لون أفتح قليلاً عند التمرير */
+    border-color: #666; /* تغيير لون الحدود عند التفاعل */
+}
+
+body.dark-mode .page-header h1 {
+    color: #fff; /* تحويل النصوص إلى اللون الأبيض */
+}
+
+
+body.dark-mode .btn {
+    background-color: #444; /* لون الخلفية داكن */
+    color: #ddd; /* لون النص */
+}
+
+body.dark-mode .btn:hover {
+    background-color: #555; /* لون أفتح قليلاً عند التمرير */
+}
+
+
+body.dark-mode .request-detail {
+    background-color: #333; /* خلفية داكنة */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* ظل داكن */
+}
+
+body.dark-mode .request-detail h2 {
+    color: #fff; /* لون النص أبيض */
+}
+
+body.dark-mode .request-info .labels {
+    color: #bbb; /* لون النص للأوصاف */
+}
+
+body.dark-mode .request-info .values {
+    color: #ddd; /* لون النص للقيم */
+}
+
+body.dark-mode .action-buttons a,
+body.dark-mode .action-buttons form button {
+    background-color: #444; /* خلفية داكنة للأزرار */
+    color: #fff; /* لون النص داخل الأزرار */
+}
+
+body.dark-mode .action-buttons a:hover,
+body.dark-mode .action-buttons form button:hover {
+    background-color: #555; /* لون أفتح عند التمرير */
+    transition: background-color 0.3s ease; /* انتقال سلس عند التمرير */
+}
+
+
+
+body.dark-mode .btn-view-details {
+    background-color: #444; /* لون خلفية الزر (يمكنك تغييره) */
+    color: #fff; /* لون النص والأيقونة */
+    transition: background-color 0.3s ease; /* تأثير انتقال عند التمرير */
+}
+
+body.dark-mode .btn-view-details:hover {
+    background-color: #555; /* لون الخلفية عند التمرير */
+}
+
+body.dark-mode .note-box textarea {
+    border: 1px solid #ddd;
+    background-color: #444;
+    color: #fff; /* لون النص والأيقونة */
+
+    transition: border-color 0.3s ease;
+}
+
+
+/* الوضع الليلي */
+body.dark-mode .modal {
+    background: #2a2a2a;
+    color: white;
+}
+
+/* الوضع الليلي للأزرار */
+body.dark-mode .modal-actions button {
+    background: #333;
+    color: #fff;
+}
+
+body.dark-mode .modal-actions button:nth-child(2) {
+    background: #555;
+}
+
+body.dark-mode .sidebar-nav ul li .sidebar-link {
+    color: #ffffff;
+
+}
+
+body.dark-mode .sidebar-nav ul li .sidebar-link:hover {
+    background-color: #555;
+}
+
+
+body.dark-mode .logo img {
+    content: url('/static/images/iconlogoco.svg'); /* الشعار الأبيض */
+}
+
+body.dark-mode .sub-sidebar {
+    background-color: #00000041;
+    color: #ffffff;
+}
+
+body.dark-mode .sub-sidebar ul li a {
+    color: #ffffff;
+}
+
+
+body.dark-mode .client-table {
+    background-color: #333; /* خلفية داكنة للجدول */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* تأثير ظل داكن */
+}
+body.dark-mode .client-table td {
+    color: #ddd; /* لون النص في الخلايا */
+    border-bottom: 1px solid #555; /* لون خط سفلي داكن */
+}
+body.dark-mode .client-table th {
+    background-color: #444; /* لون خلفية خفيف للرأس */
+    color: #fff; /* لون النص أبيض */
+}
+body.dark-mode .client-table tr:hover {
+    background-color: #555; /* لون مختلف عند التمرير فوق الصف */
+    transition: background-color 0.3s ease; /* نفس الانتقال */
+}
+
+body.dark-mode .status-active {
+    background-color: #007e1d; /* أخضر فاتح للخلفية */
+    color: #fff; /* لون النص أبيض */
+
+
+}
+
+body.dark-mode .status-inactive {
+    background-color: #b30a18; /* أحمر فاتح للخلفية */
+    color: #fff; /* لون النص أبيض */
+
+
+}
+
+

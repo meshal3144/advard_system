@@ -1,0 +1,753 @@
+/* ✅ استيراد الخطوط */
+@font-face {
+    font-family: 'Tajawal';
+    src: url('../fonts/Tajawal-Regular.ttf') format('truetype');
+
+}
+
+/* ✅ متغيرات الألوان بناءً على الهوية البصرية */
+:root {
+    --primary-color: #033043;
+    --secondary-color: #ffffff;
+    --dark-color: #033043;
+    --accent-color: #FDA521;
+    --text-color: #333;
+    --font-family: 'Tajawal', sans-serif;
+}
+
+/* ✅ تهيئة عامة */
+body {
+    font-family: var(--font-family);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-y: auto; /* تفعيل التمرير الطبيعي للصفحة */
+    transition: all 0.3s ease;
+    }
+
+
+
+    .header {
+        background: linear-gradient(135deg, rgb(3, 48, 67), rgb(3, 38, 39));
+        padding: 40px 0;
+        transition: all 0.3s ease-in-out;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+
+.header .logo img.small-logo {
+    height: 30px; /* الحجم عند التمرير */
+    transition: height 0.3s ease; /* نفس الانتقال السلس */
+}
+
+
+
+.header.scrolled {
+    background-color: #ffffff;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* تأثير بسيط عند التمرير */
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    max-width: 1400px;
+    margin: auto;
+    position: relative;
+    justify-content: flex-start;
+}
+
+
+.header .logo img {
+    height: 40px;
+    max-width: 100%;
+    transition: height 0.3s ease;
+    margin-right: 50px;
+}
+.header .nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.header .nav ul li {
+    margin: 0 15px;
+}
+.header .nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex: 1;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+
+.nav-link:hover {
+    color: #FDA521;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 4px;
+    background-color: #FDA521;
+    left: 0;
+    bottom: -15px;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+.auth-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
+.btn-primary {
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-primary.login-btn {
+    background-color: #FDA521;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-primary.login-btn:hover {
+    transform: scale(1.05);
+    background-color: #e08e1a;
+}
+.btn-primary.demo-btn {
+    background-color: #0A7273;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary.demo-btn:hover {
+    background-color: white;
+    transform: scale(1.05);
+    color: #033043;
+}
+
+.btn-primary.demo-btn i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* زر الهامبرغر (مخفي على اللابتوب) */
+.navbar-toggler {
+    display: none;
+    font-size: 24px;
+    color: white;
+    border: none;
+    background: none;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.navbar-collapse.show {
+    display: flex;
+}
+
+.nav-link.mobile-only {
+    display: none;
+}
+
+
+
+
+/* Media Queries */
+@media (max-width: 1200px) {
+    .header .logo img {
+        margin-right: 10px;
+    }
+    .navbar-collapse {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        position: relative;
+        text-align: right;
+
+    }
+
+    .header .logo {
+        margin-left: auto; /* نقل الشعار لليمين */
+        margin-right: 0; /* إزالة المسافة اليمنى */
+        margin-right: 50px; /* مسافة بسيطة من الحافة اليمنى */
+    }
+    
+
+    .header .logo img {
+        max-width: 50px;
+    }
+
+    .navbar-toggler {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+
+    .navbar-collapse {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #0d3749;
+        padding: 15px 0;
+        z-index: 1000;
+        text-align: right;
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+    }
+
+    .navbar-collapse a {
+        display: block;
+        padding: 10px 0;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .auth-buttons {
+        display: none; /* إخفاء الأزرار على الجوال */
+    }
+
+    /* إضافة زر "طلب عرض تجريبي" داخل القائمة على الجوال */
+    .navbar-collapse .demo-btn {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 15px;
+        background-color: #0A7273;
+        color: white;
+        border-radius: 5px;
+        font-size: 14px;
+        text-align: center;
+        width: fit-content;
+    }
+
+    .navbar-collapse .demo-btn:hover {
+        background-color: white;
+        color: #033043;
+    }
+
+    .nav-link.mobile-only {
+        display: block;
+    }
+}
+
+
+@media (max-width: 991px) {
+    .header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        position: relative;
+        text-align: right;
+
+    }
+
+    .header .logo {
+        margin-left: auto; /* نقل الشعار لليمين */
+        margin-right: 0; /* إزالة المسافة اليمنى */
+        margin-right: 50px; /* مسافة بسيطة من الحافة اليمنى */
+    }
+
+    .header .logo img {
+        max-width: 50px;
+    }
+
+    .navbar-toggler {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+
+    .navbar-collapse {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #0A7273;
+        padding: 15px 0;
+        z-index: 1000;
+        text-align: right;
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+    }
+
+    .navbar-collapse a {
+        display: block;
+        padding: 10px 0;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+        padding-right: 15px;
+
+    }
+
+    .header .auth-buttons {
+        display: none !important;
+    }
+
+    .navbar-collapse .demo-btn {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 15px;
+        background-color: #0A7273;
+        color: white;
+        border-radius: 5px;
+        font-size: 14px;
+        width: fit-content;
+    }
+    .navbar-collapse .demo-btn:hover {
+        background-color: white;
+        color: #033043;
+        text-align: right;
+
+    }
+
+    .nav-link.mobile-only {
+        display: block;
+    }
+}
+
+
+
+/* ✅ تنسيق الفوتر */
+footer {
+    background-color: #033043;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 90%;
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    flex: 5;
+    text-align: center;
+    line-height: 1.8; /* زيادة التباعد بين الأسطر */
+    font-size: 18px; /* حجم النص */
+
+
+}
+
+.footer-section.left {
+    text-align: left;
+    
+}
+
+.footer-section.left h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-section.left img {
+    display: block;
+    margin: 20px auto 0 0; /* ✅ يزيح الصور لليسار مع ترك هامش علوي */
+    height: 50px;
+}
+
+.footer-section.center ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.footer-section.center ul li {
+    margin: 5px 0;
+}
+
+.footer-section.center ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+
+}
+
+.footer-section.center ul li a:hover {
+    color: #FDA521;
+}
+
+.footer-section.right {
+    display: flex;
+    gap: 10px;
+    margin-right: 0;
+}
+
+.footer-logo {
+    max-height: 200px;
+    width: auto;
+    display: block;
+    transform: scale(1.5); /* تكبير بنسبة 1.2x */
+}
+
+.social-icons i {
+    font-size: 20px; /* التحكم بحجم الأيقونة */
+    font-weight: normal; /* أو bold إذا أردت أن تكون عريضة */
+    transition: color 0.3s ease, transform 0.3s ease; /* تأثير عند التمرير */
+}
+.social-icons {
+    margin-top: 10px; /* التأكد من وجود مسافة مناسبة للأيقونات */
+
+}
+
+
+.social-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #FDA521;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    width: 100%;
+}
+
+
+.logo {
+    display: flex;
+    justify-content: center; /* إبقاء اللوقو في المنتصف */
+    align-items: center;
+}
+
+.logo img {
+    height: auto;  /* يحافظ على نسبة الأبعاد */
+    max-width: 100%; /* يمنع الصورة من الخروج عن الحد */
+    transform: scale(4); /* تكبير الصورة 1.5x */
+}
+
+.feature {
+    padding: 60px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.white-bg {
+    background-color: #ffffff; /* خلفية بيضاء */
+}
+
+.gray-bg {
+    background-color: #f5f5f5; /* خلفية رمادية */
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.text {
+    width: 50%;
+    text-align: right;
+}
+
+/* ✅  تنسيقات صور الموقع كاملة */
+
+.image-placeholder {
+    width: 40%;
+    height: auto; /* السماح للارتفاع بالتكيف مع أبعاد الصورة */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+
+.image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* عرض الصورة بالكامل مع الحفاظ على نسبها */
+
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* ترتيب عمودي */
+        align-items: center; /* محاذاة العناصر في الوسط */
+        gap: 20px; /* مسافة بين الأقسام */
+        padding: 0 20px; /* إعادة الـ padding للتناسق */
+    }
+    .footer-section.right {
+        align-items: center; /* محاذاة الشعار والعبارة في الوسط */
+        gap: 30px; /* مسافة بين الأقسام */
+
+    }
+    .footer-section.center {
+        text-align: center;
+    }
+    .footer-section.left {
+        text-align: center;
+    }
+    .social-icons-container {
+        justify-content: center; /* محاذاة الأيقونات في الوسط */
+    }
+}
+
+
+main {
+    margin-top: 100px; /* يضمن عدم التصاق المحتوى بالهيدر */
+    flex: 1;
+    overflow-y: auto;
+    width: 100%
+}
+
+.header.scrolled .nav ul li a {
+    color: var(--primary-color); /* تغيير النصوص إلى اللون الأساسي عند التمرير */
+}
+
+
+
+.header.scrolled .logo img {
+    content: url("/static/images/White Logo.svg"); /* مسار مطلق بناءً على STATIC_URL */
+}
+
+/* ✅   تصميم زر تبديل اللغة */
+
+.language-switch {
+    position: absolute; /* جعل العنصر منفصلاً عن التدفق */
+    left: -200px; /* المسافة من الحافة اليسرى */
+    top: 50%; /* توسيط عمودي */
+    transform: translateY(-50%); /* ضبط التوسيط العمودي */
+}
+
+.language-switch .language-toggle {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: var(--font-family);
+
+}
+
+.language-switch .language-toggle i {
+    margin-left: 5px; /* المسافة بين الأيقونة والنص (EN/AR) */
+    font-size: 18px;
+}
+
+/* القائمة العرضية للخدمات */
+.services-dropdown {
+    position: relative;
+}
+
+.services-dropdown .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.services-dropdown:hover .mega-menu {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.services-dropdown .dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+/* عند التمرير يتم تدوير السهم */
+.services-dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.mega-menu {
+    position: absolute;
+    right: 0;
+    left: 0;
+    background: transparent;
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+    height: auto;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%; /* اجعل العرض يملأ الحاوية الأم */
+    max-width: 1400px; /* حدد الحد الأقصى */
+    margin: 0 auto; /* تأكد من توسيط العنصر */
+    box-sizing: border-box; /* تأكد من أن الحواف لا تؤثر على العرض */
+}
+
+
+.mega-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+
+/* أقسام القائمة */
+.mega-menu .menu-section {
+    flex: 1 1 30%;
+    min-width: 400px;
+}
+
+.mega-menu .menu-section h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #033043;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.mega-menu .menu-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mega-menu .menu-section ul li {
+    margin-bottom: 12px;
+}
+
+.mega-menu .menu-section ul li a {
+    color: #033043;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+}
+
+.mega-menu .menu-section ul li a:hover {
+    color: #0A7273;
+}
+
+/* تحسين التفاف المحتوى */
+
+
+.page-wrapper {
+    max-width: 1400px;
+    margin: 100px auto;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 20px 30px;
+    overflow: hidden; /* منع المحتوى من الخروج عن الحدود */
+}
+
+
+.mega-menu .menu-section-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* يُجبر العناصر على النزول لسطر جديد عند الامتلاء */
+    gap: 50px;
+    justify-content: flex-start;
+    width: 1200%;
+    max-width: 1400px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    flex-direction: column; /* لترتيب محتويات القسم عمودياً إذا لزم الأمر */
+    align-content: flex-start;
+    padding-left: 500px; /* قم بتحديد القيمة التي تناسبك */
+}
+
+
+.menu-section {
+    flex: 1 1 300px; /* ياخذ مساحة لكن يسمح بالنزول */
+    min-width: 280px;
+}

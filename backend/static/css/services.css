@@ -1,0 +1,238 @@
+/* تغليف الصفحة */
+.page-wrapper {
+    max-width: 1400px;
+    margin: 100px auto;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    border-radius: 20px;
+    padding: 20px 30px; /* 20px للأعلى والأسفل، 30px لليمين واليسار */
+
+  }
+  
+  /* القسم العلوي - hero */
+  .hero-section {
+    background: radial-gradient(circle at center, rgba(93, 176, 175, 0.89), rgba(3, 48, 67, 0.671));
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* توهج خارجي */
+    color: white;
+    padding: 80px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    margin-bottom: 60px;
+  }
+
+  .hero-icon {
+    font-size: 80px;
+    color: #ffffff;
+    opacity: 0.9; /* إضافة شفافية */
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2)); /* تأثير ظل */
+    opacity: 0.4; /* 70% شفافية */
+
+}
+
+ri-timer-2-line hero-icon
+  .hero-text {
+    max-width: 600px;
+  }
+  
+  .hero-text h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    line-height: 1.8;
+    max-width: 500px; /* عرض أقصى للنص، عدله حسب الحاجة */
+    white-space: normal; /* تأكيد كسر السطر */
+}
+
+  .custom-demo-btn {
+    background-color: #033043;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .custom-demo-btn:hover {
+    background-color: #022838;
+  }
+  
+  .hero-image img {
+    max-width: 400px;
+    border-radius: 12px;
+  }
+  
+  
+  /* فقرات الخدمة */
+  .service-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    margin: 60px 0;
+    flex-wrap: wrap;
+  }
+  
+  .service-section.reverse {
+    flex-direction: row-reverse;
+  }
+  
+  .section-text {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .section-text h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+  
+  .section-text p {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #333;
+  }
+  
+  .section-image img {
+    max-width: 500px;
+    border-radius: 12px;
+    flex: 1;
+  }
+
+  .section-image4 img {
+    max-width: 500px;
+    border-radius: 12px;
+    flex: 1;
+    display: block; /* لجعل الصورة عنصر بلوك */
+    margin: 0 auto; /* ضبط الهوامش لتوسيط الصورة */
+  }
+  
+
+
+  
+  /* جدول المعلومات */
+  .service-info {
+    margin-top: 80px;
+  }
+  
+  .service-info h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #033043;
+  }
+  
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .info-table th,
+  .info-table td {
+    padding: 15px 20px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .info-table th {
+    background: #D0D0D0;
+    color: #0A7273;
+    font-weight: bold;
+  }
+  
+  .info-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  @media (max-width: 991px) {
+    .hero-section {
+      flex-direction: column;
+      text-align: center;
+      padding: 50px 20px;
+    }
+  
+    .hero-text {
+      max-width: 100%;
+    }
+  
+    .hero-image img {
+      max-width: 100%;
+      margin-top: 30px;
+    }
+  
+    .service-section {
+      flex-direction: column;
+      text-align: center;
+      gap: 30px;
+    }
+  
+    .service-section.reverse {
+      flex-direction: column;
+    }
+  
+    .section-image img {
+      max-width: 100%;
+    }
+  
+    .section-text {
+      flex: unset;
+      min-width: auto;
+    }
+  
+    .info-table th,
+    .info-table td {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    .service-info h2 {
+      text-align: center;
+    }
+  }
+  
+
+  .service-section ul {
+    list-style: none; /* إزالة النقاط الافتراضية للقائمة */
+    padding: 0;
+}
+
+.service-section li {
+    margin-bottom: 30px; /* مسافة بين العناصر */
+    display: flex;
+    align-items: center;
+}
+
+.service-section li i {
+    color: #0A7273; /* لون الأيقونة */
+    margin-left: 10px; /* المسافة بين الأيقونة والنص */
+        font-size: 18px; /* حجم الأيقونة */
+
+}
+
+.service-section li  {
+    font-size: 20px; /* حجم النص */
+    color: #333; /* لون النص */
+}
+
+.service-section h2  {
+    font-size: 40px; /* حجم النص */
+    color: #333; /* لون النص */
+}
+
+/* تنسيق الأيقونات في صفحة sectionemployee-info-system فقط */
+#service-sectionemployee-info-system-page .service-section i {
+    font-size: 40px; /* حجم الأيقونة (عدله حسب رغبتك) */
+    color: #0A7273; /* لون الأيقونة (عدله حسب رغبتك) */
+    margin-right: 40px; /* المسافة بين الأيقونة والنص */
+
+}
+

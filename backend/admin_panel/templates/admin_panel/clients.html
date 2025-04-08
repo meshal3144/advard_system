@@ -1,0 +1,203 @@
+{% extends 'panel_base.html' %}
+{% load static %}
+
+{% block title %}إدارة العملاء{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-container {
+    padding: 20px;
+}
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.page-header h1 {
+    font-size: 20px;
+    color: #033043;
+}
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.filters select, .filters input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: var(--font-family);
+}
+.client-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-size: 13px;
+    table-layout: auto;
+}
+.client-table th, .client-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+.client-table th {
+    background-color: #f9f9f9;
+    color: #444;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+.client-table tr:hover {
+    background-color: #f3f3f3;
+    transition: background-color 0.3s ease;
+}
+.actions button {
+    border: none;
+    padding: 6px 10px;
+    margin: 2px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-view-details {
+    display: inline-flex; /* لجعل الأيقونة والنص في سطر واحد مع محاذاة جيدة */
+    align-items: center; /* محاذاة عمودية بين الأيقونة والنص */
+    gap: 8px; /* مسافة بين الأيقونة والنص */
+    padding: 5px 10px; /* حشوة داخلية للزر */
+    background-color: #0A7273; /* لون خلفية الزر (يمكنك تغييره) */
+    color: #fff; /* لون النص والأيقونة */
+    text-decoration: none; /* إزالة التسطير من الرابط */
+    border-radius: 5px; /* زوايا دائرية */
+    font-family: 'Tajawal', sans-serif; /* استخدام خط Tajawal */
+    font-size: 12px; /* حجم النص */
+    transition: background-color 0.3s ease; /* تأثير انتقال عند التمرير */
+}
+
+.btn {
+    background-color: #0A7273; /* لون خلفية الزر */
+    color: #fff; /* لون النص */
+    text-decoration: none; /* إزالة التسطير من الرابط */
+    border-radius: 5px; /* زوايا دائرية */
+    font-family: 'Tajawal', sans-serif; /* استخدام الخط */
+    font-size: 14px; /* تحسين حجم النص */
+    padding: 8px 30px; /* ضبط التباعد الداخلي */
+    display: inline-block; /* يجعل الزر يتناسب مع النص */
+    cursor: pointer; /* تحويل المؤشر إلى يد عند التفاعل */
+    transition: all 0.3s ease-in-out; /* تأثير سلس عند التحويل */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف للعمق */
+    border: none; /* إزالة الحدود بالكامل */
+}
+
+/* تأثير عند تمرير الماوس */
+.btn:hover {
+    background-color: #085a5c; /* لون أغمق عند التمرير */
+    transform: scale(1.05); /* تكبير بسيط عند التفاعل */
+}
+
+
+.btn-view-details:hover {
+    background-color: #065253; /* لون الخلفية عند التمرير */
+}
+
+.btn-view-details i.ri-send-plane-fill {
+    font-size: 12px; /* حجم الأيقونة (يمكنك تعديله) */
+    transition: transform 0.3s ease; /* تأثير انتقال للأيقونة */
+}
+
+.btn-view-details:hover i.ri-send-plane-fill {
+    transform: translateX(5px); /* تحريك الأيقونة لليمين عند التمرير */
+}
+
+.status-active, .status-inactive {
+    display: inline-block; /* يجعل الخلفية بحجم النص فقط */
+    padding: 5px 15px; /* ضبط التباعد حول النص */
+    border-radius: 5px; /* زوايا دائرية لجمالية التصميم */
+    font-weight: bold; /* تحسين وضوح النص */
+}
+
+.status-active {
+    color: #155724; /* أخضر غامق للنص */
+    background-color: #d4edda; /* أخضر فاتح للخلفية */
+}
+
+.status-inactive {
+    color: #721c24; /* أحمر غامق للنص */
+    background-color: #f8d7da; /* أحمر فاتح للخلفية */
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1>إدارة العملاء</h1>
+        <span class="badge">إجمالي: {{ users|length }} مستخدم</span>
+    </div>
+    <form method="GET" class="filters">
+        <select name="role">
+            <option value="">كل الأدوار</option>
+            <option value="manager">مدير شركة</option>
+            <option value="employee">موظف شركة</option>
+            <option value="staff">موظف داخلي</option>
+        </select>
+        <input type="text" name="q" placeholder="بحث بالاسم أو الشركة..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn">بحث</button>
+    </form>
+
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>الاسم</th>
+                <th>البريد</th>
+                <th>رقم الجوال</th>
+                <th>الشركة</th>
+                <th>الدور</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.get_full_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{% if user.company %}{{ user.company.name }}{% else %}-{% endif %}</td>
+                <td>{{ user.get_role_display }}</td>
+                <td>
+                    <span class="{% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                        {% if user.is_active %} مفعل {% else %} غير مفعل {% endif %}
+                    </span>
+                </td>
+                
+                
+                    <td class="actions">
+                        <a href="{% url 'client_detail' user.id %}" class="btn-view-details">
+                            <i class="ri-send-plane-fill"></i> عرض
+                        </a>
+                    </td>
+            </tr>
+
+
+            {% empty %}
+            <tr>
+                <td colspan="8">لا يوجد مستخدمون حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("📄 صفحة العملاء جاهزة");
+});
+</script>
+{% endblock %}

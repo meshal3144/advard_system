@@ -1,0 +1,584 @@
+/* الأساسيات */
+
+body {
+
+    overflow-y: auto; /* تفعيل التمرير الطبيعي للصفحة */
+    overflow-x: hidden; /* منع شريط التمرير السفلي */
+    }
+
+.panel-wrapper {
+    display: flex;
+    flex-direction: row; /* أو احذف الخاصية لو مو موجودة */
+    width: 100%;
+
+}
+
+.page-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    direction: rtl;
+    width: 100%; /* العرض هيبقى 100% من الحاوية الأب */
+    margin: 20px 0 40px 0; /* نزيل التمركز الأفقي ونخلّي الهوامش رأسية بس */
+    position: relative;
+    box-sizing: border-box; /* التأكد إن البادينج مش بيزوّد العرض */
+}
+
+
+/* Sidebar */
+.sidebar {
+    width: 60px; /* عرض صغير للأيقونات فقط */
+    background-color: #F2F2F7;
+    color: #373838;
+    padding: 20px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    direction: rtl;
+    height: 100vh;
+    overflow-y: auto;
+    position: fixed;
+    z-index: 999;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    transition: width 0.3s ease;
+
+
+}
+
+/* شريط التمرير */
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #033043;
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: #F2F2F7;
+}
+
+/* الشعار */
+.logo {
+    max-height: 40px;
+    width: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+/* القائمة الرئيسية */
+.sidebar-nav {
+    width: 100%;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar-nav ul li {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+/* زر الأيقونة */
+.sidebar-nav ul li .sidebar-link {
+    background: none;
+    border: none;
+    color: #373838;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 3px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    stroke-width: 20px; /* تغيير السماكة هنا */
+
+}
+
+.sidebar-nav ul li .sidebar-link:hover {
+    background-color: #E9E3D5;
+}
+
+.sidebar-nav ul li .sidebar-link i {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* القايمة الجانبية */
+.sub-sidebar {
+    display: none; /* مخفية افتراضيًا */
+    position: fixed;
+    right: 60px; /* بجانب الشريط الرئيسي */
+    top: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #f2f2f752;
+    color: #373838;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 998;
+    direction: rtl;
+    overflow-y: auto;
+    transition: width 0.3s ease; /* أنميشن سلس لتغيير العرض */
+
+}
+
+
+.sub-sidebar.active {
+    display: block; /* تظهر لما نضغط */
+
+}
+
+/* رأس القايمة الجانبية */
+.sub-sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 10px;
+}
+
+.sub-sidebar-header i {
+    font-size: 16px;
+    margin-left: 10px;
+    font-weight: normal; /* أو bold إذا أردت أن تكون عريضة */
+}
+
+
+
+.sub-sidebar-header span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* الروابط الفرعية */
+.sub-sidebar ul {
+    list-style: none;
+    padding: 0;
+    
+}
+
+.sub-sidebar ul li {
+    margin-bottom: 5px;
+}
+
+.sub-sidebar ul li a {
+    color: #383737;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+    
+}
+
+.sub-sidebar ul li a:hover {
+    background-color: #03304350;
+}
+
+/* الحاوية الرئيسية */
+.main-container {
+    margin-top: 50px;
+    margin-bottom: 80px;
+    margin-right: 60px; /* عرض الشريط الجانبي الصغير */
+    width: calc(100% - 60px); /* العرض الافتراضي */
+    padding: 20px;
+    height: calc(100vh - 120px);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    transition: margin-right 0.3s ease, width 0.3s ease; /* أنميشن سلس */
+}
+
+/* الهيدر */
+.panel-header {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    box-shadow: none; /* إزالة الظل */
+    border-bottom: 1px solid rgba(97, 96, 96, 0.5); /* خط سفلي ناعم */
+    
+    display: flex;
+    justify-content: flex-start;
+    direction: ltr;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    right: 60px;
+    left: 0;
+    z-index: 998;
+
+    transition: right 0.3s ease;
+}
+
+
+
+/* نضبط الـ dropdown-toggle */
+.dropdown-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-inline-start: 20px; /* المسافة بين الأيقونة والاسم، عدلها حسب رغبتك */
+    cursor: pointer;
+    display: inline-block;
+    align-items: center; /* صح */
+    transition: transform 0.3s ease;
+}
+
+
+.dropdown-toggle:hover .dropdown-icon,
+.dropdown-toggle:focus .dropdown-icon {
+    transform: rotate(180deg); /* السهم للأعلى */
+    transition: transform 0.3s ease;
+}
+
+.dropdown-icon.rotated {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+/* تنسيق الأيقونة */
+.dropdown-icon {
+    font-size: 25px;
+    color: #666;
+    transition: transform 0.3s ease; /* أنميشن لتغيير الاتجاه */
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right: auto;
+    direction: rtl; /* يعيد العناصر لوضع RTL داخل المينو */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* مسافة بين الصورة والمحتوى */
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.user-name {
+    font-size: 16px;
+    color: #333;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #888;
+    direction: ltr;
+    margin-top: 3px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    width: 300px; /* عرض القائمة */
+    font-size: 12px;
+}
+.dropdown-menu a {
+    display: flex; /* جعل الرابط يحتوي النص والأيقونة */
+    align-items: center; /* محاذاة النص والأيقونة عموديًا */
+    justify-content: flex-start; /* النص على اليمين والأيقونة على اليسار */
+    padding: 10px 20px; /* مساحة داخلية */
+    text-align: right; /* محاذاة النصوص لليمين */
+    color: #333; /* لون النص */
+    text-decoration: none; /* إزالة الخط تحت النص */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100%; /* امتداد الرابط لعرض القائمة بالكامل */
+    box-sizing: border-box; /* لحساب الحدود والمسافة الداخلية */
+    border-radius: 5px; /* تحسين تصميم الروابط */
+}
+
+.dropdown-menu a:hover {
+    background-color: #f5f7fa; /* تغيير الخلفية عند التفاعل */
+    color: #0A7273; /* لون النص عند التفاعل */
+}
+
+.dropdown-menu a i {
+    margin-left: 10px; /* إضافة مساحة بين النص والأيقونة */
+    font-size: 18px; /* ضبط حجم الأيقونة */
+    color: #0A7273;
+}
+
+.dropdown-menu a:hover i {
+    color: #333; /* تغيير لون الأيقونة عند التفاعل */
+}
+
+
+.dropdown-menu a:hover {
+    background-color: #f5f7fa;
+}
+
+.theme-toggle {
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    margin-left: 30px; /* مسافة بين الاسم وأيقونة الوضع */
+}
+
+.lang-toggle {
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    margin-left: 30px; /* مسافة بين الاسم وأيقونة الوضع */
+}
+
+/* Main Content */
+main {
+    padding: 20px;
+    flex: 1;
+    padding-bottom: 80px; /* يعطي مساحة عامة أسفل الصفحة */
+
+}
+
+
+/* Footer */
+.panel-footer {
+    background-color: #ffffff;
+    color: #033043;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    padding: 2px 0;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    right: 60px; /* عرض الشريط الجانبي الصغير */
+    left: 0;
+    z-index: 998;
+    transition: right 0.3s ease; /* أنميشن سلس */
+}
+
+
+/* لما القايمة الجانبية تفتح */
+.sub-sidebar-active .panel-header,
+.sub-sidebar-active .panel-footer {
+    right: 300px; /* القيمة الأساسية، هنغيّرها ديناميكيًا */
+    transition: right 0.3s ease;
+
+}
+
+.sub-sidebar-active .main-container {
+    margin-right: 260px; /* القيمة الأساسية، هنغيّرها ديناميكيًا بجافا سكريبت */
+    width: calc(100% - 260px); /* القيمة الأساسية، هنغيّرها ديناميكيًا */
+    transition: margin-right 0.3s ease, width 0.3s ease;
+}
+
+.dropdown-menu a.logout-link {
+    color: #CF423B !important; /* استخدام "important" لإعطاء أولوية قصوى */
+}
+
+.dropdown-menu a.logout-link i {
+    color: #CF423B !important; /* تغيير لون الأيقونة أيضًا */
+}
+
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 25px; /* مسافة بين العناصر */
+
+}
+
+.breadcrumb-item {
+    margin-left: 10px; /* مسافة بين العناصر */
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #007AFF; /* لون الروابط */
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #0068d8; /* لون عند التمرير */
+}
+
+.breadcrumb-item.active {
+    color: #6c757d; /* لون العنصر النشط */
+    pointer-events: none; /* جعله غير قابل للنقر */
+}
+
+.breadcrumb-item i {
+    margin-right: 5px; /* مسافة بين الأيقونة والنص */
+    font-size: 16px; /* حجم الأيقونة */
+    color: #8E8E92; /* لون الأيقونة */
+}
+
+
+
+/* التحكم في قائمة المستخدم */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.dropdown-menu.open {
+    display: block;
+}
+
+
+/* الإشعارات */
+.notifications {
+    width: 100%;
+    max-width: 500px; /* عرض محدود للحاوية */
+    position: absolute; /* لرفع الحاوية فوق المحتوى */
+    top: 30px; /* مسافة من الأعلى */
+    left: 50%; /* لتوسيط الحاوية أفقياً */
+    transform: translateX(-50%); /* تعديل الموقع للتوسيط بدقة */
+    z-index: 10; /* للتأكد من أنها فوق العناصر الأخرى */
+}
+
+.alert-success {
+    background-color: #033043;
+    color: #ffffff;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reject-form {
+    display: flex;
+    flex-direction: column; /* ترتيب العناصر عموديًا */
+    gap: 15px; /* مسافة بين العناصر */
+    width: 100%;
+    max-width: 500px; /* عرض محدود للنموذج داخل الحاوية */
+    margin: 0 auto; /* توسيط النموذج */
+}
+
+.reject-form label {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.reject-form textarea {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical; /* السماح بتغيير الحجم عموديًا فقط */
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.reject-form textarea:focus {
+    border-color: #dc3545; /* لون الحدود عند التركيز يتماشى مع زر الرفض */
+    outline: none;
+}
+
+
+
+/* تصميم نافذة تسجيل الخروج */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%; /* غيّرناها من 40% لـ 50% عشان التمركز الأفقي */
+    transform: translate(-50%, -50%); /* التمركز الأفقي والرأسي */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 600px;
+    max-width: 90%; /* متجاوب مع الشاشات الصغيرة */
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+
+
+/* تحسين تصميم المحتوى داخل المودال */
+.modal-content {
+    position: relative;
+    width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* زر الإغلاق */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* ضبط الأزرار داخل المودال */
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-actions button {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Tajawal';
+}
+
+.modal-actions button[type="submit"] {
+    background-color: #CF423B; /* لون زر النعم */
+    color: white;
+}
+
+.modal-actions button[type="submit"]:hover {
+    background-color: #ad2720;
+}
+
+.modal-actions button:not([type="submit"]) {
+    background-color: #ddd; /* لون زر الإلغاء */
+    color: #333;
+}
+
+.modal-actions button:not([type="submit"]):hover {
+    background-color: #ccc;
+}
+

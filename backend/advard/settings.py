@@ -81,10 +81,11 @@ DATABASES = {
 
 # إعدادات ملفات الاستاتيك
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,"static"),  # ✅ المسار الصحيح
+    os.path.join(BASE_DIR,"static"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ جديد
+
 
 LOGOUT_REDIRECT_URL = '/'
 

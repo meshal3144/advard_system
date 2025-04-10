@@ -136,7 +136,7 @@ def profile_view(request):
 def profile_view(request):
     user = request.user  # جلب بيانات المستخدم المسجل حاليًا
     context = {
-        'user_avatar': user.avatar.url if user.avatar else '/static/images/default_avatar.jpg',  # رابط الصورة
+        'user_avatar': user.avatar.url if user.avatar else '/static/images/default_avatar.svg',  # رابط الصورة
         'full_name': user.get_full_name() or user.username,  # الاسم الكامل أو اسم المستخدم
         'phone': user.phone,  # رقم الهاتف
         'email': user.email,  # الايميل

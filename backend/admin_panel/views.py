@@ -99,7 +99,7 @@ def view_request_detail(request, request_id):
                 # توليد رابط التعيين
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
-                registration_link = f"https://advard.sa/set-password/{uid}/{token}/"
+                registration_link = f"https://advardsystem.com/set-password/{uid}/{token}/"
                 msg_content += f"\nرابط التسجيل: {registration_link}"
 
                 req.save()

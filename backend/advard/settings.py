@@ -116,12 +116,13 @@ LOCALE_PATHS = [
 #  خاص  بربط الايميل الرسمي للشركة
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.zoho.com'  # أو smtp.zoho.sa لو كان حسابك سعودي
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'abvard99@gmail.com'
-EMAIL_HOST_PASSWORD = 'szoi aivc dblp sbbq'
-DEFAULT_FROM_EMAIL = 'Advard <abvard99@gmail.com>'
+EMAIL_HOST_USER = 'noreply@advardsystem.com'
+EMAIL_HOST_PASSWORD = 'hwGakKHbkQwp'
+DEFAULT_FROM_EMAIL = 'Advard System <noreply@advardsystem.com>'
+
 
 
 #  خاص بتطبيق الحاسابات

@@ -1,4 +1,4 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% load static %}
 
 {% block title %}العقود - Advard{% endblock %}
@@ -12,129 +12,249 @@
         margin: 0 auto;
     }
 
-    /* تنسيق الجدول */
-    .contracts-table {
+
+/* تنسيق حالة العقد - فعال */
+.status-active {
+    color: #155724;          /* لون النص: أخضر غامق */
+    background-color: #d4edda;   /* لون الخلفية: أخضر فاتح */
+    padding: 5px 20px;       /* مساحة داخلية */
+    border-radius: 4px;       /* زوايا مدورة */
+    display: inline-block;    /* عرض متكيف مع النص */
+    font-size: 13px;          /* حجم الخط */
+}
+
+/* تنسيق حالة العقد - ينتهي قريبًا */
+.status-expiring {
+    color: #FDA521;          /* لون النص: بني غامق (للبرتقالي) */
+    background-color: #fff3cd;   /* لون الخلفية: أصفر فاتح */
+    padding: 5px 20px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 13px;
+}
+
+/* تنسيق حالة العقد - منتهي */
+.status-expired {
+    color: #721c24;          /* لون النص: أحمر غامق */
+    background-color: #f8d7da;   /* لون الخلفية: أحمر فاتح */
+    padding: 5px 20px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 13px;
+}
+
+
+/* الستايل الأساسي المشترك لكل البادجات */
+.badge {
+    display: inline-block;
+    padding: 5px 12px;
+    color: rgb(255, 255, 255);
+    border-radius: 15px;
+    font-size: 14px;
+    margin: 5px;
+    font-weight: normal;
+}
+
+/* تخصيص ألوان لكل حالة */
+.badge.total-contracts { 
+    background: #0A7273; /* أزرق رمادي */
+}
+
+.badge.active-contracts { 
+    background: #3B6EA5; /* أخضر */
+}
+
+.badge.expiring-contracts { 
+    background: #FF9800; /* برتقالي */
+}
+
+.badge.expired-contracts { 
+    background: #CF423B; /* أحمر */
+}
+
+.badge:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+
+
+.btn-view-details {
+    background-color: #0A7273;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-view-details:hover {
+    background-color: #075a5c; /* لون الخلفية عند التمرير */
+}
+
+.btn-view-details i.ri-send-plane-fill {
+    font-size: 12px; /* حجم الأيقونة (يمكنك تعديله) */
+    transition: transform 0.3s ease; /* تأثير انتقال للأيقونة */
+}
+
+.btn-view-details:hover i.ri-send-plane-fill {
+    transform: translateX(5px); /* تحريك الأيقونة لليمين عند التمرير */
+}
+
+
+
+/* زر الإضافة الجديد */
+.btn-edit {
+    background-color: #E55C24;
+    color: #ffffff;
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+
+}
+
+.btn-edit:hover {
+    background-color: #d64d16;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+}
+
+.btn-edit i {
+    font-size: 16px;
+}
+
+/* تأثيرات الحركة */
+@keyframes fadeInModal {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* التجاوب مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 20px 15px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel,
+    .btn-confirm,
+    .btn-edit {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
+        justify-content: center;
+        padding: 12px 20px;
     }
+}
 
-    .contracts-table th,
-    .contracts-table td {
-        padding: 15px;
-        text-align: right;
-        border-bottom: 1px solid #eee;
-    }
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: right;
+    align-items: center;
+    font-family: 'Tajawal';
+}
 
-    .contracts-table th {
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-    }
+.filters input, .filters select, .filters button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Tajawal';
+}
 
-    .contracts-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+.filters input:focus, .filters select:focus {
+    border-color: #0A7273;
+    box-shadow: 0 0 5px rgba(3, 130, 139, 0.5);
+}
 
-    .contracts-table tr:hover {
-        background-color: #f1f1f1;
-    }
+.filters button {
+    background-color: #E9E3D7;
+    color: #033043;
+    border: none;
+    cursor: pointer;
+    font-family: 'Tajawal';
+    padding: 10px 40px;
 
-    /* تنسيق الأزرار داخل الجدول */
-    .action-btn {
-        padding: 8px 15px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        color: white;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
+}
 
-    .btn-renew {
-        background-color: #28a745;
-    }
+.filters button:hover {
+    background-color: #ccc8c0;
+}
 
-    .btn-renew:hover {
-        background-color: #218838;
-    }
-
-    .btn-details {
-        background-color: #007bff;
-    }
-
-    .btn-details:hover {
-        background-color: #0056b3;
-    }
-
-    /* تنسيق حالة العقد */
-    .status-active {
-        color: #28a745;
-        font-weight: bold;
-    }
-
-    .status-expiring {
-        color: #ffc107;
-        font-weight: bold;
-    }
-
-    .status-expired {
-        color: #dc3545;
-        font-weight: bold;
-    }
-
-    /* تنسيق التنبيهات */
-    .alert-section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #fff3cd;
-        border-radius: 5px;
-        color: #856404;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 </style>
 {% endblock %}
 
-{% block content %}
-<div class="contracts-container">
-    <h2>العقود الفعالة</h2>
-
-    <!-- قسم التنبيهات -->
-    <div class="alert-section" id="contract-alerts">
-        <span>تنبيه: عقد "شركة المثالية" ينتهي خلال 7 أيام!</span>
-        <a href="#" class="action-btn btn-renew">تجديد الآن</a>
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+      {{ message }}
     </div>
+  {% endfor %}
+{% endif %}
+
+
+{% block content %}
+
+<div class="page-container">
+<h2>ادارة العقود </h2>
+
+<div class="action-buttons" style="text-align: left; margin-bottom: 20px;">
+    <a href="{% url 'contracts:add_contract' %}" class="btn-edit">
+        <i class="ri-add-line"></i> إضافة عقد جديد
+    </a>
+</div>
+
+
+<div class="filters">
+    <input type="text" id="searchCompany" placeholder="بحث باسم الشركة">
+    <input type="text" id="searchContractNumber" placeholder="بحث برقم العقد">
+    <select id="filterStatus">
+        <option value="">كل الحالات</option>
+        <option value="فعال">فعال</option>
+        <option value="ينتهي قريبًا">ينتهي قريبًا</option>
+        <option value="منتهي">منتهي</option>
+    </select>
+    <button id="clearFilters">إلغاء الفلترة</button>
+</div>
 
     <!-- جدول العقود -->
-    <table class="contracts-table">
+    <table class="data-table">
         <thead>
             <tr>
-                <th>اسم العميل</th>
+                <th>#</th>
+                <th>اسم الشركة</th>
                 <th>رقم العقد</th>
                 <th>تاريخ البداية</th>
-                <th>تاريخ الانتهاء</th>
+                <th>تاريخ النهاية</th>
                 <th>الحالة</th>
-                <th>الشروط</th>
-                <th>الإجراءات</th>
+                <th>الإجراءات</th> <!-- ✅ زر عرض -->
             </tr>
         </thead>
+        
         <tbody>
-            <!-- مثال على بيانات ديناميكية -->
             {% for contract in contracts %}
-            <tr>
-                <td>{{ contract.client_name }}</td>
+            <tr data-end-date="{{ contract.end_date|date:'Y-m-d' }}" 
+                data-start-date="{{ contract.start_date|date:'Y-m-d' }}">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ contract.company.name }}</td>
                 <td>{{ contract.contract_number }}</td>
-                <td>{{ contract.start_date|date:"d/m/Y" }}</td>
-                <td>{{ contract.end_date|date:"d/m/Y" }}</td>
-                <td>
+                <td class="start-date">{{ contract.start_date|date:"d/m/Y" }}</td>
+                <td class="end-date">{{ contract.end_date|date:"d/m/Y" }}</td>
+                <td class="status-cell">
                     {% if contract.status == 'active' %}
                         <span class="status-active">فعال</span>
                     {% elif contract.status == 'expiring' %}
@@ -143,12 +263,10 @@
                         <span class="status-expired">منتهي</span>
                     {% endif %}
                 </td>
-                <td>{{ contract.terms|truncatewords:5 }}</td>
-                <td>
-                    <a href="{% url 'contract_details' contract.id %}" class="action-btn btn-details">التفاصيل</a>
-                    {% if contract.status != 'expired' %}
-                        <a href="{% url 'renew_contract' contract.id %}" class="action-btn btn-renew">تجديد</a>
-                    {% endif %}
+                <td class="actions">
+                    <a href="{% url 'contracts:contract_detail' contract.id %}" class="btn-view-details">
+                        <i class="ri-send-plane-fill"></i> عرض
+                    </a>
                 </td>
             </tr>
             {% empty %}
@@ -157,29 +275,82 @@
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
+    <div class="pagination">
+        <label for="rowsPerPage">عدد الصفوف لكل صفحة:</label>
+        <select id="rowsPerPage">
+            <option value="15" selected>15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+        </select>
+        <button id="prevPage" disabled>السابق</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">التالي</button>
+    </div>
 </div>
-{% endblock %}
+
+{% endblock content %}
 
 {% block extra_js %}
+<script src="{% static 'js/panel_script.js' %}"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        console.log("✔️ تم تحميل صفحة العقود بنجاح!");
+  document.addEventListener("DOMContentLoaded", function () {
+    // فقط كود العقود الأساسي يبقى
+    if (typeof window.initContractsPage === "function") {
+      window.initContractsPage();
+    } else {
+      console.warn("❌ الوظيفة initContractsPage غير معرّفة. تأكد من تحميل panel_script.js");
+    }
+  });
 
-        // مثال على منطق ديناميكي للتنبيهات (يمكن تعديله حسب البيانات الحقيقية)
-        const today = new Date();
-        const contracts = document.querySelectorAll(".contracts-table tbody tr");
-        contracts.forEach(contract => {
-            const endDateText = contract.querySelector("td:nth-child(4)").textContent;
-            const endDate = new Date(endDateText.split("/").reverse().join("-"));
-            const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
 
-            if (daysLeft <= 7 && daysLeft > 0) {
-                contract.querySelector("td:nth-child(5)").innerHTML = '<span class="status-expiring">ينتهي قريبًا</span>';
-            } else if (daysLeft <= 0) {
-                contract.querySelector("td:nth-child(5)").innerHTML = '<span class="status-expired">منتهي</span>';
-            }
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchCompany = document.getElementById("searchCompany");
+    const searchContractNumber = document.getElementById("searchContractNumber");
+    const filterStatus = document.getElementById("filterStatus");
+    const clearFilters = document.getElementById("clearFilters");
+    const rows = document.querySelectorAll(".contracts-table tbody tr");
+
+    function filterTable() {
+        
+        const companyValue = searchCompany.value.toLowerCase();
+        const contractNumberValue = searchContractNumber.value.toLowerCase();
+        const statusValue = filterStatus.value;
+        
+
+        rows.forEach(row => {
+            const companyName = row.children[1].textContent.toLowerCase();
+            const contractNumber = row.children[2].textContent.toLowerCase();
+            const status = row.children[5].textContent.trim();
+
+            const matchesCompany = companyName.includes(companyValue);
+            const matchesContract = contractNumber.includes(contractNumberValue);
+            const matchesStatus = statusValue === "" || status === statusValue;
+
+            row.style.display = (matchesCompany && matchesContract && matchesStatus) ? "" : "none";
+            
         });
+        rows.forEach(row => row.parentElement.appendChild(row));
+
+    }
+
+    searchCompany.addEventListener("input", filterTable);
+    searchContractNumber.addEventListener("input", filterTable);
+    filterStatus.addEventListener("change", filterTable);
+    rows.forEach(row => row.parentElement.appendChild(row));
+
+    clearFilters.addEventListener("click", function () {
+        searchCompany.value = "";
+        searchContractNumber.value = "";
+        filterStatus.value = "";
+        filterTable();
+        
     });
+});
+
 </script>
 {% endblock %}
+
+

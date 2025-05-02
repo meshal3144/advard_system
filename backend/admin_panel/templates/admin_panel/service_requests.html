@@ -1,4 +1,4 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% load static %}
 
 {% block title %}طلبات الخدمات - Advard{% endblock %}
@@ -29,53 +29,6 @@
     border-radius: 6px;
     font-family: var(--font-family);
 }
-.service-table {
-    width: 100%; /* الجدول ياخد كامل عرض الحاوية */
-    max-width: none; /* نزيل الحد الأقصى للعرض عشان يتكيّف مع الحاوية */
-    margin: 0; /* نزيل التمركز الأفقي */
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    font-size: 13px;
-    box-sizing: border-box;
-    table-layout: auto; /* الجدول يتكيّف مع المحتوى */
-}
-
-
-
-.service-table th, .service-table td {
-    padding: 10px; /* تصغير المسافة داخل الخلايا */
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    font-size: 13px; /* تناسق حجم النص بين الرأس والخلايا */
-}
-
-.service-table th {
-    background-color: #f9f9f9; /* خلفية أكثر خفة */
-    color: #444; /* لون النص أغمق قليلاً */
-    text-transform: uppercase; /* تحويل النصوص إلى أحرف كبيرة لتحسين التنسيق */
-    font-weight: normal;
-}
-
-.service-table td {
-    color: #555; /* لون النص الداخلي للخلايا */
-    white-space: nowrap; /* منع النص من الانتقال إلى سطر جديد */
-    overflow: hidden;
-    text-overflow: ellipsis; /* إضافة نقاط إذا كانت النصوص طويلة جدًا */
-}
-
-
-.service-table tr:last-child td {
-    border-bottom: none; /* إزالة الخط السفلي عن آخر صف */
-}
-
-.service-table tr:hover {
-    background-color: #f3f3f3; /* إضافة لون مختلف عند التمرير فوق الصف */
-    transition: background-color 0.3s ease;
-}
-
 
 .actions button {
     border: none;
@@ -152,7 +105,7 @@
     </form>
 
 
-    <table class="service-table">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>#</th>
@@ -182,7 +135,7 @@
                         </span>
                     </td>
                     <td class="actions">
-                        <a href="{% url 'view_request_detail' req.id %}" class="btn-view-details">
+                        <a href="{% url 'admin_panel:view_request_detail' req.id %}" class="btn-view-details">
                             <i class="ri-send-plane-fill"></i> عرض
                         </a>
                     </td>
@@ -195,6 +148,18 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        <label for="rowsPerPage">عدد الصفوف لكل صفحة:</label>
+        <select id="rowsPerPage">
+            <option value="15" selected>15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+        </select>
+        <button id="prevPage" disabled>السابق</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">التالي</button>
+    </div>
 </div>
 
 

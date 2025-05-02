@@ -1,0 +1,246 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/png">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- ✅ خطوط وأيقونات -->
+    <link rel="stylesheet" href="{% static 'fonts/tajawal.css' %}">  {# ← لو حاب تفصل ملف الخط #}
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- ✅ ملفات CSS -->
+    <link rel="stylesheet" href="{% static 'css/shared.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_panel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dark_mode.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="{% if dark_mode %}dark-mode{% endif %}">
+
+    <div class="panel-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="/static/images/iconlogowi.svg" alt="الشعار" style="max-width: 40px;">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <!-- الرئيسية -->
+                    <li>
+                        <button class="sidebar-link" data-target="dashboard-menu">
+                            <i class="ri-function-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="dashboard-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-function-line"></i>
+                                <span>{% trans "الرئيسية" %}</span>
+                            </div>
+
+                        </div>
+                    </li>
+                    <!-- العملاء -->
+                    <li>
+                        <button class="sidebar-link" data-target="clients-menu">
+                            <i class="ri-group-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="clients-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-group-line"></i>
+                                <span>{% trans "الموظفين" %}</span>
+                            </div>
+
+                        </div>
+                    </li>
+                    <!-- الإدارة الداخلية -->
+                    <li>
+                        <button class="sidebar-link" data-target="system-users-menu">
+                            <i class="ri-user-settings-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="system-users-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-user-settings-line"></i>
+                                <span>{% trans "الإدارة الداخلية" %}</span>
+                            </div>
+                            <ul>
+                                <li><a href="#">{% trans "إدارة الموظفين" %}</a></li>
+                                <li><a href="#">{% trans "لوحة المستخدم" %}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- المالية -->
+                    <li>
+                        <button class="sidebar-link" data-target="finance-menu">
+                            <i class="ri-bill-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="finance-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-bill-line"></i>
+                                <span>{% trans "المالية" %}</span>
+                            </div>
+                            <ul>
+                                <li><a href="#">{% trans "الفواتير والمدفوعات" %}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- التحليلات والتقارير -->
+                    <li>
+                        <button class="sidebar-link" data-target="insights-menu">
+                            <i class="ri-bar-chart-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="insights-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-bar-chart-line"></i>
+                                <span>{% trans "التحاليل والتقارير" %}</span>
+                            </div>
+                            <ul>
+                                <li><a href="#">{% trans "التقارير والتحاليلات" %}</a></li>
+                                <li><a href="#">{% trans "الإشعارات" %}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- الدعم الفني -->
+                    <li>
+                        <button class="sidebar-link" data-target="support-menu">
+                            <i class="ri-customer-service-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="support-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-customer-service-line"></i>
+                                <span>{% trans "الدعم الفني" %}</span>
+                            </div>
+                            <ul>
+                                <li><a href="#">{% trans "مركز الدعم" %}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- الإعدادات -->
+                    <li>
+                        <button class="sidebar-link" data-target="settings-menu">
+                            <i class="ri-settings-3-line"></i>
+                        </button>
+                        <div class="sub-sidebar" id="settings-menu">
+                            <div class="sub-sidebar-header">
+                                <i class="ri-settings-3-line"></i>
+                                <span>{% trans "الإعدادات" %}</span>
+                            </div>
+                            <ul>
+                                <li><a href="#"> {% trans "اعدادات النظام" %}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ✅ الهيدر خارج الحاوية -->
+    
+        <header class="panel-header">
+            
+            <div class="user-menu">
+                <!-- أيقونة الوضع الليلي -->
+                <i class="ri-moon-line theme-toggle" id="theme-toggle"></i>
+            
+                <!-- أيقونة تغيير اللغة -->
+                <i class="ri-global-line lang-toggle" id="lang-toggle"></i>
+
+                
+
+
+                <div class="user-info">
+                    <a href="{{ user_avatar }}" class="user-avatar-link">
+                        <img src="{{ user_avatar }}" class="user-avatar">
+
+                    </a>
+                    <div class="user-details">
+                        <span class="user-name">
+                            {% blocktrans with name=request.user.full_name %}
+                            صباح الخير: {{ name }}
+                        {% endblocktrans %}
+                        
+                        </span>
+                        <span class="user-email">{{ request.user.email }}</span>
+                    </div>
+                    <button class="dropdown-toggle">
+                        <i class="ri-arrow-down-s-line dropdown-icon"></i>
+                    </button>
+                </div>
+                
+
+                
+
+                <form id="lang-form" action="#" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <input type="hidden" name="language" id="language-input">
+                </form>
+
+                <div class="dropdown-menu">
+                    <a href="#">
+                        <i class="ri-user-settings-line"></i> {% trans "الملف الشخصي" %}
+                    </a>
+                    <a href="#">
+                        <i class="ri-notification-line"></i>{% trans "تخصيص الاشعارات" %} 
+                    </a>
+                    <a href="#" class="logout-link" onclick="openModal(event)">
+                        <i class="ri-logout-box-r-line"></i> {% trans "تسجيل الخروج" %}
+                    </a>
+                </div>  
+                
+            </div>
+                
+        </header>
+
+
+        <!-- ✅ الحاوية الرئيسية -->
+
+        <div class="main-container">
+            <div class="notifications">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div id="logoutModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">×</span>
+                    <h2>{% trans "تأكيد تسجيل الخروج" %}</h2>
+                    <p>{% trans "هل انت متأكد من أنك تريد تسجيل الخروج ؟" %}</p>
+                    <div class="modal-actions">
+                        <form id="logoutForm" action="{% url 'logout' %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">{% trans "نعم" %}</button>
+                        </form>
+                        <button onclick="closeModal()">{% trans "إلغاء" %}</button>
+                    </div>
+                </div>
+            </div>
+
+            <main>
+
+
+                {% block content %}{% endblock %}
+            </main>
+
+            <!-- Footer -->
+            <footer class="client-footer">
+                <p>© 2025 advard</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/shared.js' %}" defer></script>
+    <script src="{% static 'js/client_panel.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

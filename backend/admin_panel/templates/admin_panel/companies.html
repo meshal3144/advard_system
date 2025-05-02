@@ -1,0 +1,249 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% load static %}
+
+{% block title %}إدارة الشركات{% endblock %}
+
+{% block extra_css %}
+<style>
+    .action-buttons {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+   
+    .btn-add {
+        background-color: #E55C24;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-add:hover {
+        background-color: #d64d16;
+    }
+
+    .btn-view-details {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 10px;
+        background-color: #0A7273;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-family: 'Tajawal', sans-serif;
+        font-size: 12px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-view-details:hover {
+        background-color: #075a5c;
+    }
+
+    
+    .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: right;
+    align-items: center;
+    font-family: 'Tajawal';
+}
+
+.filters input, .filters select, .filters button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Tajawal';
+}
+
+.filters input:focus, .filters select:focus {
+    border-color: #0A7273;
+    box-shadow: 0 0 5px rgba(3, 130, 139, 0.5);
+}
+
+.filters button {
+    background-color: #E9E3D7;
+    color: #033043;
+    border: none;
+    cursor: pointer;
+    font-family: 'Tajawal';
+    padding: 10px 40px;
+
+}
+
+.filters button:hover {
+    background-color: #ccc8c0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2>إدارة الشركات</h2>
+
+    <div class="action-buttons">
+        <a href="{% url 'admin_panel:add_company' %}?next=companies" class="btn-add">
+            <i class="ri-building-line"></i> إضافة شركة جديدة
+        </a>
+    </div>
+
+    <div class="filters">
+        <input type="text" id="searchCity" placeholder="بحث بالمدينة">
+        <input type="text" id="searchCompanyCode" placeholder="بحث بالمعرف الداخلي">
+        <input type="text" id="searchPhone" placeholder="بحث برقم الجوال">
+        <button id="clearFilters">إلغاء الفلترة</button>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم الشركة</th>
+                <th>المعرف الداخلي</th>
+                <th>المدينة</th>
+                <th>مجال العمل</th>
+                <th>اسم المسؤول</th>
+                <th>رقم التواصل</th>
+                <th>الإجراء</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in companies %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ company.name }}</td>
+                <td>{{ company.company_code }}</td>
+                <td>{{ company.city }}</td>
+                <td>{{ company.field }}</td>
+                <td>{{ company.contact_name }}</td>
+                <td>{{ company.contact_phone }}</td>
+                <td>
+                    <a href="{% url 'admin_panel:company_detail' company.id %}" class="btn-view-details">
+                        <i class="ri-search-line"></i> عرض
+                    </a>
+                    
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">لا توجد شركات مسجلة حتى الآن.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <label for="rowsPerPage">الصفحات:</label>
+        <select id="rowsPerPage">
+            <option value="15" selected>15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+        </select>
+        <button id="prevPage" disabled>السابق</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">التالي</button>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // عناصر البحث
+    const searchCity = document.getElementById("searchCity");
+    const searchCompanyCode = document.getElementById("searchCompanyCode");
+    const searchPhone = document.getElementById("searchPhone");
+    const clearFilters = document.getElementById("clearFilters");
+    const tableBody = document.querySelector(".companies-table tbody");
+    const rows = tableBody.querySelectorAll("tr");
+    const originalRows = Array.from(rows); // حفظ النسخة الأصلية للصفوف
+
+    // دالة الفلترة المحسنة
+    function filterTable() {
+        const cityValue = searchCity.value.trim().toLowerCase();
+        const companyCodeValue = searchCompanyCode.value.trim().toLowerCase();
+        const phoneValue = searchPhone.value.trim().toLowerCase();
+
+        let hasResults = false;
+        let visibleRowIndex = 1;
+
+        // إخفاء رسالة "لا توجد نتائج" إذا كانت موجودة
+        const noResultsRow = tableBody.querySelector(".no-results");
+        if (noResultsRow) {
+            tableBody.removeChild(noResultsRow);
+        }
+
+        rows.forEach(row => {
+            const city = row.children[3].textContent.toLowerCase();
+            const companyCode = row.children[2].textContent.toLowerCase();
+            const phone = row.children[6].textContent.toLowerCase();
+
+            const cityMatch = city.includes(cityValue);
+            const codeMatch = companyCode.includes(companyCodeValue);
+            const phoneMatch = phone.includes(phoneValue);
+
+            if (cityMatch && codeMatch && phoneMatch) {
+                row.style.display = "";
+                row.cells[0].textContent = visibleRowIndex++;
+                hasResults = true;
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+        // عرض رسالة عند عدم وجود نتائج
+        if (!hasResults) {
+            const noResultsRow = document.createElement("tr");
+            noResultsRow.className = "no-results";
+            noResultsRow.innerHTML = `<td colspan="${rows[0].cells.length}" class="text-center py-3">لا توجد شركات مطابقة لمعايير البحث</td>`;
+            tableBody.appendChild(noResultsRow);
+        }
+    }
+
+    // دالة إعادة تعيين الفلاتر
+    function resetFilters() {
+        searchCity.value = "";
+        searchCompanyCode.value = "";
+        searchPhone.value = "";
+        
+        // إعادة العرض الأصلي للصفوف
+        rows.forEach((row, index) => {
+            row.style.display = "";
+            row.cells[0].textContent = index + 1;
+        });
+
+        // إزالة رسالة "لا توجد نتائج" إذا كانت موجودة
+        const noResultsRow = tableBody.querySelector(".no-results");
+        if (noResultsRow) {
+            tableBody.removeChild(noResultsRow);
+        }
+    }
+
+    // أحداث البحث
+    searchCity.addEventListener("input", filterTable);
+    searchCompanyCode.addEventListener("input", filterTable);
+    searchPhone.addEventListener("input", filterTable);
+    clearFilters.addEventListener("click", resetFilters);
+
+    // فلترة أولية عند التحميل (اختياري)
+    filterTable();
+});
+
+</script>
+{% endblock %}
+
+
+
+
+

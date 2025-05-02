@@ -1,0 +1,438 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% block title %}تفاصيل العقد{% endblock %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+/* General Styling */
+.page-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Tajawal', sans-serif;
+    position: relative;
+}
+
+/* Form Header */
+.page-container h2 {
+    font-size: 28px;
+    color: #022c3d;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e6f0fa;
+    padding-bottom: 10px;
+    text-align: right;
+    
+}
+
+/* Contract Details */
+.contract-details {
+    margin-bottom: 30px;
+}
+
+.detail-row {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+    text-align: right;
+}
+
+.detail-label {
+    font-weight: 550;
+    color: #033043;
+    min-width: 150px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-label i {
+    color: #0A7273;
+    font-size: 18px;
+}
+
+.detail-value {
+    flex: 1;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 550;
+    display: inline-block;
+}
+
+.status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-expiring {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-expired {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Action Buttons */
+.action-buttons {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+    
+}
+
+.btn-primary {
+    background-color: #044A54;
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #033d46;
+    transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+    background-color: #67917D;
+    cursor: not-allowed;
+    transform: none;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background-color: #67917D;
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5c816f;
+    transform: translateY(-2px);
+}
+
+.btn-back {
+    background-color: #C9C2B8;
+    color: rgb(0, 0, 0);
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background-color: #ada89f;
+    transform: translateY(-2px);
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 120%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    font-size: 22px;
+    color: #022c3d;
+    margin-bottom: 10px;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;  
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 100px; 
+
+
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        padding: 20px;
+    }
+}
+
+/* Icons */
+@import url('https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css');
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2>تفاصيل العقد</h2>
+
+    <div class="contract-details">
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-building-2-line"></i> الشركة:</div>
+            <div class="detail-value">{{ contract.company.name }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-file-text-line"></i> رقم العقد:</div>
+            <div class="detail-value">{{ contract.contract_number }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-calendar-event-line"></i> تاريخ البداية:</div>
+            <div class="detail-value">{{ contract.start_date|date:"Y-m-d" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-calendar-close-line"></i> تاريخ الانتهاء:</div>
+            <div class="detail-value">{{ contract.end_date|date:"Y-m-d" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-information-line"></i> الحالة:</div>
+            <div class="detail-value">
+                <span class="status-badge {% if contract.status == 'active' %}status-active{% elif contract.status == 'expiring' %}status-expiring{% else %}status-expired{% endif %}">
+                    {% if contract.status == 'active' %} فعال {% elif contract.status == 'expiring' %} ينتهي قريباً {% else %} منتهي {% endif %}
+                </span>
+            </div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-box-3-line"></i> نوع الباقة:</div>
+            <div class="detail-value">
+                {% if contract.plan %}
+                    {{ contract.plan.name }}
+                {% else %}
+                    غير محدد
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-file-list-3-line"></i> الشروط:</div>
+            <div class="detail-value">{{ contract.terms|default:"-" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-sticky-note-line"></i> الملاحظات:</div>
+            <div class="detail-value">{{ contract.notes|default:"لا توجد ملاحظات" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label"><i class="ri-attachment-line"></i> ملف العقد:</div>
+            <div class="detail-value">
+                {% if contract.contract_file %}
+                    <a href="{{ contract.contract_file.url }}" class="btn btn-primary" download>
+                        <i class="ri-download-line"></i> تحميل الملف
+                    </a>
+                {% else %}
+                    لا يوجد ملف مرفق
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        {% if contract.is_expiring_soon or contract.is_expired %}
+            <button id="openRenewalModal" class="btn btn-secondary" type="button">
+                <i class="ri-refresh-line"></i> تجديد العقد
+            </button>
+        {% else %}
+            <button class="btn btn-primary" disabled>
+                <i class="ri-check-line"></i> العقد ساري
+            </button>
+        {% endif %}
+        
+        <a href="{% url 'contracts:contracts_list' %}" class="btn btn-back">
+            <i class="ri-arrow-right-line"></i> رجوع
+        </a>
+    </div>
+</div>
+
+<!-- Renewal Modal -->
+<div id="renewalModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تجديد عقد شركة {{ contract.company.name }}</h3>
+        </div>
+        
+        <form id="renewalForm" method="POST" action="{% url 'contracts:renew_contract' contract.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="contract_id" value="{{ contract.id }}">
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="detail-label"><i class="ri-calendar-line"></i> مدة التجديد:</label>
+                    <select name="renewal_duration" class="detail-value" id="renewalDurationSelect" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="6">6 أشهر</option>
+                        <option value="12" selected>سنة</option>
+                        <option value="custom">تاريخ مخصص</option>
+                    </select>
+                </div>
+                
+                <div id="customDateSection" style="display: none;">
+                    <div class="form-group">
+                        <label class="detail-label"><i class="ri-calendar-2-line"></i> تاريخ الانتهاء:</label>
+                        <input type="date" name="custom_end_date" class="detail-value" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="detail-label"><i class="ri-sticky-note-line"></i> ملاحظات:</label>
+                    <textarea name="notes" class="detail-value" rows="3" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="detail-label"><i class="ri-file-upload-line"></i> ملف العقد:</label>
+                    <input type="file" name="contract_file" class="detail-value">
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" id="cancelRenewal" class="btn btn-back">
+                    <i class="ri-close-line"></i> إلغاء
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-check-line"></i> تأكيد التجديد
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal functionality
+    const modal = document.getElementById('renewalModal');
+    const openBtn = document.getElementById('openRenewalModal');
+    const cancelBtn = document.getElementById('cancelRenewal');
+    const durationSelect = document.getElementById('renewalDurationSelect');
+    const customDateSection = document.getElementById('customDateSection');
+    
+    if (openBtn) {
+        openBtn.addEventListener('click', function() {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+    }
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    if (durationSelect && customDateSection) {
+        durationSelect.addEventListener('change', function() {
+            customDateSection.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+    }
+    
+    // Form validation
+    const renewalForm = document.getElementById('renewalForm');
+    if (renewalForm) {
+        renewalForm.addEventListener('submit', function(e) {
+            if (durationSelect.value === 'custom' && !document.querySelector('input[name="custom_end_date"]').value) {
+                e.preventDefault();
+                alert('الرجاء تحديد تاريخ الانتهاء المخصص');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,412 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% load static %}
+
+{% block title %}إضافة عميل جديد{% endblock %}
+
+
+
+{% block extra_css %}
+<style>
+/* General Styling */
+.page-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Tajawal', sans-serif;
+    position: relative;
+    direction: rtl;
+}
+
+/* Form Header */
+.page-container h2 {
+    font-size: 28px;
+    color: #022c3d;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e6f0fa;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 25px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    color: #033043;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #033043;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    color: #0A7273;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d9e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Tajawal', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0A7273;
+    box-shadow: 0 0 8px rgba(10, 114, 115, 0.2);
+}
+
+/* Checkbox Styling */
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.form-group.checkbox input {
+    width: auto;
+    cursor: pointer;
+}
+
+/* Add Company Button */
+.btn-add-company {
+    background-color: #0A7273;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+.btn-add-company:hover {
+    background-color: #055e5f;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add-company i {
+    font-size: 18px;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Tajawal', sans-serif;
+    text-decoration: none;
+}
+
+
+/* Alert Styling */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.alert-message {
+    background-color: #28a745; /* لون أخضر للنجاح */
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.alert-message.error {
+    background-color: #dc3545; /* لون أحمر للخطأ */
+}
+
+.close-alert {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .page-container h2 {
+        font-size: 24px;
+    }
+
+    .form-section h3 {
+        font-size: 18px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Font Awesome for Icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+.btn-save, .btn-back {
+    padding: 10px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: var(--font-family);
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-save {
+    background-color: #044A54;
+    color: white;
+    border: none;
+}
+
+.btn-save:hover {
+    background-color: #03373e;
+}
+
+.btn-back {
+    background-color: #DD723A;
+    color: #ffffff;
+    border: none;
+}
+
+.btn-back:hover {
+    background-color: #c25d27;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+}
+
+.btn-add-company {
+    background-color: #0A7273;
+    padding: 10px 20px;
+    border-radius: 6px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: normal;
+    font-family: var(--font-family);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px; /* مسافة من الأعلى */
+    margin-left: auto; /* هذا سيدفع الزر لليمين */
+    transition: all 0.3s ease;
+    width: auto;
+}
+
+.btn-add-company:hover {
+    background-color: #075455;
+    transform: translateY(-2px); /* إضافة تأثير رفع خفيف عند التحويم */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* إضافة ظل خفيف */
+}
+
+.btn-add-company i {
+    font-size: 18px;
+    margin-left: 5px; /* إضافة هامش بين الأيقونة والنص */
+}
+
+.checkbox-label-rtl {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ✅ إضافة تباعد بين الزر والجملة */
+    justify-content: flex-start;
+    font-size: 12px;
+}
+.checkbox-label-rtl input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+
+
+</style>
+{% endblock %}
+
+{% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% block content %}
+<div class="page-container">
+    <h2>إضافة عميل جديد</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>الاسم الكامل:</label>
+            <input type="text" name="full_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>البريد الإلكتروني:</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الجوال:</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الهوية:</label>
+            <input type="text" name="national_id">
+        </div>
+
+        <div class="form-group">
+            <label>المسمى الوظيفي:</label>
+            <input type="text" name="job_title">
+        </div>
+
+        <div class="form-group">
+            <label>نوع المستخدم:</label>
+            <select name="user_type" required>
+                <option value="client_admin">مدير شركة</option>
+                <option value="client_employee">موظف شركة</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>الشركة:</label>
+            {% if companies %}
+                <select name="company" required>
+                    <option value="" selected disabled>اختر الشركة</option>  <!-- ✅ إضافة الخيار الافتراضي -->
+                    {% for company in companies %}
+                        <option value="{{ company.id }}">{{ company.name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <div class="alert alert-warning">
+                    لا توجد شركات حالياً.
+                </div>
+            {% endif %}
+            
+            <a href="{% url 'admin_panel:add_company' %}?next=add_client" class="btn-add-company">
+                <i class="ri-add-fill"></i> إضافة شركة جديدة
+            </a>
+        </div>
+        
+
+
+        <div class="form-group">
+            <label>عدد موظفي الشركة:</label>
+            <input type="number" name="employees_count">
+        </div>
+
+        <div class="form-group">
+            <label>ملاحظات:</label>
+            <textarea name="notes"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label-rtl">
+                <input type="checkbox" name="send_password_link"> <!-- ✅ جعل الزر قبل النص -->
+                إرسال رابط تعيين كلمة المرور للمستخدم
+            </label>
+        </div>
+        
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">حفظ</button>
+            <a href="{% url 'admin_panel:clients' %}" class="btn-back">إلغاء</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

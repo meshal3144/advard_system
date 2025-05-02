@@ -1,0 +1,323 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% load static %}
+
+{% block title %}تفاصيل الموظف - Advard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        font-family: 'Tajawal', sans-serif;
+    }
+
+    h2 {
+        color: #033043;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f4f8;
+        text-align: center;
+    }
+
+    .detail-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 20px;
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        background: #f9fbfd;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .detail-row:hover {
+        background: #f0f7ff;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4a6f8a;
+        min-width: 160px;
+        margin-left: 10px;
+    }
+
+    .detail-value {
+        color: #033043;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* تنسيق الأيقونات */
+    .text-success {
+        color: #28a745;
+        font-size: 1.2rem;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 1.2rem;
+    }
+
+    /* زر التعديل */
+    .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none; 
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        background-color: #033043;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 400;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 30px;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .btn-edit:hover {
+        background-color: #02517a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(3, 48, 67, 0.15);
+    }
+
+    /* التأثير على الأيقونات */
+    .detail-row i {
+        transition: transform 0.3s ease;
+    }
+
+    .detail-row:hover i {
+        transform: scale(1.1);
+    }
+
+    /* التجاوب مع الشاشات الصغيرة */
+    @media (max-width: 768px) {
+        .detail-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .btn-edit {
+            max-width: 100%;
+        }
+    }
+
+    /* Button Styling */
+.btn-edit, .btn-delete {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.btn-edit {
+    background-color: #0A7273;
+    color: white;
+    margin: 0 10px;
+}
+
+.btn-edit:hover {
+    background-color: #055e5f;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Font Awesome for Icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.modal.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1000 !important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2>تفاصيل الموظف</h2>
+
+    <div class="detail-container">
+        <div class="detail-row">
+            <span class="detail-label">الاسم الكامل:</span>
+            <span class="detail-value">{{ employee.user.full_name }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">البريد الإلكتروني:</span>
+            <span class="detail-value">{{ employee.user.email }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">رقم الجوال:</span>
+            <span class="detail-value">{{ employee.user.phone }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">رقم الهوية:</span>
+            <span class="detail-value">{{ employee.user.national_id }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">القسم:</span>
+            <span class="detail-value">{{ employee.user.department|default:"-" }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">المسمى الوظيفي:</span>
+            <span class="detail-value">{{ employee.user.job_title|default:"-" }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الرقم الوظيفي:</span>
+            <span class="detail-value">{{ employee.user.employee_code }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الجنس:</span>
+            <span class="detail-value">{{ employee.user.get_gender_display|default:"-" }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الجنسية:</span>
+            <span class="detail-value">{{ employee.user.nationality|default:"-" }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">نوع المستخدم:</span>
+            <span class="detail-value">{{ employee.user.get_user_type_display }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الصلاحية:</span>
+            <span class="detail-value">{{ employee.get_role_display }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">حالة الدومين:</span>
+            <span class="detail-value">
+                {% if employee.domain_verified %}
+                    <i class="ri-verified-badge-fill text-success"></i> مفعل
+                {% else %}
+                    <i class="ri-forbid-line text-danger"></i> غير مفعل
+                {% endif %}
+            </span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الحالة:</span>
+            <span class="detail-value">
+                {% if employee.user.is_active %}
+                    <i class="ri-checkbox-circle-fill text-success"></i> نشط
+                {% else %}
+                    <i class="ri-close-circle-fill text-danger"></i> موقوف
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{% url 'admin_panel:employee_edit' employee.id %}" class="btn-edit">
+            <i class="ri-edit-2-fill"></i> تعديل بيانات الموظف
+        </a>
+        <button type="button"
+                class="btn-delete"
+                data-employee-id="{{ employee.user.id }}"
+                onclick="openDeleteModal(this)">
+            <i class="ri-close-fill"></i> حذف الموظف
+        </button>
+    </div>
+    <!-- مودال تأكيد حذف الموظف -->
+<div id="deleteEmployeeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeDeleteModal()">×</span>
+        <h2>تأكيد حذف الموظف</h2>
+        <p>⚠️ هل أنت متأكد أنك تريد حذف هذا الموظف؟ لا يمكن التراجع عن هذا الإجراء.</p>
+        <div class="modal-actions">
+            <form id="deleteEmployeeForm" action="" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete-confirm" id="confirmDeleteBtn">نعم</button>
+            </form>
+            <button type="button" class="btn-cancel" onclick="closeDeleteModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+    
+{% endblock %}
+
+
+
+
+{% block extra_js %}
+<script>
+    function openDeleteModal(button) {
+        const employeeId = button.getAttribute('data-employee-id');
+        console.log("🔎 رقم الموظف من الزر:", employeeId);
+
+        const modal = document.getElementById('deleteEmployeeModal');
+        const form = document.getElementById('deleteEmployeeForm');
+
+        // ✅ الرابط الصحيح باستخدام ID من CustomUser
+        form.action = `/admin-panel/employees/${employeeId}/delete/`;
+
+        modal.classList.add('show');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteEmployeeModal');
+        modal.classList.remove('show');
+    }
+
+    document.getElementById('deleteEmployeeForm').addEventListener('submit', function(e) {
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'جاري الحذف...';
+        console.log('📤 النموذج أُرسل إلى:', this.action);
+    });
+</script>
+
+    
+{% endblock %}
+
+ 

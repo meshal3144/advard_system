@@ -1,4 +1,4 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% load static %}
 
 {% block title %}إدارة العملاء{% endblock %}
@@ -29,30 +29,7 @@
     border-radius: 6px;
     font-family: var(--font-family);
 }
-.client-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    font-size: 13px;
-    table-layout: auto;
-}
-.client-table th, .client-table td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-.client-table th {
-    background-color: #f9f9f9;
-    color: #444;
-    text-transform: uppercase;
-    font-weight: normal;
-}
-.client-table tr:hover {
-    background-color: #f3f3f3;
-    transition: background-color 0.3s ease;
-}
+
 .actions button {
     border: none;
     padding: 6px 10px;
@@ -127,15 +104,57 @@
 }
 
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-right .btn-add-client {
+    background-color: #E55C24;
+    color: #ffffff;
+    padding: 8px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.header-right .btn-add-client:hover {
+    background-color: #d64d16;
+}
+
+.header-right .btn-add-client i {
+    font-size: 18px;
+}
+
+
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="page-container">
     <div class="page-header">
-        <h1>إدارة العملاء</h1>
-        <span class="badge">إجمالي: {{ users|length }} مستخدم</span>
+        <div class="header-left">
+            <h1>إدارة العملاء</h1>
+            <span class="badge">إجمالي: {{ users|length }} مستخدم</span>
+        </div>
+    
+        <div class="header-right">
+            <a href="{% url 'admin_panel:add_client' %}" class="btn-add-client">
+                <i class="ri-user-add-line"></i> إضافة عميل
+            </a>
+        </div>
     </div>
+    
     <form method="GET" class="filters">
         <select name="role">
             <option value="">كل الأدوار</option>
@@ -147,50 +166,64 @@
         <button type="submit" class="btn">بحث</button>
     </form>
 
-    <table class="client-table">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>#</th>
-                <th>الاسم</th>
-                <th>البريد</th>
+                <th>الاسم الكامل</th>
+                <th>البريد الإلكتروني</th>
                 <th>رقم الجوال</th>
                 <th>الشركة</th>
-                <th>الدور</th>
+                <th>المسمى الوظيفي</th>
+                <th>عدد الموظفين</th>
+                <th>تاريخ التسجيل</th>
                 <th>الحالة</th>
                 <th>إجراءات</th>
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
+            {% for client in clients %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ user.get_full_name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{% if user.company %}{{ user.company.name }}{% else %}-{% endif %}</td>
-                <td>{{ user.get_role_display }}</td>
+                <td>{{ client.user.full_name }}</td>
+                <td>{{ client.user.email }}</td>
+                <td>{{ client.user.phone }}</td> 
+                <td>{{ client.user.company }}</td>               
+                <td>{{ client.job_title|default:"-" }}</td>  <!-- ✅ إذا كانت القيمة فارغة، ستظهر "-" -->
+                <td>{{ client.employees_count }}</td>
+                <td>{{ client.created_at|date:"Y-m-d" }}</td>
                 <td>
-                    <span class="{% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
-                        {% if user.is_active %} مفعل {% else %} غير مفعل {% endif %}
+                    <span class="{% if client.user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                        {% if client.user.is_active %} مفعل {% else %} غير مفعل {% endif %}
                     </span>
                 </td>
-                
-                
-                    <td class="actions">
-                        <a href="{% url 'client_detail' user.id %}" class="btn-view-details">
-                            <i class="ri-send-plane-fill"></i> عرض
-                        </a>
-                    </td>
+                <td class="actions">
+                    <a href="{% url 'admin_panel:client_detail' client.user.id %}" class="btn-view-details">
+                        <i class="ri-send-plane-fill"></i> عرض
+                    </a>
+                </td>
             </tr>
-
-
             {% empty %}
             <tr>
-                <td colspan="8">لا يوجد مستخدمون حالياً.</td>
+                <td colspan="10">لا يوجد مستخدمون حالياً.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        <label for="rowsPerPage">عدد الصفوف لكل صفحة:</label>
+        <select id="rowsPerPage">
+            <option value="15" selected>15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+        </select>
+        <button id="prevPage" disabled>السابق</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">التالي</button>
+    </div>
+</div>
+    
 </div>
 {% endblock %}
 

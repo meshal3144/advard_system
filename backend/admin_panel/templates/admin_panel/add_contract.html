@@ -1,0 +1,393 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% load static %}
+
+{% block title %}إضافة عقد جديد{% endblock %}
+
+{% block extra_css %}
+<style>
+/* General Styling */
+.page-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Tajawal', sans-serif;
+    position: relative;
+}
+
+/* Form Header */
+.page-container h2 {
+    font-size: 28px;
+    color: #022c3d;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e6f0fa;
+    padding-bottom: 10px;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 25px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    color: #033043;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #033043;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    color: #0A7273;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d9e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Tajawal', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0A7273;
+    box-shadow: 0 0 8px rgba(10, 114, 115, 0.2);
+}
+
+/* Checkbox Styling */
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.form-group.checkbox input {
+    width: auto;
+    cursor: pointer;
+}
+
+/* File Upload Styling */
+.file-upload {
+    padding: 15px;
+    border: 1px dashed #d1d9e0;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.file-upload:hover {
+    border-color: #0A7273;
+    background-color: #f0f8ff;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-save {
+    background-color: #044A54;
+    color: white;
+    text-decoration: none; 
+    font-family: 'Tajawal', sans-serif;
+}
+
+.btn-save:hover {
+    background-color: #033d46;
+    transform: translateY(-2px);
+}
+
+.btn-save:disabled {
+    background-color: #a3bffa;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-cancel {
+    background-color: #DD723A;
+    color: white;
+    text-decoration: none; 
+    font-family: 'Tajawal', sans-serif;
+}
+
+.btn-cancel:hover {
+    background-color: #c25d27;
+    transform: translateY(-2px);
+}
+
+.btn-add-company {
+    background-color: #0A7273;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-add-company:hover {
+    background-color: #075455;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .page-container h2 {
+        font-size: 24px;
+    }
+
+    .form-section h3 {
+        font-size: 18px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Alert Styling */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.alert-message {
+    background-color: #dc3545;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.close-alert {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icons */
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="alert-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-message {{ message.tags }}">
+                {{ message }}
+                <button class="close-alert">&times;</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="page-container">
+    <h2>إضافة عقد جديد</h2>
+
+    <form method="POST" id="addContractForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Company Information Section -->
+        <div class="form-section">
+            <h3>معلومات الشركة</h3>
+
+            <div class="form-group">
+                <label><i class="ri-building-line"></i> الشركة</label>
+                <select name="company" required>
+                    <option value="" selected disabled>اختر الشركة</option>
+                    {% for company in companies %}
+                        <option value="{{ company.id }}">{{ company.name }}</option>
+                    {% endfor %}
+                </select>
+                <a href="{% url 'admin_panel:add_company' %}?next=add_contract" class="btn-add-company">
+                    <i class="ri-add-line"></i> إضافة شركة جديدة
+                </a>
+            </div>
+        </div>
+
+        <!-- Contract Details Section -->
+        <div class="form-section">
+            <h3>تفاصيل العقد</h3>
+
+            <div class="form-group">
+                <label><i class="ri-file-text-line"></i> رقم العقد</label>
+                <input type="text" name="contract_number" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-box-3-line"></i> الباقة</label>
+                <select name="plan">
+                    <option value="" selected disabled>اختر الباقة (اختياري)</option>
+                    <optgroup label="الباقات المتاحة">
+                        {% for plan in plans %}
+                            <option value="{{ plan.id }}">
+                                {% if plan.name == "Basic" %}أساسي
+                                {% elif plan.name == "Pro" %}أحترافي
+                                {% elif plan.name == "Enterprise" %}مؤسسي
+                                {% else %}{{ plan.name }}
+                                {% endif %}
+                            </option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-calendar-event-line"></i> تاريخ البداية</label>
+                <input type="date" name="start_date" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-calendar-close-line"></i> تاريخ النهاية</label>
+                <input type="date" name="end_date" required>
+            </div>
+        </div>
+
+        <!-- Terms & Notes Section -->
+        <div class="form-section">
+            <h3>الشروط والملاحظات</h3>
+
+            <div class="form-group">
+                <label><i class="ri-file-list-3-line"></i> الشروط</label>
+                <textarea name="terms" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-sticky-note-line"></i> الملاحظات</label>
+                <textarea name="notes" rows="3"></textarea>
+            </div>
+        </div>
+
+        <!-- Contract File Section -->
+        <div class="form-section">
+            <h3>مرفقات العقد</h3>
+
+            <div class="form-group">
+                <label><i class="ri-attachment-line"></i> ملف العقد (اختياري)</label>
+                <div class="file-upload">
+                    <input type="file" name="contract_file">
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save" id="submitBtn">حفظ العقد</button>
+            <a href="{% url 'contracts:contracts_list' %}" class="btn btn-cancel">إلغاء</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('addContractForm').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جاري الحفظ...';
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const alerts = document.querySelectorAll(".alert-message");
+    const closeButtons = document.querySelectorAll(".close-alert");
+
+    // إخفاء التنبيه بعد 5 ثوانٍ تلقائيًا
+    setTimeout(() => {
+        alerts.forEach(alert => {
+            alert.style.opacity = "0";
+            setTimeout(() => alert.style.display = "none", 500);
+        });
+    }, 5000);
+
+    // السماح بالإغلاق اليدوي
+    closeButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            this.parentElement.style.opacity = "0";
+            setTimeout(() => this.parentElement.style.display = "none", 500);
+        });
+    });
+});
+</script>
+{% endblock %}

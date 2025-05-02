@@ -1,0 +1,277 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% load static %}
+
+{% block title %}إدارة الموظفين{% endblock %}
+
+{% block extra_css %}
+<style>
+    .action-buttons {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .btn-add {
+        background-color: #E55C24;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-add:hover {
+        background-color: #d64d16;
+    }
+
+    .btn-view-details {
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 5px 10px; 
+    background-color: #0A7273; 
+    color: #fff; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-family: 'Tajawal', sans-serif; 
+    font-size: 12px; /* حجم النص */
+    transition: background-color 0.3s ease; 
+}
+
+
+.btn-view-details:hover {
+        background-color: #075a5c;
+    }
+
+
+    .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: right;
+    align-items: center;
+    font-family: 'Tajawal';
+}
+
+.filters input, .filters select, .filters button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Tajawal';
+}
+
+.filters input:focus, .filters select:focus {
+    border-color: #0A7273;
+    box-shadow: 0 0 5px rgba(3, 130, 139, 0.5);
+}
+
+.filters button {
+    background-color: #E9E3D7;
+    color: #033043;
+    border: none;
+    cursor: pointer;
+    font-family: 'Tajawal';
+    padding: 10px 40px;
+
+}
+
+.filters button:hover {
+    background-color: #ccc8c0;
+}
+
+.status-active {
+    color: #155724;         /* لون النص: أخضر غامق */
+    background-color: #d4edda;  /* لون الخلفية: أخضر فاتح */
+    padding: 5px 20px;      /* تضبيط المساحة الداخلية */
+    border-radius: 4px;      /* زوايا مدورة */
+    display: inline-block;   /* لجعل الخلفية تتكيف مع النص */
+    font-size: 13px;
+
+}
+
+.status-inactive {
+    color: #721c24;         /* لون النص: أحمر غامق */
+    background-color: #f8d7da;  /* لون الخلفية: أحمر فاتح */
+    padding: 5px 20px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 13px;
+
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+    <h2>إدارة الموظفين</h2>
+    <div class="action-buttons">
+        <a href="{% url 'admin_panel:employee_add' %}" class="btn-add">
+            <i class="ri-user-add-line"></i> إضافة موظف جديد
+        </a>
+    </div>
+
+    <div class="filters">
+        <input type="text" id="searchID" placeholder="بحث برقم الهوية">
+        <select id="filterStatus">
+            <option value="">كل الحالات</option>
+            <option value="نشط">نشط</option>
+            <option value="موقوف">موقوف</option>
+        </select>
+        <select id="filterRole">
+            <option value="">كل الأدوار</option>
+            <option value="مسؤول نظام">مسؤول نظام</option>
+            <option value="دعم فني">دعم فني</option>
+            <option value="مندوب مبيعات">مندوب مبيعات</option>
+        </select>
+        <button id="clearFilters">إلغاء الفلترة</button>
+    </div>
+    
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>الاسم الكامل</th>
+                <th>البريد الإلكتروني</th>
+                <th>national_id</th>
+                <th>رقم الجوال</th>
+                <th>الدور</th>
+                <th>القسم</th>
+                <th>الحالة</th>
+                <th>الإجراء</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ employee.user.full_name }}</td>
+                <td>{{ employee.user.email }}</td>
+                <td>{{ employee.user.national_id }}</td>
+                <td>{{ employee.user.phone }}</td>
+                <td>{{ employee.get_role_display }}</td>
+                <td>{{ employee.user.department|default:"-" }}</td>
+                <td>
+                    <span class="{% if employee.user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                        {% if employee.user.is_active %} نشط {% else %} موقوف {% endif %}
+                    </span>
+                </td>
+
+
+                <td>
+                    <a href="{% url 'admin_panel:employee_detail' employee.id %}" class="btn-view-details">
+                        <i class="ri-search-line"></i> عرض
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">لا يوجد موظفون حتى الآن.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <label for="rowsPerPage">عدد الصفوف لكل صفحة:</label>
+        <select id="rowsPerPage">
+            <option value="15" selected>15</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+        </select>
+        <button id="prevPage" disabled>السابق</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">التالي</button>
+    </div>
+    
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // عناصر الفلترة من واجهتك
+    const searchID = document.getElementById("searchID");
+    const filterStatus = document.getElementById("filterStatus");
+    const filterRole = document.getElementById("filterRole");
+    const clearFilters = document.getElementById("clearFilters");
+    const rows = document.querySelectorAll(".employees-table tbody tr");
+
+    // دالة الفلترة الرئيسية
+    function filterTable() {
+        const idValue = searchID.value.trim().toLowerCase();
+        const statusValue = filterStatus.value;
+        const roleValue = filterRole.value;
+
+        let visibleRowIndex = 1; // عداد لإعادة الترقيم
+
+        // إخفاء رسالة "لا توجد نتائج" إذا كانت موجودة
+        const existingNoResults = document.querySelector('.no-results');
+        if (existingNoResults) {
+            existingNoResults.remove();
+        }
+
+        rows.forEach(row => {
+            // استخراج قيم الخلايا من الجدول
+            const id = row.children[1].textContent.toLowerCase(); // العمود الثاني (رقم الهوية)
+            const status = row.querySelector('.status-cell').textContent.trim();
+            const role = row.children[7].textContent.trim(); // العمود الثامن (الدور)
+
+            // التحقق من تطابق الفلتر
+            const idMatch = id.includes(idValue);
+            const statusMatch = statusValue === "" || status === statusValue;
+            const roleMatch = roleValue === "" || role === roleValue;
+
+            // تطبيق الفلتر
+            if (idMatch && statusMatch && roleMatch) {
+                row.style.display = "";
+                // إعادة ترقيم الصف الظاهر فقط
+                row.cells[0].textContent = visibleRowIndex++;
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+        // معالجة حالة عدم وجود نتائج
+        const visibleRows = document.querySelectorAll(".employees-table tbody tr:not([style*='display: none'])");
+        if (visibleRows.length === 0) {
+            const noResultsRow = document.createElement("tr");
+            noResultsRow.className = "no-results";
+            noResultsRow.innerHTML = `<td colspan="8" class="text-center">لا توجد نتائج مطابقة للبحث</td>`;
+            document.querySelector(".employees-table tbody").appendChild(noResultsRow);
+        }
+    }
+
+    // أحداث الفلترة
+    searchID.addEventListener("input", filterTable);
+    filterStatus.addEventListener("change", filterTable);
+    filterRole.addEventListener("change", filterTable);
+
+    // زر مسح الفلاتر
+    clearFilters.addEventListener("click", function () {
+        searchID.value = "";
+        filterStatus.value = "";
+        filterRole.value = "";
+        filterTable();
+        
+        // إعادة الترقيم الأصلي
+        rows.forEach((row, index) => {
+            if (row.style.display !== "none") {
+                row.cells[0].textContent = index + 1;
+            }
+        });
+    });
+
+    // فلترة أولية عند التحميل (اختياري)
+    filterTable();
+});
+</script>
+{% endblock %}

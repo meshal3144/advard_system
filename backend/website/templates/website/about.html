@@ -1,0 +1,353 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block content %}
+    <style>
+/* تنسيق الـ Hero Section */
+.about-hero {
+    background-color: #033043;
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0.3;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero-text {
+    flex: 1;
+    color: white;
+}
+
+.hero-text .hero-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    opacity: 0.2; /* 70% شفافية */
+
+}
+
+.hero-text h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #d1e8ff;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* تنسيق قسم القيم */
+.about-values {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+}
+
+.values-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-heading {
+    font-size: 32px;
+    color: #033043;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.value-item {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.value-item i {
+    font-size: 36px;
+    color: #FF9800;
+    margin-bottom: 20px;
+}
+
+.value-item h3 {
+    font-size: 20px;
+    color: #033043;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.value-item p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* تنسيق قسم الرسالة */
+.about-mission {
+    padding: 60px 0;
+    background-color: white;
+}
+
+.mission-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.mission-text {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* تنسيق الجوال */
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .hero-text p {
+        font-size: 16px;
+    }
+
+    .hero-image {
+        margin-top: 30px;
+    }
+
+    .about-values {
+        padding: 50px 0;
+    }
+
+    .section-heading {
+        font-size: 26px;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-mission, .about-vision {
+        padding: 40px 0;
+    }
+
+    .mission-text, .vision-text {
+        font-size: 16px;
+    }
+}
+
+/* تنسيق قسم الإحصائيات */
+.stats-section {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.stats-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.stats-heading {
+    font-size: 40px;
+    color: #033043;
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+}
+
+.stat-item {
+    position: relative;
+}
+
+.stat-number {
+    font-size: 48px;
+    color: #033043;
+    font-weight: bold;
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+.stat-number::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #a3d8ff 0%, #e6f4ff 100%); /* خط أزرق متدرج زي الصورة */
+    border-radius: 2px;
+}
+
+.stat-item p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.stat-item i {
+    color: #6BC081;
+    font-size: 30px; /* حجم الأيقونة */
+}
+
+/* تنسيق الجوال */
+@media (max-width: 768px) {
+    .stats-section {
+        padding: 50px 0;
+    }
+
+    .stats-heading {
+        font-size: 26px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .stat-number {
+        font-size: 36px;
+    }
+}
+    </style>
+<section class="about-hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <i class="ri-dashboard-fill hero-icon"></i>
+            <h1>أدفارد.. منصة ذكية لإدارة الموارد البشرية وتحسين بيئة العمل</h1>
+            <p>يوفّر نظام أدفارد حلاً متكاملاً يدعم التحول الرقمي في إدارة الموارد البشرية وبيئة العمل داخل المنشآت. من خلال أدوات ذكية وتقارير دقيقة، يساعد أدفارد الفرق الإدارية على رفع الكفاءة وتقليل الجهد، للتركيز على تطوير الأداء وتحقيق الأهداف.</p>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/hrsa.svg' %}" alt="بروفايل ">
+        </div>
+    </div>
+</section>
+
+<section class="about-values">
+    <div class="values-wrapper">
+        <h2 class="section-heading">قيمنا</h2>
+        <div class="values-grid">
+            <div class="value-item">
+                <i class="ri-lightbulb-line"></i>
+                <h3>الابتكار</h3>
+                <p>نسعى دائمًا لتقديم حلول مبتكرة تلبي احتياجات المؤسسات الحديثة.</p>
+            </div>
+            <div class="value-item">
+                <i class="ri-team-line"></i>
+                <h3>العمل الجماعي</h3>
+                <p>نؤمن بأهمية التعاون لتحقيق أفضل النتائج لعملائنا.</p>
+            </div>
+            <div class="value-item">
+                <i class="ri-shield-check-line"></i>
+                <h3>الموثوقية</h3>
+                <p>نضمن تقديم خدمات موثوقة ودقيقة تدعم نجاح عملائنا.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-mission">
+    <div class="mission-wrapper">
+        <h2 class="section-heading">رسالتنا</h2>
+        <p class="mission-text">تقديم نظام متكامل يجعل إدارة الموظفين أكثر سهولة وكفاءة، مع تحسين بيئة العمل وتعزيز الإنتاجية.</p>
+        <h2 class="section-heading">رؤيتنا</h2>
+        <p class="mission-text">أن نكون الخيار الأول في أنظمة إدارة الموارد البشرية من خلال تقديم حلول ذكية تناسب المؤسسات.</p>
+    </div>
+</section>
+
+<!-- قسم الإحصائيات الجديد -->
+<section class="stats-section">
+    <div class="stats-wrapper">
+        <h2 class="stats-heading">"انطلق بأعمالك نحو المستقبل مع أدفار"</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="500">0</h3>
+                <i class="ri-add-line"></i>
+                <p>عميل يثقون بنا</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="15">0</h3>
+                <i class="ri-add-line"></i>
+                <p>سنة من الخبرة</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="3000">0</h3>
+                <i class="ri-add-line"></i>
+                <p>مستخدم نشط</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="stat-number" data-target="50">0</h3>
+                <i class="ri-add-line"></i>
+                <p>دولة نغطيها</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}

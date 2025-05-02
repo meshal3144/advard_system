@@ -1,32 +1,97 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% block title %}تفاصيل المستخدم{% endblock %}
 
 {% block content %}
 
 <style>
+.page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Tajawal', sans-serif;
+}
 
+.page-container h2 {
+    color: #033043;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f4f8;
+    text-align: center;
+}
 
+.detail-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f9fbfd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.detail-row:hover {
+    background: #f0f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #4a6f8a;
+    min-width: 160px;
+    margin-left: 10px;
+}
+
+.detail-value {
+    color: #033043;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.text-success {
+    color: #28a745;
+    font-size: 1.2rem;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 1.2rem;
+}
 
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* تباعد بين الأزرار */
+    gap: 10px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .action-buttons a,
 .action-buttons button {
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
     border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 400;
     cursor: pointer;
-    transition: all 0.3s ease;
     text-decoration: none;
     color: white;
-    font-family: var(--font-family);
-
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.3s ease;
 }
 
 .btn-back {
@@ -35,22 +100,28 @@
 
 .btn-back:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-edit {
-    background-color: #3a6ea5;
+    background-color: #0A7273;
 }
 
 .btn-edit:hover {
-    background-color: #2f5e91;
+    background-color: #055e5f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-deactivate {
-    background-color: #CF423B;
+    background-color: #e74c3c;
 }
 
 .btn-deactivate:hover {
-    background-color: #b83e37;
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-activate {
@@ -59,6 +130,8 @@
 
 .btn-activate:hover {
     background-color: #58836e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-send-link {
@@ -68,46 +141,118 @@
 
 .btn-send-link:hover {
     background-color: #e6951c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-
 
 .modal {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%; /* غيّرناها من 40% لـ 50% عشان التمركز الأفقي */
-    transform: translate(-50%, -50%); /* التمركز الأفقي والرأسي */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 600px;
-    max-width: 90%; /* متجاوب مع الشاشات الصغيرة */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
-    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Tajawal', sans-serif;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-content {
-    position: relative;
-    width: 90%;
+    background: white;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 600px;
+    max-width: 90%;
+    position: relative;
+    text-align: center;
 }
 
 .close-btn {
     cursor: pointer;
-    float: right;
     font-size: 24px;
     position: absolute;
     top: 10px;
     right: 15px;
-    z-index: 10000;
+    color: #033043;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+.modal-content h2 {
+    color: #033043;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    color: #033043;
+    margin-bottom: 20px;
 }
 
 .modal-actions {
     display: flex;
     justify-content: space-around;
+    gap: 10px;
+}
+
+.modal-actions button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.btn-confirm {
+    background-color: #0A7273;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background-color: #055e5f;
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons a,
+    .action-buttons button {
+        width: 100%;
+        max-width: none;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
 }
 
 
@@ -116,115 +261,113 @@
 
 <div class="page-container">
     <h2>تفاصيل العميل</h2>
-
-    <p><strong>الاسم:</strong> {{ user.get_full_name }}</p>
-    <p><strong>البريد:</strong> {{ user.email }}</p>
-    <p><strong>رقم الجوال:</strong> {{ user.phone }}</p>
-    <p><strong>الدور:</strong> {{ user.get_role_display }}</p>
-    <p><strong>الشركة:</strong> {{ user.company.name }}</p>
-    <p><strong>الحالة:</strong> {% if user.is_active %}مفعل{% else %}غير مفعل{% endif %}</p>
-</div>
-
-
-
-
-<div class="action-buttons">
-    <!-- زر الرجوع -->
-    <a href="{% url 'clients' %}" class="btn btn-back">
-        <i class="ri-arrow-go-back-line"></i> رجوع
-    </a>
-
-    <!-- زر تعديل -->
-    <a href="{% url 'edit_user' user.id %}" class="btn btn-edit">
-        <i class="ri-edit-line"></i> تعديل
-    </a>
-
-    <!-- زر تفعيل / تعطيل -->
-    {% if user.is_active %}
-        <form method="POST" action="{% url 'deactivate_user' user.id %}" style="display:inline;">
-            {% csrf_token %}
-            <button class="btn btn-deactivate">
-                <i class="ri-lock-line"></i> تعطيل
-            </button>
-        </form>
-    {% else %}
-        <form method="POST" action="{% url 'activate_user' user.id %}" style="display:inline;">
-            {% csrf_token %}
-            <button class="btn btn-activate">
-                <i class="ri-lock-unlock-line"></i> تفعيل
-            </button>
-        </form>
-    {% endif %}
-
-    <!-- زر إرسال رابط تعيين كلمة مرور -->
-    <form method="POST" action="{% url 'send_set_password_link' user.id %}" style="display:inline;">
-        {% csrf_token %}
-        <button class="btn btn-send-link">
-            <i class="ri-mail-send-line"></i> إرسال رابط تعيين كلمة مرور
-        </button>
-    </form>
-</div>
-
-<div id="confirmDeactivateModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">×</span>
-        <h2>تأكيد تعطيل المستخدم</h2>
-        <p>هل أنت متأكد من أنك تريد تعطيل هذا المستخدم؟</p>
-        <div class="modal-actions">
-            <form id="deactivateForm" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">نعم</button>
-            </form>
-            <button class="btn btn-secondary">إلغاء</button>
+    <div class="detail-container">
+        <div class="detail-row">
+            <span class="detail-label">الاسم الكامل:</span>
+            <span class="detail-value">{{ client.user.full_name }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">البريد الإلكتروني:</span>
+            <span class="detail-value">{{ client.user.email }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">رقم الجوال:</span>
+            <span class="detail-value">{{ client.user.phone }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">المسمى الوظيفي:</span>
+            <span class="detail-value">{{ client.job_title|default:"-" }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الشركة:</span>
+            <span class="detail-value">{% if client.user.company %}{{ client.user.company.name }}{% else %}-{% endif %}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">الحالة:</span>
+            <span class="detail-value">
+                {% if client.user.is_active %}
+                    <i class="ri-checkbox-circle-fill text-success"></i> مفعل
+                {% else %}
+                    <i class="ri-close-circle-fill text-danger"></i> غير مفعل
+                {% endif %}
+            </span>
         </div>
     </div>
 </div>
 
+<div class="action-buttons">
+    <!-- زر الرجوع -->
+    <a href="{% url 'admin_panel:clients' %}" class="btn btn-back">
+        <i class="ri-arrow-go-back-line"></i> رجوع
+    </a>
+
+    <!-- زر تعديل -->
+    <a href="{% url 'admin_panel:edit_user' client.user.id %}" class="btn btn-edit">
+        <i class="ri-edit-line"></i> تعديل
+    </a>
+
+    <!-- زر إرسال رابط تعيين كلمة مرور (إذا كان المستخدم غير مفعل) -->
+    {% if not client.user.is_active %}
+    <button class="btn btn-send-link" id="sendPasswordLinkBtn">
+        <i class="ri-mail-send-line"></i> إرسال رابط تعيين كلمة مرور
+    </button>
+{% endif %}
+
+</div>
+
+
+
+<!-- نافذة تأكيد قبل إرسال رابط تعيين كلمة المرور -->
+<div id="confirmSendLinkModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>تأكيد إرسال الرابط</h2>
+        <p>هل أنت متأكد أنك تريد إرسال رابط تعيين كلمة المرور لهذا المستخدم؟</p>
+        <div class="modal-actions">
+            <form method="POST" action="{% url 'admin_panel:send_set_password_link' client.user.id %}" style="display:inline;">
+
+                {% csrf_token %}
+                <button type="submit" class="btn btn-confirm">نعم، إرسال</button>
+            </form>
+            <button class="btn btn-cancel">إلغاء</button>
+        </div>
+    </div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const deactivateBtn = document.querySelector(".btn-deactivate");
-    const modal = document.getElementById("confirmDeactivateModal");
-    const closeBtn = document.querySelector("#confirmDeactivateModal .close-btn");
-    const cancelBtn = document.querySelector(".btn-secondary");
-    const confirmBtn = document.querySelector(".btn-danger");
-    const form = document.getElementById("deactivateForm");
+    const sendLinkBtn = document.getElementById("sendPasswordLinkBtn");
+    const modal = document.getElementById("confirmSendLinkModal");
+    const closeBtn = document.querySelector("#confirmSendLinkModal .close-btn");
+    const cancelBtn = document.querySelector(".btn-cancel");
+    const confirmBtn = document.querySelector(".btn-confirm");
+    const form = document.getElementById("sendLinkForm");
 
-    // تحقق من وجود closeBtn
-    if (!closeBtn) {
-        console.error("Close button not found!");
-        return;
-    }
-
-    if (deactivateBtn) {
-        deactivateBtn.addEventListener("click", function (event) {
-            event.preventDefault();
+    if (sendLinkBtn) {
+        sendLinkBtn.addEventListener("click", function () {
             modal.style.display = "flex";
-            form.action = deactivateBtn.closest("form").action;
         });
     }
 
-    closeBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        console.log("Close button clicked"); // تحقق مما إذا كان هذا يظهر في وحدة التحكم
+    closeBtn.addEventListener("click", function () {
         modal.style.display = "none";
     });
 
-    if (cancelBtn) {
-        cancelBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-        });
-    }
+    cancelBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
 
-    if (confirmBtn) {
-        confirmBtn.addEventListener("click", function () {
-            form.submit();
-        });
-    }
+    confirmBtn.addEventListener("click", function () {
+        form.submit();
+    });
 });
-
-
 </script>
+
 
 
 {% endblock %}

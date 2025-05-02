@@ -10,7 +10,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-
 # التطبيقات المثبتة
 INSTALLED_APPS = [
     # Django default apps
@@ -25,13 +24,14 @@ INSTALLED_APPS = [
     'django_extensions',
 
     # Project apps
-    'employees',
+    'requests.apps.RequestsConfig',
+    'website',
     'admin_panel',
-    'accounts',
-
-
+    'accounts.apps.AccountsConfig',
+    'client_panel',
+    'contracts.apps.ContractsConfig',
+    
 ]
-
 
 # إعدادات الوسيط (Middleware)
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
-                'accounts.context_processors.user_info',  # ✅ أضفناه هنا
+                 'accounts.context_processors.user_avatar',
             ],
         },
     },
@@ -82,7 +82,9 @@ DATABASES = {
 # إعدادات ملفات الاستاتيك
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "backend", "static"),
+    os.path.join(BASE_DIR, "static"),           # للبيئة المحلية
+    os.path.join(BASE_DIR, "backend", "static") # للإنتاج
+
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ جديد
 
@@ -120,7 +122,7 @@ EMAIL_HOST = 'smtp.zoho.sa'  # أو smtp.zoho.sa لو كان حسابك سعود
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'noreply@advardsystem.com'
-EMAIL_HOST_PASSWORD = 'YKn3SSGC12aP'
+EMAIL_HOST_PASSWORD = 'ecYHdbvXfgHA'
 DEFAULT_FROM_EMAIL = 'Advard System <noreply@advardsystem.com>'
 
 
@@ -132,5 +134,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 

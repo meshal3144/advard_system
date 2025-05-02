@@ -1,0 +1,123 @@
+{% extends "website/base.html" %}
+
+{% block content %}
+    <style>
+        .policy-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 40px 0;
+            color: #033043;
+            margin-top: 100px; /* أو padding-top: 100px حسب التصميم */
+        }
+
+        .policy-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px; /* أضف مسافة بين العنصر والفوتر */
+
+        }
+
+
+
+        .policy-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .policy-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .policy-section i {
+            color: #033043;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .policy-section h2 {
+            font-size: 22px;
+            color: #033043;
+            margin-bottom: 10px;
+        }
+
+        .policy-section p, .policy-section ul {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555555;
+            margin: 0;
+        }
+
+        .policy-section ul {
+            padding-left: 20px;
+        }
+
+        .policy-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .arrow {
+            color: #033043;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+        
+        ul {
+            list-style: none; /* حذف التعداد النقطي */
+            padding-left: 0; /* إزالة المسافات الجانبية إذا وجدت */
+        }
+
+    </style>
+
+    <div class="policy-title">
+        <h1>السياسة والخصوصية</h1>
+    </div>
+
+    <div class="policy-container">
+        <div class="policy-section" data-aos="fade-up">
+            <h2><i class="ri-verified-badge-line"></i> مقدمة</h2>
+            <p>في Advard، نلتزم بحماية بيانات عملائنا وضمان أقصى درجات الأمان والخصوصية. توضح هذه السياسة كيفية جمع بيانات المستخدمين، استخدامها، ومشاركتها وفقًا لأفضل الممارسات والمعايير الأمنية.</p>
+        </div>
+
+        <div class="policy-section" data-aos="fade-up" data-aos-delay="200">
+            <h2><i class="ri-bubble-chart-line"></i> جمع المعلومات</h2>
+            <p>نقوم بجمع البيانات التالية عند استخدامك لنظامنا:</p>
+            <ul>
+                <li><i class="ri-arrow-left-s-fill arrow"></i>معلومات الحساب مثل الاسم، البريد الإلكتروني، ورقم الهوية.</li>
+                <li><i class="ri-arrow-left-s-fill arrow"></i>بيانات الحضور والانصراف لتقديم التقارير والتحليلات.</li>
+                <li><i class="ri-arrow-left-s-fill arrow"></i>معلومات تقنية مثل عنوان IP ونوع الجهاز المستخدم لضمان الأمان وتحسين الخدمة.</li>
+            </ul>
+        </div>
+
+        <div class="policy-section" data-aos="fade-up" data-aos-delay="400">
+            <h2><i class="ri-cloud-line"></i> استخدام البيانات</h2>
+            <ul>
+                <li><i class="ri-arrow-left-s-fill arrow"></i> تحسين أداء النظام وتحليل تجربة المستخدم</li>
+                <li><i class="ri-arrow-left-s-fill arrow"></i> توفير تقارير دقيقة عن الحضور والأداء</li>
+                <li><i class="ri-arrow-left-s-fill arrow"></i> إرسال إشعارات ذكية وفقًا لإعدادات المستخدمين</li>
+            </ul>
+        </div>
+
+        <div class="policy-section" data-aos="fade-up" data-aos-delay="600">
+            <h2><i class="ri-shield-check-line"></i> حماية البيانات</h2>
+            <p>نحن ملتزمون بحماية بياناتك من الوصول غير المصرح به باستخدام تشفير متقدم وإجراءات أمان حديثة. كما أننا لا نشارك بيانات المستخدمين مع أي جهات خارجية بدون موافقتهم.</p>
+        </div>
+
+        <div class="policy-section" data-aos="fade-up" data-aos-delay="800">
+            <h2><i class="ri-admin-line"></i> حقوق المستخدمين</h2>
+            <p>يمكنك طلب تعديل أو حذف بياناتك من خلال إعدادات الحساب أو التواصل مع فريق الدعم الفني لدينا.</p>
+        </div>
+    </div>
+
+
+{% endblock %}

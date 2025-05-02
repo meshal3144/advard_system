@@ -1,0 +1,116 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}إدارة الحضور والانصراف - Advard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+    <!-- القسم العلوي (Hero Section) -->
+    <section class="hero-section">
+        <div class="hero-text">
+            <i class="ri-timer-2-line hero-icon"></i>
+            <h1>نظام الحضور والانصراف</h1>
+            <p>نظام ذكي لتتبع أوقات دخول وخروج الموظفين بدقة، يوفر تقارير فورية ويساعد في ضبط أوقات العمل وتحسين الالتزام الوظيفي.</p>
+            <a href="{% url 'services' %}#trial-request" class="custom-demo-btn">اطلب العرض التجريبي</a>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="إدارة الحضور والانصراف">
+        </div>
+    </section>
+
+    <!-- الفقرة 1 -->
+    <section class="service-section">
+        <div class="section-text">
+            <h2>المميزات الرئيسية:</h2>
+            <ul>
+                <li><i class="ri-checkbox-circle-fill"></i> تسجيل الحضور والانصراف تلقائيًا أو يدويًا</li>
+                <li><i class="ri-checkbox-circle-fill"></i> دعم الربط مع أجهزة البصمة (حاليًا أو لاحقًا)</li>
+                <li><i class="ri-checkbox-circle-fill"></i> إشعارات فورية بالتأخيرات أو الغيابات</li>
+                <li><i class="ri-checkbox-circle-fill"></i> تقارير يومية، أسبوعية، وشهرية للإدارة</li>
+                <li><i class="ri-checkbox-circle-fill"></i> ربط مباشر مع مسير الرواتب والإجازات</li>
+                <li><i class="ri-checkbox-circle-fill"></i> صلاحيات متعددة (موظف – مدير – مسؤول نظام)</li>
+            </ul>
+        </div>
+
+        <div class="section-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="فترات العمل">
+        </div>
+    </section>
+    
+
+    <!-- الفقرة 2 -->
+    <section class="service-section reverse">
+
+        <div class="section-text">
+            <h2> تكامل الخدمة مع الأنظمة الأخرى</h2>
+        </div>
+        <div class="section-image">
+            <img src="{% static 'images/services/salre.svg' %}" alt="تتبع الحضور والانصراف">
+        </div>
+    </section>
+
+    <!-- الفقرة 3 -->
+    <section class="service-section reverse">
+        <div class="section-image">
+            <img src="{% static 'images/services/sass.png' %}" alt="الربط مع المرتبات">
+        </div>
+        <div class="section-text">
+            <h2>الربط مع المرتبات</h2>
+            <p>الحضور مرتبط مباشرة بنظام المرتبات، حيث يتم حساب الساعات الفعلية وتحديث الاستحقاقات تلقائيًا.</p>
+        </div>
+    </section>
+    </section>
+
+    <!-- الفقرة 4 -->
+    <section class="service-section reverse">
+
+        <div class="section-text">
+            <h2> تكامل الخدمة مع الأنظمة الأخرى</h2>
+        </div>
+        <div class="section-image">
+            <img src="{% static 'images/services/salr.svg' %}" alt="تتبع الحضور والانصراف">
+        </div>
+    </section>
+
+    <!-- جدول المعلومات أسفل الصفحة -->
+    <section class="service-info">
+        <h2>معلومات إضافية</h2>
+        <table class="info-table">
+            <tr>
+                <th>الخاصية</th>
+                <th>البيان</th>
+            </tr>
+            <tr>
+                <td>توفر الخدمة	</td>
+                <td>تتوفر في جميع الباقات</td>
+            </tr>
+            <tr>
+                <td>التكامل مع الخدمات الأخرى	</td>
+                <td>الرواتب - الإجازات - الخدمة الذاتية</td>
+            </tr>
+            <tr>
+                <td>آلية الاستخدام</td>
+                <td>  الادارة والموظفين – حسب الصلاحيات</td>
+            </tr>
+            <tr>
+                <td>التفعيل عبر الأجهزة الذكية</td>
+                <td>متوافق مع الجوال والتابلت</td>
+            </tr>
+            <tr>
+                <td>إمكانية الربط بالبصمة</td>
+                <td> متاح عبر التكامل مع أجهزة الحضور</td>
+            </tr>
+        </table>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/services.js' %}" defer></script>
+{% endblock %}

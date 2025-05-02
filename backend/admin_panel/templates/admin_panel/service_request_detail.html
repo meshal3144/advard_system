@@ -1,4 +1,4 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% load static %}
 
 {% block title %}تفاصيل الطلب - Advard{% endblock %}
@@ -143,7 +143,9 @@
     
 
 <div class="action-buttons">
-    {% if request_data.status == "قيد المراجعة" %}
+    {% if request_data.status == "pending" %}
+
+
     <form id="action-form" method="POST" style="display: inline;">
         {% csrf_token %}
         {% if request_data.request_type == 'pricing' %}
@@ -161,7 +163,7 @@
     </form>
     {% endif %}
     
-    <a href="{% url 'service_requests' %}" class="btn btn-back">
+    <a href="{% url 'admin_panel:service_requests' %}" class="btn btn-back">
         <i class="ri-arrow-go-back-line"></i> رجوع
     </a>
 </div>

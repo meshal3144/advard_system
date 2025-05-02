@@ -1,4 +1,4 @@
-{% extends 'panel_base.html' %}
+{% extends 'admin_panel/panel_base.html' %}
 {% load static %}
 
 {% block title %}تعديل بيانات المستخدم{% endblock %}
@@ -83,20 +83,31 @@
 
         <div class="form-group">
             <label>الصورة الشخصية:</label>
+            {% if user.avatar %}
             <img src="{{ user.avatar.url }}" class="avatar-preview" alt="الصورة الحالية">
+        {% else %}
+            <img src="{% static 'images/default_avatar.svg' %}" class="avatar-preview" alt="الصورة الافتراضية">
+        {% endif %}
+        
             <input type="file" name="avatar">
         </div>
 
         <div class="form-group">
-            <label>الاسم الأول:</label>
-            <input type="text" name="first_name" value="{{ user.first_name }}">
+            <label>الاسم الكامل:</label>
+            <input type="text" name="full_name" value="{{ user.full_name }}">
         </div>
 
         <div class="form-group">
-            <label>الاسم الأخير:</label>
-            <input type="text" name="last_name" value="{{ user.last_name }}">
+            <label>المسمى الوظيفي:</label>
+            <input type="text" name="job_title" value="{{ user.job_title }}">
         </div>
 
+        <div class="form-group">
+            <label>رقم الهوية:</label>
+            <input type="text" name="national_id" value="{{ user.national_id }}">
+        </div>
+        
+        
         <div class="form-group">
             <label>البريد الإلكتروني:</label>
             <input type="email" value="{{ user.email }}" disabled>
@@ -119,18 +130,13 @@
 
         <div class="form-group">
             <label>الشركة:</label>
-            <select name="company">
-                {% for company in companies %}
-                <option value="{{ company.id }}" {% if user.company and user.company.id == company.id %}selected{% endif %}>
-                    {{ company.name }}
-                </option>
-                {% endfor %}
-            </select>
+            <input type="text" name="company" value="{% if user.company %}{{ user.company.name }}{% endif %}">
         </div>
+        
 
         <div class="form-actions">
             <button type="submit" class="btn-save">حفظ التغييرات</button>
-            <a href="{% url 'client_detail' user.id %}" class="btn-back">رجوع</a>
+            <a href="{% url 'admin_panel:client_detail' user.id %}" class="btn-back">رجوع</a>
         </div>
     </form>
 </div>

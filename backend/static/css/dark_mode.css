@@ -6,11 +6,11 @@ body.dark-mode {
 
 /* الهيدر والفوتر */
 body.dark-mode .panel-header {
-    background-color: #2a2a2a;
+    background-color: #1a1a1a;
 }
 
 body.dark-mode .panel-footer {
-    background-color: #2a2a2a;
+    background-color: #1a1a1a;
 }
 
 /* Sidebar */
@@ -51,6 +51,49 @@ body.dark-mode .dashboard-summary ul li::before {
     margin-left: 8px;
     color: #f5f5f5;
 }
+
+
+
+    /* تنسيق جداول الواجهة */
+    body.dark-mode .data-table {
+        background: #333;
+    }
+
+    body.dark-mode .data-table th,
+    body.dark-mode .data-table td {
+        border-bottom: 1px solid #eee;
+    }
+
+    body.dark-mode .data-table th {
+        background-color: #444;
+        color: #ffffff;
+    }
+
+    body.dark-mode .data-table tr:nth-child(even) {
+        background-color: #333;
+    }
+
+    body.dark-mode .data-table tr:hover {
+        background-color: #555;
+    }
+
+
+
+    /* خاص بتقسيم صفحات الجداول */
+
+    
+    body.dark-mode .pagination button {
+        background-color: #333;
+        color: white;
+
+    }
+    
+    body.dark-mode .pagination button:disabled {
+        background-color: #555;
+        cursor: not-allowed;
+    }
+    
+
 
 /* Scrollbar */
 body.dark-mode .sidebar::-webkit-scrollbar-thumb {
@@ -161,12 +204,6 @@ body.dark-mode .activities ul li {
     color: #ccc;
 }
 
-/* الوضع الليلي */
-body.dark-mode {
-    background-color: #333;
-    color: #fff;
-}
-
 body.dark-mode .dropdown-menu {
     background-color: #444;
     color: #fff;
@@ -176,25 +213,6 @@ body.dark-mode h2, body.dark-mode p, body.dark-mode ul li {
     color: #ddd;
 }
 
-body.dark-mode .service-table {
-    background-color: #333; /* خلفية داكنة للجدول */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* تأثير ظل داكن */
-}
-
-body.dark-mode .service-table th {
-    background-color: #444; /* لون خلفية خفيف للرأس */
-    color: #fff; /* لون النص أبيض */
-}
-
-body.dark-mode .service-table td {
-    color: #ddd; /* لون النص في الخلايا */
-    border-bottom: 1px solid #555; /* لون خط سفلي داكن */
-}
-
-body.dark-mode .service-table tr:hover {
-    background-color: #555; /* لون مختلف عند التمرير فوق الصف */
-    transition: background-color 0.3s ease; /* نفس الانتقال */
-}
 
 body.dark-mode .filters {
     gap: 10px; /* الحفاظ على نفس المسافة */
@@ -321,22 +339,7 @@ body.dark-mode .sub-sidebar ul li a {
 }
 
 
-body.dark-mode .client-table {
-    background-color: #333; /* خلفية داكنة للجدول */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* تأثير ظل داكن */
-}
-body.dark-mode .client-table td {
-    color: #ddd; /* لون النص في الخلايا */
-    border-bottom: 1px solid #555; /* لون خط سفلي داكن */
-}
-body.dark-mode .client-table th {
-    background-color: #444; /* لون خلفية خفيف للرأس */
-    color: #fff; /* لون النص أبيض */
-}
-body.dark-mode .client-table tr:hover {
-    background-color: #555; /* لون مختلف عند التمرير فوق الصف */
-    transition: background-color 0.3s ease; /* نفس الانتقال */
-}
+
 
 body.dark-mode .status-active {
     background-color: #007e1d; /* أخضر فاتح للخلفية */
@@ -346,10 +349,130 @@ body.dark-mode .status-active {
 }
 
 body.dark-mode .status-inactive {
-    background-color: #b30a18; /* أحمر فاتح للخلفية */
+    background-color: #b30a18; 
     color: #fff; /* لون النص أبيض */
+}
 
+body.dark-mode .dashboard-section {
+    background-color: #444; 
+    color: #fff; /* لون النص أبيض */
+}
+
+body.dark-mode .quick-action-btn {
+    background-color: #555;
+    color: white;
+}
+
+
+body.dark-mode .quick-action-btn:hover {
+    background-color: #747474;
+    color: white;
+}
+
+
+
+body.dark-mode .form-group input, 
+body.dark-mode .form-group select, 
+body.dark-mode .form-group textarea {
+    background-color: #333;
+}
+
+
+
+body.dark-mode .page-container p {
+    color: #fffdfd;
+}
+
+body.dark-mode .page-container p strong {
+    color: #ffffff;
+}
+
+
+body.dark-mode .breadcrumb-wrapper {
+    background: #333;
 
 }
+
+body.dark-mode .breadcrumb-item a {
+    color: #ffffff;
+
+}
+
+body.dark-mode .breadcrumb-item a:hover {
+    color: #94979b;
+  
+}
+
+body.dark-mode .breadcrumb-item.active {
+    color: #6c757d;
+}
+
+
+body.dark-mode .detail-row {
+    background: #444;
+
+}
+
+body.dark-mode .detail-row:hover {
+    background: #555;
+}
+
+body.dark-mode .detail-label {
+    color: #ffffff;
+}
+
+body.dark-mode .detail-value {
+    color: #ffffff;
+}
+
+
+
+
+body.dark-mode .form-section h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .form-group label {
+    color: #edeeee;
+
+}
+
+body.dark-mode .form-group label i {
+    color: #e2dfdf;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select {
+    color: #e5e7e7;
+    background: #444;
+
+}
+
+
+
+body.dark-mode .file-upload {
+    background-color: #333;
+
+}
+
+body.dark-mode .file-upload:hover {
+    border-color: #555;
+    background-color: #555;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

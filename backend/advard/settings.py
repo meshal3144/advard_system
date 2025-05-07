@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-very-secret-key'  # استبدله بمفتاح ح
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-
+ 
 # التطبيقات المثبتة
 INSTALLED_APPS = [
     # Django default apps
@@ -121,9 +121,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.zoho.sa'  # أو smtp.zoho.sa لو كان حسابك سعودي
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'noreply@advardsystem.com'
-EMAIL_HOST_PASSWORD = 'ecYHdbvXfgHA'
-DEFAULT_FROM_EMAIL = 'Advard System <noreply@advardsystem.com>'
+EMAIL_HOST_USER = 'admin@advardsystem.com'
+EMAIL_HOST_PASSWORD = 'Kch9vQJMJdD7'
+DEFAULT_FROM_EMAIL = 'Advard System <admin@advardsystem.com>'
 
 
 

@@ -51,24 +51,38 @@
     transition: background-color 0.3s ease; /* تأثير انتقال عند التمرير */
 }
 
+/* ✅ زر البحث */
 .btn {
-    background-color: #0A7273; /* لون خلفية الزر */
-    color: #fff; /* لون النص */
-    text-decoration: none; /* إزالة التسطير من الرابط */
+    background-color: #E9E3D7;
+    color: #033043;
+    border: none;
     border-radius: 5px; /* زوايا دائرية */
-    font-family: 'Tajawal', sans-serif; /* استخدام الخط */
-    font-size: 14px; /* تحسين حجم النص */
-    padding: 8px 30px; /* ضبط التباعد الداخلي */
-    display: inline-block; /* يجعل الزر يتناسب مع النص */
-    cursor: pointer; /* تحويل المؤشر إلى يد عند التفاعل */
-    transition: all 0.3s ease-in-out; /* تأثير سلس عند التحويل */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف للعمق */
-    border: none; /* إزالة الحدود بالكامل */
+    cursor: pointer;
+    font-family: 'Tajawal';
+    padding: 10px 40px;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* تأثير عند تمرير الماوس */
 .btn:hover {
-    background-color: #085a5c; /* لون أغمق عند التمرير */
+    background-color: #ccc8c0; /* لون أغمق عند التمرير */
+    transform: scale(1.05); /* تكبير بسيط عند التفاعل */
+}
+
+/* ✅ زر الإلغاء */
+.btn-reset {
+    background-color: #033043;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 40px;
+    display: inline-block;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-reset:hover {
+    background-color: #064f6e; /* لون أغمق عند التمرير */
     transform: scale(1.05); /* تكبير بسيط عند التفاعل */
 }
 
@@ -90,7 +104,8 @@
     display: inline-block; /* يجعل الخلفية بحجم النص فقط */
     padding: 5px 15px; /* ضبط التباعد حول النص */
     border-radius: 5px; /* زوايا دائرية لجمالية التصميم */
-    font-weight: bold; /* تحسين وضوح النص */
+    font-weight: normal; /* تحسين وضوح النص */
+    font-size: 13px;
 }
 
 .status-active {
@@ -156,15 +171,20 @@
     </div>
     
     <form method="GET" class="filters">
-        <select name="role">
-            <option value="">كل الأدوار</option>
-            <option value="manager">مدير شركة</option>
-            <option value="employee">موظف شركة</option>
-            <option value="staff">موظف داخلي</option>
+        <input type="text" name="q" placeholder="بحث بالاسم أو البريد أو الشركة..." value="{{ request.GET.q }}">
+        
+        <select name="status">
+            <option value="">كل الحالات</option>
+            <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>مفعل</option>
+            <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>غير مفعل</option>
         </select>
-        <input type="text" name="q" placeholder="بحث بالاسم أو الشركة..." value="{{ request.GET.q }}">
+    
         <button type="submit" class="btn">بحث</button>
+    
+        <!-- ✅ زر "إلغاء الفلترة" لمسح البحث وإعادة الصفحة للوضع الأساسي -->
+        <a href="{% url 'admin_panel:clients' %}" class="btn btn-reset">إلغاء</a>
     </form>
+    
 
     <table class="data-table">
         <thead>
@@ -182,32 +202,36 @@
             </tr>
         </thead>
         <tbody>
+            {% if clients.exists %}
             {% for client in clients %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ client.user.full_name }}</td>
-                <td>{{ client.user.email }}</td>
-                <td>{{ client.user.phone }}</td> 
-                <td>{{ client.user.company }}</td>               
-                <td>{{ client.job_title|default:"-" }}</td>  <!-- ✅ إذا كانت القيمة فارغة، ستظهر "-" -->
-                <td>{{ client.employees_count }}</td>
-                <td>{{ client.created_at|date:"Y-m-d" }}</td>
-                <td>
-                    <span class="{% if client.user.is_active %}status-active{% else %}status-inactive{% endif %}">
-                        {% if client.user.is_active %} مفعل {% else %} غير مفعل {% endif %}
-                    </span>
-                </td>
-                <td class="actions">
-                    <a href="{% url 'admin_panel:client_detail' client.user.id %}" class="btn-view-details">
-                        <i class="ri-send-plane-fill"></i> عرض
-                    </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="10">لا يوجد مستخدمون حالياً.</td>
-            </tr>
+                <tr>
+                    <td>{{ forloop.counter }}</td>  <!-- ✅ الرقم يظهر فقط عند وجود بيانات -->
+                    <td>{{ client.user.full_name }}</td>
+                    <td>{{ client.user.email }}</td>
+                    <td>{{ client.user.phone }}</td>
+                    <td>{{ client.user.company }}</td>
+                    <td>{{ client.job_title|default:"-" }}</td>
+                    <td>{{ client.employees_count }}</td>
+                    <td>{{ client.created_at|date:"Y-m-d" }}</td>
+                    <td>
+                        <span class="{% if client.user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                            {% if client.user.is_active %} مفعل {% else %} غير مفعل {% endif %}
+                        </span>
+                    </td>
+                    <td class="actions">
+                        <a href="{% url 'admin_panel:client_detail' client.user.id %}" class="btn-view-details">
+                            <i class="ri-send-plane-fill"></i> عرض
+                        </a>
+                    </td>
+                </tr>
             {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="10">لا يوجد مستخدمون حالياً.</td>  <!-- ✅ تظهر فقط عند عدم وجود بيانات -->
+            </tr>
+        {% endif %}
+        
+        
         </tbody>
     </table>
     <div class="pagination">

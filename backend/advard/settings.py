@@ -24,13 +24,13 @@ INSTALLED_APPS = [
     'django_extensions',
 
     # Project apps
-    'requests.apps.RequestsConfig',
-    'website',
-    'admin_panel',
-    'accounts.apps.AccountsConfig',
-    'client_panel',
-    'contracts.apps.ContractsConfig',
-    
+    'requests.apps.RequestsConfig',  # تطبيق الطلبات
+    'website', # تطبيق الموقع الرسمي
+    'admin_panel', # تطبيق لوحة الادارة
+    'accounts.apps.AccountsConfig', # تطبيق الحسابات
+    'client_panel', # تطبيق العملاء
+    'contracts.apps.ContractsConfig', # تطبيق العقود
+    'reports.apps.ReportsConfig', # تطبيق التقارير
 ]
 
 # إعدادات الوسيط (Middleware)

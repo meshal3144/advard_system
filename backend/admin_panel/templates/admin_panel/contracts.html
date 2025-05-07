@@ -103,7 +103,9 @@
 }
 
 
-
+.badge.total-contracts { 
+    background: #0A7273; /* أزرق رمادي */
+}
 /* زر الإضافة الجديد */
 .btn-edit {
     background-color: #E55C24;
@@ -198,15 +200,6 @@
 </style>
 {% endblock %}
 
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-      {{ message }}
-    </div>
-  {% endfor %}
-{% endif %}
-
-
 {% block content %}
 
 <div class="page-container">
@@ -237,6 +230,8 @@
             <tr>
                 <th>#</th>
                 <th>اسم الشركة</th>
+                <th>معرف الشركة</th>
+                <th>تاريخ الإضافة</th>
                 <th>رقم العقد</th>
                 <th>تاريخ البداية</th>
                 <th>تاريخ النهاية</th>
@@ -251,6 +246,8 @@
                 data-start-date="{{ contract.start_date|date:'Y-m-d' }}">
                 <td>{{ forloop.counter }}</td>
                 <td>{{ contract.company.name }}</td>
+                <td>{{ contract.company.company_code }}</td>
+                <td>{{ contract.created_at|date:"Y-m-d" }}</td>
                 <td>{{ contract.contract_number }}</td>
                 <td class="start-date">{{ contract.start_date|date:"d/m/Y" }}</td>
                 <td class="end-date">{{ contract.end_date|date:"d/m/Y" }}</td>
@@ -311,7 +308,7 @@
     const searchContractNumber = document.getElementById("searchContractNumber");
     const filterStatus = document.getElementById("filterStatus");
     const clearFilters = document.getElementById("clearFilters");
-    const rows = document.querySelectorAll(".contracts-table tbody tr");
+    const rows = document.querySelectorAll(".data-table tbody tr");
 
     function filterTable() {
         

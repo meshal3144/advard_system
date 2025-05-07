@@ -79,9 +79,8 @@ body.dark-mode .dashboard-summary ul li::before {
 
 
 
-    /* خاص بتقسيم صفحات الجداول */
+    /* خاص بصفحة من-الى اسفل الجداول */
 
-    
     body.dark-mode .pagination button {
         background-color: #333;
         color: white;
@@ -92,7 +91,40 @@ body.dark-mode .dashboard-summary ul li::before {
         background-color: #555;
         cursor: not-allowed;
     }
+
+    /* هذا تصميم حاويات التفاصيل في جميع الصفحات */
+
+    body.dark-mode .detail-container {
+        background: #333;
+    }
     
+    body.dark-mode .detail-container h2 {
+        color: #ffffff;
+    }
+    
+    body.dark-mode .data-row {
+        background: #555;
+    }
+    
+    body.dark-mode .data-row:hover {
+        background: #3a3a3a;
+    }
+    
+    body.dark-mode .field-label {
+        color: #F2F2F2;
+    }
+    
+    body.dark-mode .field-label i {
+        color: #e2dfdf;
+
+        
+    }
+    
+    body.dark-mode .field-value {
+        color: #F2F2F2;
+        flex-grow: 1;
+    }
+
 
 
 /* Scrollbar */
@@ -179,8 +211,6 @@ body.dark-mode .page-container {
     background-color: #2a2a2a00;
     color: #ddd;
 }
-
-
 
 body.dark-mode .dashboard-card {
     background-color: #444444; /* تغيير لون البطاقات */
@@ -278,8 +308,6 @@ body.dark-mode .action-buttons form button:hover {
     transition: background-color 0.3s ease; /* انتقال سلس عند التمرير */
 }
 
-
-
 body.dark-mode .btn-view-details {
     background-color: #444; /* لون خلفية الزر (يمكنك تغييره) */
     color: #fff; /* لون النص والأيقونة */
@@ -294,10 +322,8 @@ body.dark-mode .note-box textarea {
     border: 1px solid #ddd;
     background-color: #444;
     color: #fff; /* لون النص والأيقونة */
-
     transition: border-color 0.3s ease;
 }
-
 
 /* الوضع الليلي */
 body.dark-mode .modal {
@@ -324,7 +350,6 @@ body.dark-mode .sidebar-nav ul li .sidebar-link:hover {
     background-color: #555;
 }
 
-
 body.dark-mode .logo img {
     content: url('/static/images/iconlogoco.svg'); /* الشعار الأبيض */
 }
@@ -338,14 +363,9 @@ body.dark-mode .sub-sidebar ul li a {
     color: #ffffff;
 }
 
-
-
-
 body.dark-mode .status-active {
     background-color: #007e1d; /* أخضر فاتح للخلفية */
     color: #fff; /* لون النص أبيض */
-
-
 }
 
 body.dark-mode .status-inactive {
@@ -363,13 +383,10 @@ body.dark-mode .quick-action-btn {
     color: white;
 }
 
-
 body.dark-mode .quick-action-btn:hover {
     background-color: #747474;
     color: white;
 }
-
-
 
 body.dark-mode .form-group input, 
 body.dark-mode .form-group select, 
@@ -407,27 +424,6 @@ body.dark-mode .breadcrumb-item.active {
     color: #6c757d;
 }
 
-
-body.dark-mode .detail-row {
-    background: #444;
-
-}
-
-body.dark-mode .detail-row:hover {
-    background: #555;
-}
-
-body.dark-mode .detail-label {
-    color: #ffffff;
-}
-
-body.dark-mode .detail-value {
-    color: #ffffff;
-}
-
-
-
-
 body.dark-mode .form-section h3 {
     color: #ffffff;
 }
@@ -448,8 +444,6 @@ body.dark-mode .form-group select {
 
 }
 
-
-
 body.dark-mode .file-upload {
     background-color: #333;
 
@@ -460,19 +454,19 @@ body.dark-mode .file-upload:hover {
     background-color: #555;
 }
 
+body.dark-mode .note-box {
+    background: #555;
+}
+body.dark-mode .note-box label {
+    color: #e2dfdf;
+}
 
+/* هذا تصميم حاويات الاضافة في جميع الصفحات */
+body.dark-mode .add-section-box {
+    background: #333;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+body.dark-mode .add-section-box h2 {
+    color: #e2dfdf;
+}
 

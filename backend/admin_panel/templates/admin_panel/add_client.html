@@ -1,109 +1,9 @@
 {% extends 'admin_panel/panel_base.html' %}
 {% load static %}
-
 {% block title %}إضافة عميل جديد{% endblock %}
-
-
-
 {% block extra_css %}
+
 <style>
-/* General Styling */
-.page-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
-    font-family: 'Tajawal', sans-serif;
-    position: relative;
-    direction: rtl;
-}
-
-/* Form Header */
-.page-container h2 {
-    font-size: 28px;
-    color: #022c3d;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e6f0fa;
-    padding-bottom: 10px;
-    text-align: center;
-}
-
-/* Form Sections */
-.form-section {
-    margin-bottom: 25px;
-}
-
-.form-section h3 {
-    font-size: 20px;
-    color: #033043;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #033043;
-    margin-bottom: 8px;
-}
-
-.form-group label i {
-    color: #0A7273;
-    font-size: 18px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #d1d9e0;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: 'Tajawal', sans-serif;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-group textarea {
-    resize: vertical;
-    height: 100px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #0A7273;
-    box-shadow: 0 0 8px rgba(10, 114, 115, 0.2);
-}
-
-/* Checkbox Styling */
-.form-group.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.form-group.checkbox label {
-    margin-bottom: 0;
-    font-weight: 400;
-}
-
-.form-group.checkbox input {
-    width: auto;
-    cursor: pointer;
-}
-
-/* Add Company Button */
 .btn-add-company {
     background-color: #0A7273;
     padding: 10px 20px;
@@ -132,14 +32,6 @@
     font-size: 18px;
 }
 
-/* Form Actions */
-.form-actions {
-    margin-top: 40px;
-    display: flex;
-    gap: 15px;
-    justify-content: flex-end;
-}
-
 .btn {
     padding: 12px 30px;
     border: none;
@@ -152,49 +44,6 @@
     text-decoration: none;
 }
 
-
-/* Alert Styling */
-.alert-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-}
-
-.alert-message {
-    background-color: #28a745; /* لون أخضر للنجاح */
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-
-.alert-message.error {
-    background-color: #dc3545; /* لون أحمر للخطأ */
-}
-
-.close-alert {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -310,61 +159,45 @@
     cursor: pointer;
 }
 
-
-
 </style>
 {% endblock %}
 
-{% if messages %}
-    <div class="messages-container">
-        {% for message in messages %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
-    </div>
-{% endif %}
-
-
 {% block content %}
-<div class="page-container">
+<div class="add-section-box">
     <h2>إضافة عميل جديد</h2>
-    <form method="POST">
+    <form method="POST" action="{% url 'admin_panel:add_client' %}">
         {% csrf_token %}
 
         <div class="form-group">
-            <label>الاسم الكامل:</label>
+            <label>الاسم الكامل <span style="color: red;">*</span></label>
+
             <input type="text" name="full_name" required>
         </div>
 
         <div class="form-group">
-            <label>البريد الإلكتروني:</label>
+            <label>البريد الإلكتروني<span style="color: red;">*</span></label>
             <input type="email" name="email" required>
         </div>
 
         <div class="form-group">
-            <label>رقم الجوال:</label>
+            <label>رقم الجوال<span style="color: red;">*</span></label>
             <input type="text" name="phone" required>
-        </div>
-
-        <div class="form-group">
-            <label>رقم الهوية:</label>
-            <input type="text" name="national_id">
-        </div>
-
-        <div class="form-group">
-            <label>المسمى الوظيفي:</label>
-            <input type="text" name="job_title">
-        </div>
-
-        <div class="form-group">
-            <label>نوع المستخدم:</label>
-            <select name="user_type" required>
-                <option value="client_admin">مدير شركة</option>
-                <option value="client_employee">موظف شركة</option>
-            </select>
         </div>
         
         <div class="form-group">
-            <label>الشركة:</label>
+            <label>رقم الهوية<span style="color: red;">*</span></label>
+            <input type="text" name="national_id" required>
+        </div>
+        
+
+        <div class="form-group">
+            <label>المسمى الوظيفي</label>
+            <input type="text" name="job_title">
+        </div>
+
+
+        <div class="form-group">
+            <label>الشركة<span style="color: red;">*</span></label>
             {% if companies %}
                 <select name="company" required>
                     <option value="" selected disabled>اختر الشركة</option>  <!-- ✅ إضافة الخيار الافتراضي -->
@@ -383,7 +216,7 @@
             </a>
         </div>
         
-
+       
 
         <div class="form-group">
             <label>عدد موظفي الشركة:</label>
@@ -410,3 +243,23 @@
     </form>
 </div>
 {% endblock %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form"); // ✅ استهداف النموذج
+    const submitBtn = document.querySelector(".btn-save");
+
+    form.addEventListener("submit", function () {
+        submitBtn.disabled = true; // ✅ تعطيل الزر بعد بدء الإرسال وليس عند الضغط فقط
+        submitBtn.textContent = "جاري الحفظ...";
+    });
+});
+
+</script>
+{% endblock %}
+
+
+
+

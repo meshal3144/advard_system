@@ -271,10 +271,13 @@
         <!-- ✅ الحاوية الرئيسية -->
 
         <div class="main-container">
-            <div class="notifications">
+            <div class="messages-container">
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        <div class="alert alert-{{ message.tags }}">
+                            <i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% elif message.tags == 'error' or message.tags == 'danger' %}ri-close-circle-fill{% elif message.tags == 'warning' %}ri-alert-fill{% elif message.tags == 'info' %}ri-information-fill{% endif %}"></i>
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endif %}
             </div>
@@ -294,8 +297,25 @@
                 </div>
             </div>
 
-            <main>
+                        <!-- ✅ مودال الحذف الموحد -->
+            <div id="universalDeleteModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeUniversalDeleteModal()">×</span>
+                    <h2 id="deleteModalTitle">تأكيد الحذف</h2>
+                    <p id="deleteModalMessage">⚠️ هل أنت متأكد من رغبتك في حذف هذا العنصر؟</p>
+                    <div class="modal-actions">
+                        <form id="universalDeleteForm" method="POST" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete-confirm">نعم</button>
+                        </form>
+                        <button type="button" class="btn-cancel" onclick="closeUniversalDeleteModal()">إلغاء</button>
+                    </div>
+                </div>
+            </div>
 
+
+            <main>
+                
 
                 {% block content %}{% endblock %}
             </main>

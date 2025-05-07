@@ -120,32 +120,3 @@ class ClientUser(models.Model):
         verbose_name = "موظف شركة عميلة"
         verbose_name_plural = "موظفو الشركات"
 
-
-class SubscriptionPlan(models.Model):
-    name = models.CharField(max_length=100, verbose_name="اسم الباقة")
-    max_employees = models.PositiveIntegerField(verbose_name="الحد الأقصى للموظفين")
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر")
-    features = models.TextField(null=True, blank=True, verbose_name="المزايا")
-    is_active = models.BooleanField(default=True, verbose_name="مفعّلة")
-
-    def __str__(self):
-        return f"{self.name} ({self.max_employees} موظف)"
-
-    class Meta:
-        verbose_name = "باقة اشتراك"
-        verbose_name_plural = "باقات الاشتراك"
-
-
-class CompanySubscription(models.Model):
-    company = models.OneToOneField(Company, on_delete=models.CASCADE, verbose_name="الشركة")
-    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.PROTECT, verbose_name="الباقة")
-    start_date = models.DateField(verbose_name="تاريخ البداية")
-    end_date = models.DateField(verbose_name="تاريخ الانتهاء")
-    is_active = models.BooleanField(default=True, verbose_name="نشط؟")
-
-    def __str__(self):
-        return f"{self.company.name} - {self.plan.name}"
-
-    class Meta:
-        verbose_name = "اشتراك شركة"
-        verbose_name_plural = "اشتراكات الشركات"

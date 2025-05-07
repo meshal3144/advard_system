@@ -42,27 +42,26 @@ themeToggle.addEventListener('click', () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // الحصول على جميع الإشعارات
-    const alerts = document.querySelectorAll(".alert");
+    const messagesContainer = document.querySelector(".messages-container");
 
-    alerts.forEach((alert) => {
-        // تأخير لمدة 5 ثوانٍ قبل الإخفاء
+    if (messagesContainer) {
         setTimeout(() => {
-            alert.style.opacity = "0"; // تخفيف الشفافية تدريجيًا
-            alert.style.transform = "translateY(-20px)"; // تحريك لأعلى بشكل طفيف
-
-            // إزالة العنصر بالكامل بعد انتهاء التحريك
+            messagesContainer.style.opacity = "0";  // ✅ تخفيف تدريجي بدل الإخفاء الفوري
+            messagesContainer.style.transform = "translateY(-10px)"; // ✅ تحريك لأعلى
+            
             setTimeout(() => {
-                alert.remove();
-            }, 300); // نفس مدة الانتقال في CSS
-        }, 5000); // ظهور لمدة 5 ثوانٍ
-    });
+                messagesContainer.style.display = "none";  // ✅ الإخفاء بالكامل بعد التأثير
+            }, 300);
+        }, 5000);
+    }
 });
 
 
 
 
-    // جافا سكريبت لفتح وإغلاق المودال بتاع تسجيل الخروج
+
+
+    // جافا سكريبت لفتح وإغلاق المودال  تسجيل الخروج
     function openModal(event) {
         event.preventDefault(); // منع الانتقال الفوري
         document.getElementById("logoutModal").style.display = "block"; // إظهار المودال
@@ -93,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.querySelector('.panel-header').style.right = '60px';
                     document.querySelector('.panel-footer').style.right = '60px';
                 } else {
-                    // إذا مش مفتوحة، أغلق كل القوائم التانية وافتح دي
+                    // إذا ليست مفتوحة، أغلق كل القوائم التانية وافتح دي
                     document.querySelectorAll('.sub-sidebar').forEach(menu => {
                         menu.classList.remove('active');
                         menu.style.width = '200px'; // رجّع العرض للقيمة الأساسية لكل القوائم

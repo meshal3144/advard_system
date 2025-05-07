@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     CustomUser, Company, InternalEmployee,
-    ClientUser, SubscriptionPlan, CompanySubscription
+    ClientUser
 )
 
 @admin.register(CustomUser)
@@ -26,15 +26,5 @@ class ClientUserAdmin(admin.ModelAdmin):
     list_display = ("user", "role_in_company", "is_company_admin")
     autocomplete_fields = ["user"]
 
-@admin.register(SubscriptionPlan)
-class SubscriptionPlanAdmin(admin.ModelAdmin):
-    list_display = ("name", "max_employees", "price", "is_active")
-    list_filter = ("is_active",)
-    search_fields = ("name",)  # ✅ هذا هو اللي كان ناقص
 
-
-@admin.register(CompanySubscription)
-class CompanySubscriptionAdmin(admin.ModelAdmin):
-    list_display = ("company", "plan", "start_date", "end_date", "is_active")
-    autocomplete_fields = ["company", "plan"]
 

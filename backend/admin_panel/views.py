@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from accounts.models import CustomUser, Company, ClientUser, SubscriptionPlan, CompanySubscription, InternalEmployee
+from accounts.models import CustomUser, Company, ClientUser, InternalEmployee
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
@@ -13,19 +13,19 @@ from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
-from contracts.models import CompanyContract
+from contracts.models import CompanyContract, Company
 from datetime import datetime, timedelta
 from django.utils.crypto import get_random_string
 from django.db.models.signals import post_save
 from accounts.signals import create_user_profile
-from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
-
-
+from django.core.mail import get_connection
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from contracts.models import CompanyContract, SubscriptionPlan
 
 
 
@@ -49,17 +49,26 @@ def dashboard_view(request):
     return render(request, "admin_panel/dashboard.html", context)
 
 
-
-
-@login_required
 def service_requests_view(request):
-    requests_list = InquiryRequest.objects.all().order_by('-submitted_at')
+    requests = InquiryRequest.objects.all()
 
-    context = {
-        "requests": requests_list
-    }
+    # ✅ فلترة حسب نوع الطلب
+    request_type = request.GET.get('type')
+    if request_type:
+        requests = requests.filter(request_type=request_type)
 
-    return render(request, "admin_panel/service_requests.html", context)
+    # ✅ فلترة حسب الحالة
+    status = request.GET.get('status')
+    if status:
+        requests = requests.filter(status=status)
+
+    # ✅ فلترة حسب الاسم أو الشركة
+    query = request.GET.get('q')
+    if query:
+        requests = requests.filter(full_name__icontains=query) | requests.filter(company_name__icontains=query)
+
+    return render(request, "admin_panel/service_requests.html", {"requests": requests})
+
 
 
 @login_required
@@ -68,28 +77,36 @@ def reports_page(request):
 
 
 
-
-
 @login_required
 def clients_view(request):
     q = request.GET.get("q")
+    status = request.GET.get("status")  
 
-    clients = ClientUser.objects.select_related("user").all()
+    clients = ClientUser.objects.select_related("user", "user__company").all()
 
-
+    # ✅ فلترة حسب الاسم أو البريد أو الشركة
     if q:
         clients = clients.filter(
             Q(user__full_name__icontains=q) |
             Q(user__email__icontains=q) |
-            Q(company__name__icontains=q)
+            Q(user__company__name__icontains=q)  
         )
+
+    # ✅ فلترة حسب الحالة (مفعل / غير مفعل)
+    if status:
+        if status == "active":
+            clients = clients.filter(user__is_active=True)
+        elif status == "inactive":
+            clients = clients.filter(user__is_active=False)
 
     context = {
         "clients": clients,
-        "query": q
+        "query": q,
+        "status": status
     }
 
     return render(request, "admin_panel/clients.html", context)
+
 
 
 @login_required
@@ -123,7 +140,8 @@ def view_request_detail(request, request_id):
         
 
         if action == 'approve':
-            req.status = 'مقبول'
+            req.status = 'approved'
+
 
             if req.request_type == 'trial':
                 clean_name = req.company_name.strip()
@@ -146,16 +164,16 @@ def view_request_detail(request, request_id):
 
                 # تحقق إذا المستخدم موجود مسبقًا بالبريد
                 if CustomUser.objects.filter(email=email).exists():
-                    messages.error(request, '📛 هذا البريد الإلكتروني مسجل مسبقًا في النظام.')
-                    return redirect('service_requests')
+                    messages.error(request, ' هذا البريد الإلكتروني مسجل مسبقًا في النظام')
+                    return redirect('admin_panel:service_requests')
 
                 # استخدم البريد فقط بدون username
 
 
                 # 3️⃣ التحقق من وجود المستخدم
                 if CustomUser.objects.filter(email=req.email).exists():
-                    messages.error(request, '📛 هذا البريد الإلكتروني مسجل مسبقًا في النظام.')
-                    return redirect('service_requests')
+                    messages.error(request, ' هذا البريد الإلكتروني مسجل مسبقًا في النظام')
+                    return redirect('admin_panel:service_requests')
 
                 # 4️⃣ إنشاء المستخدم
                 user = CustomUser.objects.create(
@@ -212,19 +230,18 @@ def view_request_detail(request, request_id):
 """
             send_mail(subject, message, None, [req.email]) 
             messages.success(request, '✔ تم قبول الطلب وإرسال البيانات')
-            return redirect('service_requests')
+            return redirect('admin_panel:service_requests')
 
         elif action == 'reject':
-            req.status = 'مرفوض'
+            req.status = 'rejected'
             req.rejection_note = note
             req.save()
             messages.warning(request, '✖ تم رفض الطلب')
-            return redirect('service_requests')
+            return redirect('admin_panel:service_requests')
 
     return render(request, 'admin_panel/service_request_detail.html', {
         'request_data': req
     })
-
 
 
 
@@ -254,13 +271,7 @@ def edit_user_view(request, user_id):
 
 # هنا دوال الارسال البريد دالتين
 
-from django.core.mail import get_connection
-from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import smtplib
+
 
 def send_real_html_email(to_email, context):
     html_content = render_to_string('accounts/password_reset_email.html', context)
@@ -287,12 +298,6 @@ def send_real_html_email(to_email, context):
 
 
 
-
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from accounts.models import CustomUser
-
 def send_set_password_link_view(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
 
@@ -306,8 +311,8 @@ def send_set_password_link_view(request, user_id):
     }
 
     send_real_html_email(user.email, context)
-    messages.success(request, f"📨 تم إرسال رابط تعيين كلمة المرور إلى {user.email}")
-    return redirect('client_detail', user_id=user.id)
+    messages.success(request, f"تم إرسال رابط تعيين كلمة المرور إلى {user.full_name}")
+    return redirect('admin_panel:client_detail', user_id=user.id)
 
 
 
@@ -318,61 +323,67 @@ def send_set_password_link_view(request, user_id):
 def add_client_view(request):
     companies = Company.objects.all()
 
-    if not companies.exists():
-        messages.warning(request, "لا توجد شركات حالياً. يجب إضافة شركة أولاً قبل إنشاء عميل.")
-        return redirect("add_company")
-
     if request.method == "POST":
         full_name = request.POST.get("full_name")
         email = request.POST.get("email")
         phone = request.POST.get("phone")
         national_id = request.POST.get("national_id")
         job_title = request.POST.get("job_title")
-        user_type = request.POST.get("user_type")
         company_id = request.POST.get("company")
-        employees_count = request.POST.get("employees_count")
 
-        company = get_object_or_404(Company, pk=company_id)
-
-        # ✅ التحقق أول شيء قبل أي إضافة
-        if CustomUser.objects.filter(email=email).exists():
-            messages.error(request, "❌ البريد الإلكتروني مستخدم من قبل. يرجى استخدام بريد آخر.")
-            return redirect("admin_panel:add_client")  # لاحظ هنا ترجع على طول وما تكمل الإنشاء
-        
-
-        # ✅ التحقق إذا الرقم الوطني موجود
-        if CustomUser.objects.filter(national_id=national_id).exists():
-            messages.error(request, "❌ رقم الهوية مستخدم من قبل. يرجى التأكد أو استخدام رقم آخر.")
+        if not all([email, full_name, phone, national_id]):
+            messages.error(request, "❌ تأكد من تعبئة جميع الحقول المطلوبة.")
             return redirect("admin_panel:add_client")
 
-        # ✅ بعدها فقط إذا الإيميل جديد نكمل:
-        user = CustomUser.objects.create(
-            full_name=full_name,
-            email=email,
-            phone=phone,
-            national_id=national_id,
-            job_title=job_title,
-            company=company,
-            user_type=user_type,
-            is_active=False,
-        )
+        try:
+            employees_count = int(request.POST.get("employees_count") or 0)
+        except ValueError:
+            employees_count = 0
 
-        ClientUser.objects.create(
-            user=user,
-            employees_count=employees_count,
-            job_title=job_title
-        )
+        # التحقق من البريد ورقم الهوية
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "❌ البريد الإلكتروني مستخدم من قبل.")
+            return redirect("admin_panel:add_client")
 
-        if request.POST.get("send_password_link"):
-            # (كود إرسال رابط تعيين كلمة المرور)
-            pass  # انتبه لو عندك كود هنا
+        if CustomUser.objects.filter(national_id=national_id).exists():
+            messages.error(request, "❌ رقم الهوية مستخدم من قبل.")
+            return redirect("admin_panel:add_client")
 
-        messages.success(request, f"✅ تم إضافة العميل {full_name} بنجاح!")
-        return redirect("admin_panel:client_detail", user_id=user.id)
+        # التحقق من الشركة
+        try:
+            company = Company.objects.get(id=company_id)
+        except Company.DoesNotExist:
+            messages.error(request, "❌ الشركة المحددة غير موجودة.")
+            return redirect("admin_panel:add_client")
+
+        # التحقق إن الشركة لا تحتوي على مدير آخر
+        if CustomUser.objects.filter(company=company, user_type="client_admin").exists():
+            messages.error(request, "❌ هذه الشركة لديها مدير بالفعل ولا يمكن إضافة مدير آخر.")
+            return redirect("admin_panel:add_client")
+
+
+        try:
+            # إنشاء المستخدم
+            user = CustomUser.objects.create(
+                full_name=full_name,
+                email=email,
+                phone=phone,
+                national_id=national_id,
+                job_title=job_title,
+                company=company,
+                user_type="client_admin",
+                is_active=False,
+            )
+
+            
+            messages.success(request, f"✅ تم إضافة العميل {full_name} بنجاح!")
+            return redirect("admin_panel:clients")
+
+        except Exception as e:
+            messages.error(request, f"❌ حدث خطأ أثناء الإضافة: {str(e)}")
+            return redirect("admin_panel:add_client")
 
     return render(request, "admin_panel/add_client.html", {"companies": companies})
-
-
 
 
 @login_required
@@ -411,8 +422,11 @@ def add_company_view(request):
             company_code=company_code
         )
 
+
+
+
         # ✅ إضافة رسالة نجاح
-        messages.success(request, "✅ تم حفظ الشركة بنجاح.")
+        messages.success(request, "تم حفظ الشركة بنجاح")
 
         # ✅ تنفيذ `redirect` بناءً على `next_action`
         if next_action == "add_contract":
@@ -435,6 +449,36 @@ def company_detail_view(request, company_id):
 
 
 
+@login_required
+def company_info_view(request, company_id):
+    company = get_object_or_404(Company, id=company_id)
+    client = ClientUser.objects.filter(user__company=company, is_company_admin=True).first()
+
+
+    return render(request, 'admin_panel/company_detail_info.html', {
+        'company': company,
+        'client': client
+    })
+
+
+
+
+@login_required
+def delete_company_view(request, company_id):
+    company = get_object_or_404(Company, id=company_id)
+
+    if request.method == "POST":
+        company.delete()
+        messages.success(request, "✅ تم حذف الشركة بنجاح.")
+        return redirect("admin_panel:companies")
+
+    messages.error(request, "❌ لا يمكن حذف الشركة بهذه الطريقة.")
+    return redirect("admin_panel:company_info", company_id=company_id)
+
+
+
+
+
 
 @login_required
 def edit_company_view(request, company_id):
@@ -453,7 +497,7 @@ def edit_company_view(request, company_id):
             messages.success(request, "✅ تم تحديث بيانات الشركة بنجاح.")
             return redirect('admin_panel:companies')
         except Exception as e:
-            messages.error(request, f"❌ حدث خطأ أثناء التحديث: {str(e)}")
+            messages.error(request, f" حدث خطأ أثناء التحديث: {str(e)}")
             return redirect('admin_panel:edit_company', company_id=company.id)
     
     return render(request, 'admin_panel/createcompany.html', {"company": company})
@@ -476,35 +520,15 @@ def panel_base_view(request):
     })
     
 
-
-
-
-def contract_detail_view(request, contract_id):
-    contract = get_object_or_404(CompanyContract, id=contract_id)
-    return render(request, 'admin_panel/contract_detail.html', {'contract': contract})
-
-
-
-
-
 def employees_view(request):
     employees = InternalEmployee.objects.select_related('user').all()
     return render(request, 'admin_panel/employees.html', {'employees': employees})
-
-
-
-
 
 
 # ✅ عرض تفاصيل موظف
 def employee_detail_view(request, employee_id):
     employee = get_object_or_404(InternalEmployee, id=employee_id)
     return render(request, 'admin_panel/employee_detail.html', {'employee': employee})
-
-
-
-
-
 
 def employee_add_view(request):
     if request.method == 'POST':
@@ -524,7 +548,7 @@ def employee_add_view(request):
         employee_code = f"EMP-{get_random_string(4, allowed_chars='0123456789')}"
 
         if CustomUser.objects.filter(national_id=national_id).exists():
-            messages.error(request, "❌ رقم الهوية مستخدم مسبقًا.")
+            messages.error(request, "رقم الهوية مستخدم مسبقًا")
             return redirect('admin_panel:employee_add')
 
         # ✅ قبل إنشاء المستخدم نفصل الـ signal
@@ -556,7 +580,7 @@ def employee_add_view(request):
             domain_verified=domain_verified
         )
 
-        messages.success(request, f"✅ تم إضافة الموظف بنجاح. كلمة المرور المؤقتة: {temp_password}")
+        messages.success(request, f"تم إضافة الموظف بنجاح. كلمة المرور المؤقتة: {temp_password}")
         return redirect('admin_panel:employees')
 
     return render(request, 'admin_panel/employee_add.html')
@@ -586,16 +610,10 @@ def employee_edit_view(request, employee_id):
         employee.domain_verified = True if request.POST.get('domain_verified') == 'on' else False
         employee.save()
 
-        messages.success(request, "✅ تم تحديث بيانات الموظف بنجاح.")
+        messages.success(request, "تم تحديث بيانات الموظف بنجاح")
         return redirect('admin_panel:employees')
 
     return render(request, 'admin_panel/employee_edit.html', {'employee': employee})
-
-
-
-
-
-
 
 @login_required
 def employee_delete_view(request, employee_id):
@@ -603,8 +621,19 @@ def employee_delete_view(request, employee_id):
     
     if request.method == "POST":
         user.delete()
-        messages.success(request, "✅ تم حذف الموظف بنجاح.")
+        messages.success(request, " تم حذف الموظف بنجاح")
         return redirect('admin_panel:employees')  # تأكد أن هذا المسار يعمل
     
-    messages.error(request, "❌ لا يمكن تنفيذ الحذف بهذه الطريقة.")
+    messages.error(request, " لا يمكن تنفيذ الحذف بهذه الطريقة")
     return redirect('admin_panel:employees')
+
+
+
+
+from contracts.views import contracts_list  # ✅ استدعاء القائمة الأساسية من تطبيق العقود
+
+def contracts_list_view(request):
+    return contracts_list(request)  # ✅ استدعاء الفيو مباشرة دون تكرار الكود
+
+
+

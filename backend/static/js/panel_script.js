@@ -61,17 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
-
-
-
-
 // تمرير الروابط من Django إلى جافاسكريبت
 const serviceRequestsUrl = "{% url 'service_requests' %}"; // مثل /admin-panel/service-requests/
     
-// قائمة بالمسارات المعرفة
-// كائن المسارات المحدث (يحتوي على جميع الصفحات)
-// كائن المسارات المحدث
 const routes = {
     // الصفحات الأساسية
     "dashboard": {name: "لوحة التحكم", path: "dashboard"},
@@ -317,3 +309,32 @@ document.addEventListener("DOMContentLoaded", function () {
         displayRows();
     });
 });
+
+
+
+
+
+function openUniversalDeleteModal(actionUrl, title = 'تأكيد الحذف', message = '⚠️ هل أنت متأكد من رغبتك في الحذف؟') {
+    // 🔹 جلب عناصر المودال
+    const modal = document.getElementById('universalDeleteModal');
+    const form = document.getElementById('universalDeleteForm');
+    const modalTitle = document.getElementById('deleteModalTitle');
+    const modalMessage = document.getElementById('deleteModalMessage');
+    const confirmBtn = document.querySelector(".btn-delete-confirm");
+
+    // 🔹 ضبط بيانات المودال
+    form.action = actionUrl;
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    confirmBtn.textContent = title.includes('تجديد') ? 'نعم، تجديد' : 'نعم، حذف';
+
+    // 🔹 عرض المودال
+    modal.classList.add('show');
+}
+
+function closeUniversalDeleteModal() {
+    document.getElementById('universalDeleteModal').classList.remove('show');
+}
+
+
+

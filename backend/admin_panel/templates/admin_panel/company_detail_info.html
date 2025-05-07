@@ -1,0 +1,119 @@
+{% extends 'admin_panel/panel_base.html' %}
+{% block title %}تفاصيل الشركة{% endblock %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+.btn-back {
+    background-color: #D0D0D0;
+    color: #033043;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: normal;
+}
+.btn-back:hover {
+    background-color: #c9c9c9;
+}
+.btn-edit {
+    background-color: #67917D;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: normal;
+}
+.btn-edit:hover {
+    background-color: #628a77;
+}
+
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <h2>تفاصيل الشركة</h2>
+
+    <!-- ✅ القسم الأول: معلومات الشركة -->
+    <div class="info-grid">
+        <div class="data-row">
+            <div class="field-label"><i class="ri-building-2-line"></i> اسم الشركة:</div>
+            <div class="field-value">{{ company.name }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-code-line"></i> المعرف الداخلي:</div>
+            <div class="field-value">{{ company.company_code }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-map-pin-line"></i> المدينة:</div>
+            <div class="field-value">{{ company.city|default:"-" }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-briefcase-line"></i> مجال العمل:</div>
+            <div class="field-value">{{ company.field|default:"-" }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-user-line"></i> جهة الاتصال:</div>
+            <div class="field-value">{{ company.contact_name|default:"-" }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-phone-line"></i> رقم التواصل:</div>
+            <div class="field-value">{{ company.contact_phone|default:"-" }}</div>
+        </div>
+    </div>
+
+    <!-- ✅ القسم الثاني: بيانات العميل المرتبط -->
+    <h2>بيانات مسؤول الشركة</h2>
+    <div class="info-grid">
+        {% if client %}
+        <div class="data-row">
+            <div class="field-label"><i class="ri-user-fill"></i> الاسم الكامل:</div>
+            <div class="field-value">{{ client.user.full_name }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-id-card-line"></i> رقم الهوية:</div>
+            <div class="field-value">{{ client.user.national_id }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-phone-line"></i> رقم الجوال:</div>
+            <div class="field-value">{{ client.user.phone }}</div>
+        </div>
+        <div class="data-row">
+            <div class="field-label"><i class="ri-mail-line"></i> البريد الإلكتروني:</div>
+            <div class="field-value">{{ client.user.email }}</div>
+        </div>
+        {% else %}
+        <div class="data-row">
+            <div class="field-value">لا يوجد مسؤول مرتبط بهذه الشركة حالياً.</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="action-buttons" style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'admin_panel:companies' %}" class="btn btn-back">
+            <i class="ri-arrow-right-line"></i> رجوع إلى قائمة الشركات
+        </a>
+    
+        <a href="{% url 'admin_panel:company_detail' company.id %}" class="btn btn-edit" style="margin-right: 10px;">
+            <i class="ri-edit-line"></i> تعديل بيانات الشركة
+        </a>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{% endblock %}

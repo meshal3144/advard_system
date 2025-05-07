@@ -5,180 +5,367 @@
 
 {% block extra_css %}
 <style>
-    .request-detail {
-        max-width: 900px;
-        margin: 40px auto;
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .request-detail h2 {
-        font-size: 24px;
-        color: #033043;
-        margin-bottom: 30px;
-    }
-    .request-info {
-        display: flex;
-        justify-content: space-between;
-    }
-    .request-info .labels {
-        color: #555;
-        line-height: 2;
-        text-align: right;
-    }
-    .request-info .values {
-        font-weight: normal;
-        text-align: right;
-        line-height: 2;
-    }
-    .btn {
-        margin-top: 30px;
-        display: flex;
-        justify-content: flex-start;
-    }
-    .action-buttons a, .action-buttons form button {
-        padding: 10px 40px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        text-decoration: none;
-        color: #fff;
-        display: inline-flex;
-        align-items: center;
-        gap: 15px;
-        margin-right: 20px; /* المسافة بين الأزرار من اليمين (لأن النص RTL) */
-    }
-    .btn-approve {
-        background-color: #28a745;
-        font-family: var(--font-family);
-    }
-    .btn-reject {
-        background-color: #dc3545;
-        font-family: var(--font-family);
+.action-buttons {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    gap: 10px; 
+    margin-top: 30px; 
+}
 
-    }
-    .btn-back {
-        background-color: #6c757d;
-    }
+.action-group {
+    display: flex;
+    gap: 10px; 
+}
 
-    .action-buttons i{
+.btn-back {
+    margin-right: auto; 
+}
 
-        color: #ffffff; 
-        font-size: 16px; 
-    }
-
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+    font-family: 'Tajawal';
     
-
+}
+.btn-approve {
+    background-color: #67917D;
+    color: white;
+}
+.btn-approve:hover {
+    background-color: #5b796a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+}
+.btn-reject {
+    background-color: #CF423B;
+    color: white;
+}
+.btn-reject:hover {
+    background-color: #b1413b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+}
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+}
+.btn-back:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.15);
+}
 
 .note-box {
-    display: flex;
-    flex-direction: column; /* ترتيب العناصر عموديًا */
-    gap: 15px; /* مسافة بين العناصر */
-    width: 100%;
-    max-width: 600px; /* عرض محدود للنموذج داخل الحاوية */
-    margin: 0; /* توسيط النموذج */
+    margin-top: 30px;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
-
 .note-box label {
-    font-family: 'Tajawal';
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #4a6f8a;
 }
-
-.note-box textarea {
-    font-family: 'Tajawal';
-    font-size: 14px;
-    padding: 10px;
+.note-box textarea,
+.quote-link-field input {
+    width: 100%;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    resize: vertical; /* السماح بتغيير الحجم عموديًا فقط */
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
+    font-family: 'Tajawal', sans-serif;
 }
-
-.note-box textarea:focus {
-    border-color: #dc3545; /* لون الحدود عند التركيز يتماشى مع زر الرفض */
+.note-box textarea:focus,
+.quote-link-field input:focus {
+    border-color: #0A7273;
     outline: none;
 }
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1000 !important;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #033043;
+    transition: color 0.3s ease;
+}
+.close-btn:hover {
+    color: #dc3545;
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.btn-confirm {
+    background-color: #28a745;
+    color: white;
+}
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+.btn-confirm:hover {
+    background-color: #218838;
+}
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+@media (max-width: 768px) {
+    .request-info {
+        grid-template-columns: 1fr;
+    }
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+    /* تنسسيقات الحالة   */
+    .status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 550;
+    display: inline-block;
+}
+
+.status-approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-review {
+    background-color: #cfe2f3;  
+    color: #0353a4;  
+}
+
+
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="request-detail">
+<div class="detail-container">
     <h2>تفاصيل الطلب</h2>
 
-    <div class="request-info">
-        <div class="labels">
-            <p>الاسم الكامل:</p>
-            <p>اسم الشركة:</p>
-            <p>المسمى الوظيفي:</p>
-            <p>البريد الإلكتروني:</p>
-            <p>رقم الجوال:</p>
-            <p>عدد الموظفين:</p>
-            <p>نوع الطلب:</p>
-            <p>الحالة الحالية:</p>
+    <div class="info-grid">
+        <div class="data-row">
+            <span class="field-label">الاسم الكامل:</span>
+            <span class="field-value">{{ request_data.full_name }}</span>
         </div>
-        <div class="values">
-            <p>{{ request_data.full_name }}</p>
-            <p>{{ request_data.company_name }}</p>
-            <p>{{ request_data.job_title }}</p>
-            <p>{{ request_data.email }}</p>
-            <p>{{ request_data.phone }}</p>
-            <p>{{ request_data.employees_count }}</p>
-            <p>{{ request_data.get_request_type_display }}</p>
-            <p>{{ request_data.status|default:"قيد المراجعة" }}</p>
+        
+        <div class="data-row">
+            <span class="field-label">اسم الشركة:</span>
+            <span class="field-value">{{ request_data.company_name }}</span>
         </div>
+        
+        <div class="data-row">
+            <span class="field-label">المسمى الوظيفي:</span>
+            <span class="field-value">{{ request_data.job_title }}</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="field-label">البريد الإلكتروني:</span>
+            <span class="field-value">{{ request_data.email }}</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="field-label">رقم الجوال:</span>
+            <span class="field-value">{{ request_data.phone }}</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="field-label">عدد الموظفين:</span>
+            <span class="field-value">{{ request_data.employees_count }}</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="field-label">نوع الطلب:</span>
+            <span class="field-value">{{ request_data.get_request_type_display }}</span>
+        </div>
+        
+        <div class="data-row">
+            <div class="field-label"><i class="ri-information-line"></i> الحالة:</div>
+            <div class="field-value">
+                <span class="status-badge {% if request_data.status == 'approved' %}status-approved{% elif request_data.status == 'rejected' %}status-rejected{% elif request_data.status == 'pending' %}status-pending{% else %}status-review{% endif %}">
+                    {% if request_data.status == 'approved' %} مقبول
+                    {% elif request_data.status == 'rejected' %} مرفوض
+                    {% elif request_data.status == 'pending' %} قيد الانتظار
+                    {% else %} قيد المراجعة
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        
+        
+
+    <!-- مربع الملاحظات -->
+    <div class="note-box">
+        <label for="note-text">ملاحظات (اختياري):</label>
+        <textarea id="note-text" rows="4" placeholder="أضف ملاحظات..."></textarea>
+        
+        {% if request_data.request_type == 'pricing' %}
+        <div class="quote-link-field">
+            <label for="quote-link">رابط عرض السعر (اختياري):</label>
+            <input type="url" id="quote-link" placeholder="https://example.com/quote.pdf">
+        </div>
+        {% endif %}
     </div>
 
-    <!-- ✅ مربع الملاحظات العام (يُستخدم للقبول والرفض) -->
-<div class="note-box">
-    <label for="note">ملاحظات (اختياري):</label>
-    <textarea id="note-text" rows="4" placeholder="أضف ملاحظات..."></textarea>
+    <!-- أزرار الإجراءات -->
+    <div class="action-buttons">
+        <div class="action-group">
+            {% if request_data.status == "pending" %}
+                <button type="button" class="btn btn-approve"
+                onclick="openModalWithNote('approveModal', 'note-text-approve', 'quote-link-approve')">
+                    <i class="ri-check-line"></i> قبول الطلب
+                </button>
+    
+                <button type="button" class="btn btn-reject"
+                onclick="openModalWithNote('rejectModal', 'note-text-reject')">
+                    <i class="ri-close-line"></i> رفض الطلب
+                </button>
+            {% endif %}
+        </div>
+    
+        <a href="{% url 'admin_panel:service_requests' %}" class="btn btn-back">
+            <i class="ri-arrow-go-back-line"></i> رجوع للقائمة
+        </a>
+    </div>
+    
+
+<!-- مودال تأكيد القبول -->
+<div id="approveModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('approveModal')">×</span>
+
+        <h2>تأكيد قبول الطلب</h2>
+        <p>هل أنت متأكد من قبول هذا الطلب؟ سيتم إرسال بريد إلكتروني إلى العميل !</p>
+        
+        <div class="modal-actions">
+            <form id="approveForm" action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="approve">
+                <input type="hidden" name="note" id="note-text-approve">
+                <input type="hidden" name="quote_link" id="quote-link-approve">
+                <button type="submit" class="btn-confirm">تأكيد</button>
+            </form>
+            <button type="button" class="btn-cancel">إلغاء</button>
+
+        </div>
+    </div>
 </div>
 
-    
 
-<div class="action-buttons">
-    {% if request_data.status == "pending" %}
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('rejectModal')">×</span>
+        <h2>تأكيد رفض الطلب</h2>
+        <p>⚠️ هل أنت متأكد من رفض هذا الطلب؟ سيتم إرسال بريد إلكتروني إلى العميل.</p>
+        <div class="modal-actions">
+            <form id="rejectForm" action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="reject">
+                <input type="hidden" name="note" id="note-text-reject">
+                <button type="submit" class="btn-confirm">تأكيد</button>
+            </form>
+            <button type="button" class="btn-cancel">إلغاء</button>
 
-
-    <form id="action-form" method="POST" style="display: inline;">
-        {% csrf_token %}
-        {% if request_data.request_type == 'pricing' %}
-    <label>رابط عرض السعر (اختياري)</label>
-    <input type="url" name="quote_link" placeholder="https://drive.google.com/...">
-{% endif %}
-
-        <input type="hidden" name="note" id="hidden-note">
-        <button type="submit" name="action" value="approve" class="btn btn-approve">
-            <i class="ri-check-line"></i> قبول
-        </button>
-        <button type="submit" name="action" value="reject" class="btn btn-reject">
-            <i class="ri-close-line"></i> رفض
-        </button>
-    </form>
-    {% endif %}
-    
-    <a href="{% url 'admin_panel:service_requests' %}" class="btn btn-back">
-        <i class="ri-arrow-go-back-line"></i> رجوع
-    </a>
+        </div>
+    </div>
 </div>
-    
-    <script>
-        document.getElementById('action-form').addEventListener('submit', function(e) {
-            const noteText = document.getElementById('note-text').value;
-            document.getElementById('hidden-note').value = noteText;
-        });
-    </script>
-    
-</div>
-
 
 
 {% endblock %}
 
+
+{% block extra_js %}
+<script>
+function openModalWithNote(modalId, noteFieldId, quoteLinkFieldId = null) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.classList.add('show');
+
+    const noteSource = document.getElementById('note-text');
+    const quoteLinkSource = document.getElementById('quote-link');
+
+    if (noteSource && noteFieldId && document.getElementById(noteFieldId)) {
+        document.getElementById(noteFieldId).value = noteSource.value;
+    }
+
+    if (quoteLinkSource && quoteLinkFieldId && document.getElementById(quoteLinkFieldId)) {
+        document.getElementById(quoteLinkFieldId).value = quoteLinkSource.value;
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+
+document.querySelectorAll('.close-btn, .btn-cancel').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const modal = btn.closest('.modal');
+        if (modal) {
+            modal.classList.remove('show');
+            console.log('تم الإغلاق');
+        } else {
+            console.log('ما لقيت المودال');
+        }
+    });
+});
+</script>
+{% endblock %}
 

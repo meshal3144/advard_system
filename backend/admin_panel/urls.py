@@ -5,15 +5,10 @@ from .views import add_client_view
 from .views import panel_base_view
 from accounts.views import profile_view
 from .views import employee_delete_view
-
 app_name = 'admin_panel'
 
 
-
-
-
 urlpatterns = [
-    path('contracts/', include('contracts.urls')),
     path('profile/', profile_view, name='profile'),
     path('set-language/', set_language, name='set_language'),
     path('clients/', views.clients_view, name='clients'),
@@ -32,10 +27,15 @@ urlpatterns = [
     path('clients/<int:user_id>/send-link/', views.send_set_password_link_view, name='send_set_password_link'),
     path('accounts/', include('accounts.urls')),
     path('mark-welcome-shown/', views.mark_welcome_shown, name='mark_welcome_shown'),
-    path('contracts/', include(('contracts.urls', 'contracts'), namespace='contracts')),
-    path('contracts/<int:contract_id>/', views.contract_detail_view, name='contract_detail'),
+
+    path('contracts/manage/', views.contracts_list_view, name='admin_contracts'),
+    
+
+
+
     # عرض  جدول الموظفين
     path('employees/', views.employees_view, name='employees'),
+
     # عرض تفاصيل موظف
     path('employees/<int:employee_id>/', views.employee_detail_view, name='employee_detail'),
 
@@ -51,11 +51,8 @@ urlpatterns = [
     path('companies/', views.companies_list_view, name='companies'),
     path('companies/<int:company_id>/edit/', views.edit_company_view, name='edit_company'),
     path('companies/<int:company_id>/', views.company_detail_view, name='company_detail'),
-
-
-
-
-
+    path('companies/<int:company_id>/details/', views.company_info_view, name='company_info'),
+    path('companies/<int:company_id>/delete/', views.delete_company_view, name='delete_company'),
 ]
 
 

@@ -1,10 +1,10 @@
 /* الأساسيات */
-
 body {
 
     overflow-y: auto; /* تفعيل التمرير الطبيعي للصفحة */
     overflow-x: hidden; /* منع شريط التمرير السفلي */
     }
+
 
     .avatar {
         width: 40px;
@@ -24,12 +24,10 @@ body {
         font-family: 'Tajawal', sans-serif;
     }
     
-
 .panel-wrapper {
     display: flex;
     flex-direction: row; /* أو احذف الخاصية لو مو موجودة */
     width: 100%;
-
 }
 
 .page-container {
@@ -44,6 +42,183 @@ body {
     box-sizing: border-box; /* التأكد إن البادينج مش بيزوّد العرض */
 }
 
+
+
+/* هذا تصميم حاويات الاضافة في جميع الصفحات */
+.add-section-box {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+    font-family: 'Tajawal', sans-serif;
+    position: relative;
+}
+
+.add-section-box h2 {
+    font-size: 28px;
+    color: #022c3d;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e6f0fa;
+    padding-bottom: 10px;
+    text-align: right;
+}
+
+
+
+/* هذا تصميم الفروم حث الاضافات + الازرار في جميع الصفحات */
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    color: #033043;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #e6f0fa; /* ✅ جعل الخط أرفع */
+    padding-bottom: 5px; /* ✅ زيادة المسافة بين النص والخط */
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #033043;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    color: #0A7273;
+    font-size: 18px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d9e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Tajawal', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0A7273;
+    box-shadow: 0 0 8px rgba(10, 114, 115, 0.2);
+}
+
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.checkbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.form-group.checkbox input {
+    width: auto;
+    cursor: pointer;
+}
+
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+/* هذا تصميم حاويات التفاصيل في جميع الصفحات */
+
+.detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+    
+}
+
+.detail-container h2 {
+    color: #033043;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f4f8;
+    text-align: right;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f9fbfd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+
+}
+
+.data-row {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.data-row:hover {
+    background: #F0F8FA;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.field-label {
+    font-weight: 600;
+    color: #3E3C37;
+    min-width: 160px;
+    margin-left: 10px;
+}
+
+.field-label i {
+    color: #0A7273;
+    font-size: 18px;
+    margin-left: 10px; /* إضافة مساحة بين النص والأيقونة */
+    font-weight: normal;
+    
+}
+
+.field-value {
+    color: #033043;
+    flex-grow: 1;
+}
 
 /* Sidebar */
 .sidebar {
@@ -169,7 +344,7 @@ body {
 .sub-sidebar-header i {
     font-size: 16px;
     margin-left: 10px;
-    font-weight: normal; /* أو bold إذا أردت أن تكون عريضة */
+    font-weight: normal;
 }
 
 
@@ -209,14 +384,14 @@ body {
 .main-container {
     margin-top: 50px;
     margin-bottom: 80px;
-    margin-right: 60px; /* عرض الشريط الجانبي الصغير */
-    width: calc(100% - 60px); /* العرض الافتراضي */
+    margin-right: 60px; 
+    width: calc(100% - 60px); 
     padding: 20px;
     height: calc(100vh - 120px);
     box-sizing: border-box;
     position: relative;
     z-index: 1;
-    transition: margin-right 0.3s ease, width 0.3s ease; /* أنميشن سلس */
+    transition: margin-right 0.3s ease, width 0.3s ease; 
 }
 
 /* الهيدر */
@@ -247,7 +422,7 @@ body {
     background: none;
     border: none;
     padding: 0;
-    margin-inline-start: 20px; /* المسافة بين الأيقونة والاسم، عدلها حسب رغبتك */
+    margin-inline-start: 20px; 
     cursor: pointer;
     display: inline-block;
     align-items: center; /* صح */
@@ -471,68 +646,102 @@ main {
 }
 
 
-/* الإشعارات */
-.notifications {
+
+
+/* حاوية الاشعارات  */
+.messages-container {
     width: 100%;
-    max-width: 500px; /* عرض محدود للحاوية */
-    position: absolute; /* لرفع الحاوية فوق المحتوى */
-    top: 30px; /* مسافة من الأعلى */
-    left: 50%; /* لتوسيط الحاوية أفقياً */
-    transform: translateX(-50%); /* تعديل الموقع للتوسيط بدقة */
-    z-index: 10; /* للتأكد من أنها فوق العناصر الأخرى */
+    max-width: 500px;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }
 
-.alert-success {
-    background-color: #033043;
-    color: #ffffff;
-}
-
+/* الرسالة العامة */
 .alert {
     padding: 15px;
     margin-bottom: 10px;
+    font-family: 'Tajawal', sans-serif;
     border-radius: 8px;
-    font-size: 14px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: fadeIn 0.3s ease-in-out;
+    text-align: center;
 }
 
-.reject-form {
-    display: flex;
-    flex-direction: column; /* ترتيب العناصر عموديًا */
-    gap: 15px; /* مسافة بين العناصر */
-    width: 100%;
-    max-width: 500px; /* عرض محدود للنموذج داخل الحاوية */
-    margin: 0 auto; /* توسيط النموذج */
+/* أنواع الرسائل */
+.alert-success {
+    background-color: #0A7273;
+    color: #ffffff;
 }
 
-.reject-form label {
-    font-family: 'Tajawal', sans-serif;
+.alert-error, .alert-danger {
+    background-color: #f8d7da;
+    color: #CF423B;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #FDA521;
+}
+
+.alert-info {
+    background-color: #cfe2f3;
+    color: #034078;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert i {
+    font-family: "remixicon";
+    margin-right: 8px; /* تقليل المسافة بين الأيقونة والنص */
+    font-style: normal;
+    font-size: 18px; /* حجم الأيقونة */
+    vertical-align: middle; /* محاذاة الأيقونة مع النص */
+    line-height: 1; /* تناسق مع النص */
+}
+
+
+
+
+/*زر الحذف في جميع الصفحات */
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-weight: normal;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Tajawal', sans-serif; /* استخدام خط Tajawal */
+    border: none;
     font-size: 16px;
-    color: #333;
-    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
 }
-
-.reject-form textarea {
-    font-family: 'Tajawal', sans-serif;
-    font-size: 14px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    resize: vertical; /* السماح بتغيير الحجم عموديًا فقط */
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-}
-
-.reject-form textarea:focus {
-    border-color: #dc3545; /* لون الحدود عند التركيز يتماشى مع زر الرفض */
-    outline: none;
+.btn-delete:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
 }
 
 
 
 /* تصميم نافذة تسجيل الخروج */
-
 .modal {
     display: none;
     position: fixed;
@@ -546,11 +755,9 @@ main {
     text-align: center;
     width: 600px;
     max-width: 90%; /* متجاوب مع الشاشات الصغيرة */
-    z-index: 9999;
+    z-index: 2001;
     box-sizing: border-box;
 }
-
-
 
 /* تحسين تصميم المحتوى داخل المودال */
 .modal-content {
@@ -558,6 +765,16 @@ main {
     width: 90%;
     padding: 20px;
     border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.modal-content h2 {
+    color: #033043;
+    margin-bottom: 20px;
+    padding-bottom: 10px; /* ترك مسافة تحت العنوان */
+    border-bottom: 2px solid #f0f4f8; /* خط فاصل ناعم */
+    text-align: center; /* محاذاة للمنتصف */
 }
 
 /* زر الإغلاق */
@@ -573,6 +790,7 @@ main {
 .modal-actions {
     display: flex;
     justify-content: space-around;
+    margin-top: 25px;
 }
 
 .modal-actions button {
@@ -591,16 +809,30 @@ main {
 
 .modal-actions button[type="submit"]:hover {
     background-color: #ad2720;
-}
+    transform: translateY(-2px);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;}
 
 .modal-actions button:not([type="submit"]) {
     background-color: #ddd; /* لون زر الإلغاء */
     color: #333;
+    
 }
 
 .modal-actions button:not([type="submit"]):hover {
     background-color: #ccc;
+    transform: translateY(-2px);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
+
+
+.modal.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1000 !important;
+}
+
+
 
 
 .welcome-animation {

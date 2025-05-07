@@ -128,10 +128,9 @@
                 <td>{{ company.contact_name }}</td>
                 <td>{{ company.contact_phone }}</td>
                 <td>
-                    <a href="{% url 'admin_panel:company_detail' company.id %}" class="btn-view-details">
+                    <a href="{% url 'admin_panel:company_info' company.id %}" class="btn-view-details">
                         <i class="ri-search-line"></i> عرض
                     </a>
-                    
                 </td>
             </tr>
             {% empty %}

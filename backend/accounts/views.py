@@ -116,9 +116,3 @@ def profile_view(request):
         "phone": user.phone,
         "email": user.email,
     })
-
-
-
-
-
-

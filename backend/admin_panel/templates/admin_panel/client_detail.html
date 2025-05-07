@@ -4,59 +4,6 @@
 {% block content %}
 
 <style>
-.page-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    font-family: 'Tajawal', sans-serif;
-}
-
-.page-container h2 {
-    color: #033043;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f0f4f8;
-    text-align: center;
-}
-
-.detail-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 20px;
-}
-
-.detail-row {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    background: #f9fbfd;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.detail-row:hover {
-    background: #f0f7ff;
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-}
-
-.detail-label {
-    font-weight: 600;
-    color: #4a6f8a;
-    min-width: 160px;
-    margin-left: 10px;
-}
-
-.detail-value {
-    color: #033043;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
 
 .text-success {
     color: #28a745;
@@ -145,39 +92,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Tajawal', sans-serif;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease-in-out;
-}
 
-.modal.show {
-    display: flex;
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 600px;
-    max-width: 90%;
-    position: relative;
-    text-align: center;
-}
 
 .close-btn {
     cursor: pointer;
@@ -259,37 +174,37 @@
 
 </style>
 
-<div class="page-container">
+<div class="detail-container">
     <h2>تفاصيل العميل</h2>
-    <div class="detail-container">
-        <div class="detail-row">
-            <span class="detail-label">الاسم الكامل:</span>
-            <span class="detail-value">{{ client.user.full_name }}</span>
+    <div class="info-grid">
+        <div class="data-row">
+            <span class="field-label">الاسم الكامل:</span>
+            <span class="field-value">{{ client.user.full_name }}</span>
         </div>
         
-        <div class="detail-row">
-            <span class="detail-label">البريد الإلكتروني:</span>
-            <span class="detail-value">{{ client.user.email }}</span>
+        <div class="data-row">
+            <span class="field-label">البريد الإلكتروني:</span>
+            <span class="field-value">{{ client.user.email }}</span>
         </div>
         
-        <div class="detail-row">
-            <span class="detail-label">رقم الجوال:</span>
-            <span class="detail-value">{{ client.user.phone }}</span>
+        <div class="data-row">
+            <span class="field-label">رقم الجوال:</span>
+            <span class="field-value">{{ client.user.phone }}</span>
         </div>
         
-        <div class="detail-row">
-            <span class="detail-label">المسمى الوظيفي:</span>
-            <span class="detail-value">{{ client.job_title|default:"-" }}</span>
+        <div class="data-row">
+            <span class="field-label">المسمى الوظيفي:</span>
+            <span class="field-value">{{ client.job_title|default:"-" }}</span>
         </div>
         
-        <div class="detail-row">
-            <span class="detail-label">الشركة:</span>
-            <span class="detail-value">{% if client.user.company %}{{ client.user.company.name }}{% else %}-{% endif %}</span>
+        <div class="data-row">
+            <span class="field-label">الشركة:</span>
+            <span class="field-value">{% if client.user.company %}{{ client.user.company.name }}{% else %}-{% endif %}</span>
         </div>
         
-        <div class="detail-row">
-            <span class="detail-label">الحالة:</span>
-            <span class="detail-value">
+        <div class="data-row">
+            <span class="field-label">الحالة:</span>
+            <span class="field-value">
                 {% if client.user.is_active %}
                     <i class="ri-checkbox-circle-fill text-success"></i> مفعل
                 {% else %}
@@ -298,27 +213,28 @@
             </span>
         </div>
     </div>
+    <div class="action-buttons">
+        <!-- زر الرجوع -->
+        <a href="{% url 'admin_panel:clients' %}" class="btn btn-back">
+            <i class="ri-arrow-go-back-line"></i> رجوع
+        </a>
+    
+        <!-- زر تعديل -->
+        <a href="{% url 'admin_panel:edit_user' client.user.id %}" class="btn btn-edit">
+            <i class="ri-edit-line"></i> تعديل
+        </a>
+    
+        <!-- زر إرسال رابط تعيين كلمة مرور (إذا كان المستخدم غير مفعل) -->
+        {% if not client.user.is_active %}
+        <button class="btn btn-send-link" id="sendPasswordLinkBtn">
+            <i class="ri-mail-send-line"></i> إرسال رابط تعيين كلمة مرور
+        </button>
+    {% endif %}
+    
+    </div>
 </div>
 
-<div class="action-buttons">
-    <!-- زر الرجوع -->
-    <a href="{% url 'admin_panel:clients' %}" class="btn btn-back">
-        <i class="ri-arrow-go-back-line"></i> رجوع
-    </a>
 
-    <!-- زر تعديل -->
-    <a href="{% url 'admin_panel:edit_user' client.user.id %}" class="btn btn-edit">
-        <i class="ri-edit-line"></i> تعديل
-    </a>
-
-    <!-- زر إرسال رابط تعيين كلمة مرور (إذا كان المستخدم غير مفعل) -->
-    {% if not client.user.is_active %}
-    <button class="btn btn-send-link" id="sendPasswordLinkBtn">
-        <i class="ri-mail-send-line"></i> إرسال رابط تعيين كلمة مرور
-    </button>
-{% endif %}
-
-</div>
 
 
 
@@ -329,8 +245,7 @@
         <h2>تأكيد إرسال الرابط</h2>
         <p>هل أنت متأكد أنك تريد إرسال رابط تعيين كلمة المرور لهذا المستخدم؟</p>
         <div class="modal-actions">
-            <form method="POST" action="{% url 'admin_panel:send_set_password_link' client.user.id %}" style="display:inline;">
-
+            <form id="sendLinkForm" method="POST" action="{% url 'admin_panel:send_set_password_link' client.user.id %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-confirm">نعم، إرسال</button>
             </form>

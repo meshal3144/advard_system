@@ -21,7 +21,10 @@
 .filters {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    justify-content: right;
+    align-items: center;
+    font-family: 'Tajawal';
 }
 .filters select, .filters input {
     padding: 8px 12px;
@@ -39,20 +42,37 @@
 }
 
 .btn {
-    padding: 10px 20px;
+    background-color: #E9E3D7;
+    color: #033043;
     border: none;
-    border-radius: 5px;
-    background-color: #FDA521; /* لون الخلفية الأزرق */
-    color: #fff; /* لون النص الأبيض */
-    font-size: 12px;
+    border-radius: 5px; /* زوايا دائرية */
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: var(--font-family);
+    font-family: 'Tajawal';
+    padding: 10px 40px;
+    transition: background-color 0.3s ease;
+    font-size: 13px;
 }
 
 .btn:hover {
-    background-color: #e09017; /* لون أغمق عند التمرير */
+    background-color: #ccc8c0; /* لون أغمق عند التمرير */
 }
+
+/* ✅ زر "إلغاء" منفصل بتنسيق مختلف */
+.btn-reset {
+    background-color: #033043; 
+    color: #ffffff;
+    text-decoration: none; 
+    border-radius: 5px;
+    padding: 10px 40px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    font-size: 13px;
+}
+
+.btn-reset:hover {
+    background-color: #064f6e; /* ✅ لون أغمق عند التمرير */
+}
+
 
 .btn-view-details {
     display: inline-flex; /* لجعل الأيقونة والنص في سطر واحد مع محاذاة جيدة */
@@ -84,7 +104,6 @@
 
 </style>
 {% endblock %}
-
 {% block content %}
 
 <div class="page-container">
@@ -92,18 +111,28 @@
         <h1>طلبات الخدمات</h1>
         <span class="badge">إجمالي: {{ requests|length }} طلب</span>
     </div>
+
     <form method="GET" class="filters">
         <select name="type">
             <option value="">كل الأنواع</option>
-            <option value="trial">عرض تجريبي</option>
-            <option value="pricing">عرض سعر</option>
+            <option value="trial" {% if request.GET.type == 'trial' %}selected{% endif %}>عرض تجريبي</option>
+            <option value="pricing" {% if request.GET.type == 'pricing' %}selected{% endif %}>عرض سعر</option>
+        </select>
+    
+        <select name="status">
+            <option value="">كل الحالات</option>
+            <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>قيد المراجعة</option>
+            <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>مقبول</option>
+            <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>مرفوض</option>
         </select>
     
         <input type="text" name="q" placeholder="بحث بالاسم أو الشركة..." value="{{ request.GET.q }}">
         <button type="submit" class="btn">بحث</button>
-
+    
+        <!-- ✅ زر "إلغاء" يمسح الفلترة ويعيد تحميل الصفحة -->
+        <a href="{% url 'admin_panel:service_requests' %}" class="btn btn-reset">إلغاء</a>
     </form>
-
+    
 
     <table class="data-table">
         <thead>
@@ -125,29 +154,33 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ req.full_name }}</td>
                     <td>{{ req.company_name }}</td>
-                    <td>{{ req.request_type }}</td>
+                    <td>{{ req.get_request_type_display }}</td>
                     <td>{{ req.email }}</td>
                     <td>{{ req.phone }}</td>
                     <td>{{ req.submitted_at|date:"Y-m-d" }}</td>
                     <td>
-                        <span class="{% if req.status == 'مقبول' %}status-approved{% elif req.status == 'مرفوض' %}status-rejected{% else %}status-pending{% endif %}">
-                            {{ req.status|default:"قيد المراجعة" }}
+                        <span class="{% if req.status == 'approved' %}status-approved
+                                      {% elif req.status == 'rejected' %}status-rejected
+                                      {% else %}status-pending{% endif %}">
+                            {{ req.get_status_display }}
                         </span>
                     </td>
+                    
+                    
                     <td class="actions">
                         <a href="{% url 'admin_panel:view_request_detail' req.id %}" class="btn-view-details">
                             <i class="ri-send-plane-fill"></i> عرض
                         </a>
                     </td>
-                    
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="8">لا توجد طلبات حالياً</td>
+                    <td colspan="9">لا توجد طلبات حالياً</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
     <div class="pagination">
         <label for="rowsPerPage">عدد الصفوف لكل صفحة:</label>
         <select id="rowsPerPage">
@@ -161,7 +194,6 @@
         <button id="nextPage">التالي</button>
     </div>
 </div>
-
 
 {% endblock %}
 

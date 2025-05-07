@@ -5,103 +5,9 @@
 
 {% block extra_css %}
 <style>
-/* General Styling */
-.page-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
-    font-family: 'Tajawal', sans-serif;
-    position: relative;
-}
 
-/* Form Header */
-.page-container h2 {
-    font-size: 28px;
-    color: #022c3d;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e6f0fa;
-    padding-bottom: 10px;
-}
-
-/* Form Sections */
-.form-section {
-    margin-bottom: 25px;
-}
-
-.form-section h3 {
-    font-size: 20px;
-    color: #033043;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #033043;
-    margin-bottom: 8px;
-}
-
-.form-group label i {
-    color: #0A7273;
-    font-size: 18px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #d1d9e0;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: 'Tajawal', sans-serif;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #0A7273;
-    box-shadow: 0 0 8px rgba(10, 114, 115, 0.2);
-}
-
-/* Checkbox Styling */
-.form-group.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.form-group.checkbox label {
-    margin-bottom: 0;
-    font-weight: 400;
-}
-
-.form-group.checkbox input {
-    width: auto;
-    cursor: pointer;
-}
-
-/* File Upload Styling */
 .file-upload {
-    padding: 15px;
+    padding: 20px;
     border: 1px dashed #d1d9e0;
     border-radius: 8px;
     text-align: center;
@@ -112,14 +18,6 @@
 .file-upload:hover {
     border-color: #0A7273;
     background-color: #f0f8ff;
-}
-
-/* Form Actions */
-.form-actions {
-    margin-top: 40px;
-    display: flex;
-    gap: 15px;
-    justify-content: flex-end;
 }
 
 .btn {
@@ -207,63 +105,13 @@
     }
 }
 
-/* Alert Styling */
-.alert-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-}
 
-.alert-message {
-    background-color: #dc3545;
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-
-.close-alert {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Icons */
 </style>
 {% endblock %}
 
 {% block content %}
 
-<div class="alert-container">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert-message {{ message.tags }}">
-                {{ message }}
-                <button class="close-alert">&times;</button>
-            </div>
-        {% endfor %}
-    {% endif %}
-</div>
-
-<div class="page-container">
+<div class="add-section-box">
     <h2>إضافة عقد جديد</h2>
 
     <form method="POST" id="addContractForm" enctype="multipart/form-data">
@@ -274,11 +122,14 @@
             <h3>معلومات الشركة</h3>
 
             <div class="form-group">
-                <label><i class="ri-building-line"></i> الشركة</label>
+                <label><i class="ri-building-line"></i> الشركة<span style="color: red;">*</span></label>
                 <select name="company" required>
                     <option value="" selected disabled>اختر الشركة</option>
                     {% for company in companies %}
-                        <option value="{{ company.id }}">{{ company.name }}</option>
+                    <option value="{{ company.id }}">
+                        {{ company.name }} ({{ company.company_code }})
+                    </option>
+                    
                     {% endfor %}
                 </select>
                 <a href="{% url 'admin_panel:add_company' %}?next=add_contract" class="btn-add-company">
@@ -291,52 +142,149 @@
         <div class="form-section">
             <h3>تفاصيل العقد</h3>
 
-            <div class="form-group">
-                <label><i class="ri-file-text-line"></i> رقم العقد</label>
-                <input type="text" name="contract_number" required>
-            </div>
 
             <div class="form-group">
-                <label><i class="ri-box-3-line"></i> الباقة</label>
-                <select name="plan">
-                    <option value="" selected disabled>اختر الباقة (اختياري)</option>
-                    <optgroup label="الباقات المتاحة">
-                        {% for plan in plans %}
-                            <option value="{{ plan.id }}">
-                                {% if plan.name == "Basic" %}أساسي
-                                {% elif plan.name == "Pro" %}أحترافي
-                                {% elif plan.name == "Enterprise" %}مؤسسي
-                                {% else %}{{ plan.name }}
-                                {% endif %}
-                            </option>
-                        {% endfor %}
-                    </optgroup>
-                </select>
-            </div>
+            <select name="plan" required>
+                <option value="" selected disabled>اختر الباقة<span style="color: red;">*</span></option>
+                <optgroup label="الباقات المتاحة">
+                    {% for plan in plans %}
+                        <option value="{{ plan.id }}">
+                            {% if plan.name == "Basic" %}أساسي
+                            {% elif plan.name == "Pro" %}أحترافي
+                            {% elif plan.name == "Enterprise" %}مؤسسي
+                            {% else %}{{ plan.name }}
+                            {% endif %}
+                        </option>
+                    {% endfor %}
+                </optgroup>
+            </select>
+        </div>
+            
 
             <div class="form-group">
-                <label><i class="ri-calendar-event-line"></i> تاريخ البداية</label>
+                <label><i class="ri-calendar-event-line"></i> تاريخ البداية<span style="color: red;">*</span></label>
                 <input type="date" name="start_date" required>
             </div>
 
             <div class="form-group">
-                <label><i class="ri-calendar-close-line"></i> تاريخ النهاية</label>
+                <label><i class="ri-calendar-close-line"></i> تاريخ النهاية<span style="color: red;">*</span></label>
                 <input type="date" name="end_date" required>
             </div>
         </div>
+
+        <!-- Payment Section -->
+        <div class="form-section">
+            <h3>معلومات الدفع</h3>
+
+            <div class="form-group">
+                <label><i class="ri-team-line"></i> عدد الموظفين<span style="color: red;">*</span></label>
+                <input type="number" name="employee_count" id="employeeCount" min="1" required>
+            </div>
+            
+
+            <div class="form-group">
+                <label><i class="ri-money-dollar-circle-line"></i> تكلفة العقد</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="text" name="contract_cost" id="contractCost" readonly style="flex: 1;">
+                    <img src="/static/images/Saudi_Riyal.svg" alt="ر.س" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+            
+            
+
+
+            <div class="form-group">
+                <label><i class="ri-discount-percent-line"></i> قيمة الخصم</label>
+                <select name="discount_value" id="discountSelect">
+                    <option value="0">بدون خصم</option>
+                    <option value="0.25">25%</option>
+                    <option value="0.5">50%</option>
+                    <option value="0.75">75%</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label><i class="ri-bank-card-line"></i> طريقة الدفع <span style="color: red;">*</span></label>
+                <select name="payment_method" required>
+                    <option value="" selected disabled>اختر طريقة الدفع</option>
+                    <option value="bank_transfer">تحويل بنكي</option>
+                    <option value="credit_card">بطاقة ائتمان</option>
+                    <option value="e_payment">دفع إلكتروني</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-checkbox-circle-line"></i> حالة الدفع <span style="color: red;">*</span></label>
+                <select name="payment_status" required>
+                    <option value="" selected disabled>اختر حالة الدفع</option>
+                    <option value="paid">مدفوع</option>
+                    <option value="unpaid">غير مدفوع</option>
+                    <option value="pending">قيد الانتظار</option>
+                </select>
+            </div>
+
+ 
+            <div class="form-group">
+                <label><i class="ri-percent-line"></i> قيمة الضريبة (15%)</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="text" id="vatAmount" readonly style="flex: 1;">
+                    <img src="/static/images/Saudi_Riyal.svg" alt="ر.س" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label><i class="ri-money-cny-box-line"></i> الإجمالي بعد شامل القيمة المضافة</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="text" id="finalAmount" readonly style="flex: 1;">
+                    <img src="/static/images/Saudi_Riyal.svg" alt="ر.س" style="width: 20px; height: 20px;">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label><i class="ri-loop-left-line"></i> تجديد تلقائي <span style="color: red;">*</span></label>
+                <select name="auto_renewal" required>
+                    <option value="false" selected>لا</option>
+                    <option value="true">نعم</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Signer Section -->
+        <div class="form-section">
+            <h3>بيانات الموقّع</h3>
+
+            <div class="form-group">
+                <label><i class="ri-user-line"></i> اسم الموقّع <span style="color: red;">*</span></label>
+                <input type="text" name="signer_name" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-mail-line"></i> البريد الإلكتروني للموقّع <span style="color: red;">*</span></label>
+                <input type="email" name="signer_email" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="ri-briefcase-line"></i> الصفة الوظيفية للموقّع <span style="color: red;">*</span></label>
+                <input type="text" name="signer_position" required>
+            </div>
+        </div>
+
 
         <!-- Terms & Notes Section -->
         <div class="form-section">
             <h3>الشروط والملاحظات</h3>
 
             <div class="form-group">
-                <label><i class="ri-file-list-3-line"></i> الشروط</label>
-                <textarea name="terms" rows="3"></textarea>
+                <label><i class="ri-file-list-3-line"></i> الشروط <span style="color: red;">*</span></label>
+                <textarea name="terms" rows="3" required></textarea>
             </div>
+            
 
             <div class="form-group">
                 <label><i class="ri-sticky-note-line"></i> الملاحظات</label>
-                <textarea name="notes" rows="3"></textarea>
+                <textarea name="notes"  rows="3"></textarea>
             </div>
         </div>
 
@@ -345,9 +293,9 @@
             <h3>مرفقات العقد</h3>
 
             <div class="form-group">
-                <label><i class="ri-attachment-line"></i> ملف العقد (اختياري)</label>
+                <label><i class="ri-attachment-line"></i> ملف العقد<span style="color: red;">*</span></label>
                 <div class="file-upload">
-                    <input type="file" name="contract_file">
+                    <input type="file" name="contract_file" required>
                 </div>
             </div>
         </div>
@@ -363,6 +311,39 @@
 
 {% block extra_js %}
 <script>
+
+    
+document.addEventListener("DOMContentLoaded", function () {
+        let startDateInput = document.querySelector("input[name='start_date']");
+        let endDateInput = document.querySelector("input[name='end_date']");
+
+        startDateInput.addEventListener("change", function () {
+            let startDate = new Date(startDateInput.value);
+            if (endDateInput.value) {
+                let endDate = new Date(endDateInput.value);
+                if (endDate < startDate) {
+                    endDateInput.value = ""; // تصفية الحقل إذا كان التاريخ غير صحيح
+                    alert(" لا يمكن أن يكون تاريخ النهاية أقدم من تاريخ البداية!");
+                }
+            }
+            endDateInput.min = startDateInput.value; // ضبط الحد الأدنى تلقائيًا
+        });
+
+        endDateInput.addEventListener("change", function () {
+            let startDate = new Date(startDateInput.value);
+            let endDate = new Date(endDateInput.value);
+            if (endDate < startDate) {
+                endDateInput.value = ""; // تصفية الحقل إذا كان التاريخ غير صحيح
+                alert(" تاريخ النهاية يجب أن يكون بعد تاريخ البداية!");
+            }
+        });
+
+        // عند تحميل الصفحة، ضبط الحد الأدنى لتاريخ النهاية تلقائيًا
+        if (startDateInput.value) {
+            endDateInput.min = startDateInput.value;
+        }
+    });
+
 document.getElementById('addContractForm').addEventListener('submit', function(e) {
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
@@ -389,5 +370,70 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+
+function updateFinalAmount() {
+    const selectedPlanId = planSelect.value;
+    const discount = parseFloat(discountSelect.value) || 0;
+    const planPrice = plans[selectedPlanId];
+
+    if (planPrice) {
+        const discounted = planPrice - (planPrice * discount);
+        finalAmountInput.value = discounted.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    } else {
+        finalAmountInput.value = "";
+    }
+}
+
+
+    //حساب اجمالي العقد
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const planSelect = document.querySelector('select[name="plan"]');
+    const employeeCountInput = document.getElementById('employeeCount');
+    const discountSelect = document.getElementById('discountSelect');
+    const contractCostInput = document.getElementById('contractCost');
+    const vatAmountInput = document.getElementById('vatAmount');
+    const finalAmountInput = document.getElementById('finalAmount');
+
+    let plans = {};
+    {% for plan in plans %}
+        plans["{{ plan.id }}"] = {{ plan.price_per_employee }};
+    {% endfor %}
+
+    function updateAmounts() {
+        const selectedPlanId = planSelect.value;
+        const planPrice = plans[selectedPlanId];
+        const employeeCount = parseInt(employeeCountInput.value) || 0;
+        const discount = parseFloat(discountSelect.value) || 0;
+
+        if (!planPrice || employeeCount <= 0) {
+            contractCostInput.value = '';
+            vatAmountInput.value = '';
+            finalAmountInput.value = '';
+            return;
+        }
+
+        const baseCost = planPrice * employeeCount;
+        const discounted = baseCost - (baseCost * discount);
+        const vat = discounted * 0.15;
+        const totalWithVat = discounted + vat;
+
+        contractCostInput.value = baseCost.toLocaleString('en-US', { minimumFractionDigits: 2 });
+        vatAmountInput.value = vat.toLocaleString('en-US', { minimumFractionDigits: 2 });
+        finalAmountInput.value = totalWithVat.toLocaleString('en-US', { minimumFractionDigits: 2 });
+
+    }
+
+    planSelect.addEventListener("change", updateAmounts);
+    employeeCountInput.addEventListener("input", updateAmounts);
+    discountSelect.addEventListener("change", updateAmounts);
+});
+
+
 </script>
 {% endblock %}
+
+
+

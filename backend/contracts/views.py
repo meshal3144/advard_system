@@ -209,12 +209,14 @@ def contracts_list(request):
     # فلترة حسب الحالة
     today = date.today()
     if status == 'active':
-        contracts = contracts.filter(start_date__lte=today, end_date__gte=today)
+        contracts = contracts.filter(status='active')
     elif status == 'expired':
-        contracts = contracts.filter(end_date__lt=today)
+        contracts = contracts.filter(status='expired')
     elif status == 'expiring_soon':
-        soon = today + timedelta(days=30)
-        contracts = contracts.filter(end_date__range=[today, soon])
+        contracts = contracts.filter(status='expiring')
+    elif status == 'cancelled':
+        contracts = contracts.filter(status='cancelled')
+
     
     # فلترة بالبحث
     if search:
@@ -240,5 +242,11 @@ def contracts_list(request):
         'sort_by': sort
     })
 
+    # العقود المؤرشفة  
 
+def archived_contracts(request):
+    contracts = CompanyContract.objects.filter(status__in=['expired', 'cancelled'])
+    return render(request, 'admin_panel/archived_contracts.html', {
+        'contracts': contracts
+    })
 

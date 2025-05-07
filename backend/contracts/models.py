@@ -91,6 +91,8 @@ class CompanyContract(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="آخر تحديث")
     approved_by = models.CharField(max_length=255, null=True, blank=True, verbose_name="تمت الموافقة بواسطة")
     approval_date = models.DateTimeField(null=True, blank=True, verbose_name="تاريخ الموافقة")
+    is_cancelled = models.BooleanField(default=False, verbose_name="تم الإلغاء؟")
+
 
 
 
@@ -139,8 +141,16 @@ class CompanyContract(models.Model):
         super().save(*args, **kwargs)
 
 
-
-
+    @property
+    def computed_status(self):
+        if self.is_cancelled:
+            return 'cancelled'
+        today = date.today()
+        if self.end_date < today:
+            return 'expired'
+        elif self.end_date <= today + timedelta(days=15):
+            return 'expiring'
+        return 'active'
 
     class Meta:
         verbose_name = "عقد شركة"

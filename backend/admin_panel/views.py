@@ -26,6 +26,8 @@ from django.core.mail import get_connection
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from contracts.models import CompanyContract, SubscriptionPlan
+import uuid  # ضعها في أعلى الملف إن لم تكن موجودة
+
 
 
 
@@ -175,6 +177,8 @@ def view_request_detail(request, request_id):
                     messages.error(request, ' هذا البريد الإلكتروني مسجل مسبقًا في النظام')
                     return redirect('admin_panel:service_requests')
 
+
+
                 # 4️⃣ إنشاء المستخدم
                 user = CustomUser.objects.create(
                     email=email,
@@ -183,7 +187,9 @@ def view_request_detail(request, request_id):
                     company=company,
                     is_active=False,
                     user_type='client',
+                    national_id=f"temp-{uuid.uuid4().hex[:8]}"  # توليد رقم هوية مؤقت لتجاوز شرط unique
                 )
+
 
 
                 # 5️⃣ إنشاء ClientUser مرتبط
@@ -208,8 +214,8 @@ def view_request_detail(request, request_id):
                 # 7️⃣ إنشاء رابط التعيين
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
-                domain = request.get_host()
-                registration_link = f"http://{domain}/accounts/set-password/{uid}/{token}/"
+                domain = "advardsystem.com"  # ← هنا تم التثبيت
+                registration_link = f"https://{domain}/accounts/set-password/{uid}/{token}/"
 
                 msg_content += f"\nرابط التسجيل: {registration_link}"
 
@@ -271,8 +277,6 @@ def edit_user_view(request, user_id):
 
 # هنا دوال الارسال البريد دالتين
 
-
-
 def send_real_html_email(to_email, context):
     html_content = render_to_string('accounts/password_reset_email.html', context)
     plain_content = strip_tags(html_content)
@@ -296,6 +300,13 @@ def send_real_html_email(to_email, context):
     )
     connection.close()
 
+    try:
+        html_content = render_to_string('accounts/password_reset_email.html', context)
+        plain_content = strip_tags(html_content)
+    except Exception as e:
+        print("⚠️ render_to_string failed:", str(e))
+        raise
+
 
 
 def send_set_password_link_view(request, user_id):
@@ -305,14 +316,15 @@ def send_set_password_link_view(request, user_id):
         'user': user,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': default_token_generator.make_token(user),
-        'domain': request.get_host(),
-        'protocol': 'https' if request.is_secure() else 'http',
+        'domain': 'advardsystem.com',  # ✳️ ثبّت اسم الدومين يدويًا
+        'protocol': 'https',
         'site_name': 'Advard System'
     }
 
     send_real_html_email(user.email, context)
     messages.success(request, f"تم إرسال رابط تعيين كلمة المرور إلى {user.full_name}")
     return redirect('admin_panel:client_detail', user_id=user.id)
+
 
 
 

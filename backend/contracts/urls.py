@@ -7,6 +7,8 @@ urlpatterns = [
     # ✅ عرض كل العقود
    path('', views.contracts_list, name='contracts_list'),
 
+   # ✅ عرض العقود المؤرشفة
+    path('archived/', views.archived_contracts, name='archived_contracts'),
 
     # ✅ تفاصيل عقد محدد
     path('<int:contract_id>/', views.contract_detail_view, name='contract_detail'),
